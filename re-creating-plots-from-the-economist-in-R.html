@@ -1,0 +1,860 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        
+            
+                <title>Re-creating Plots from The Economist in R and ggplot2</title>
+            
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.16" />
+        
+
+
+        
+        
+            
+                <meta name="description" content="A website built through Hugo and blogdown.">
+            
+        
+
+        
+
+  <meta name="twitter:card" content="summary"/>
+
+
+
+<meta name="twitter:title" content="Re-creating Plots from The Economist in R and ggplot2"/>
+<meta name="twitter:description" content="The Economist is well known for its graphs and images, and I personally like them a lot. I was doing some work on Brexit when I spied the image above, and thought how much I would like to make something similar. Since my go-to environment is R, and its go-to plotting package ggplot2, I thought I’d try to recreate the image using these tools. (Hat tip: I was half-way through doing this, and getting a little irritated with British place names, when I came across this fantastic RPub, which helped a lot with the area names."/>
+
+
+
+        <meta property="og:title" content="Re-creating Plots from The Economist in R and ggplot2" />
+<meta property="og:description" content="The Economist is well known for its graphs and images, and I personally like them a lot. I was doing some work on Brexit when I spied the image above, and thought how much I would like to make something similar. Since my go-to environment is R, and its go-to plotting package ggplot2, I thought I’d try to recreate the image using these tools. (Hat tip: I was half-way through doing this, and getting a little irritated with British place names, when I came across this fantastic RPub, which helped a lot with the area names." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/re-creating-plots-from-the-economist-in-r.html" />
+
+
+<meta property="og:updated_time" content="2016-08-21T00:00:00&#43;00:00"/>
+
+
+
+
+
+
+
+
+
+
+        
+<meta itemprop="name" content="Re-creating Plots from The Economist in R and ggplot2">
+<meta itemprop="description" content="The Economist is well known for its graphs and images, and I personally like them a lot. I was doing some work on Brexit when I spied the image above, and thought how much I would like to make something similar. Since my go-to environment is R, and its go-to plotting package ggplot2, I thought I’d try to recreate the image using these tools. (Hat tip: I was half-way through doing this, and getting a little irritated with British place names, when I came across this fantastic RPub, which helped a lot with the area names.">
+
+
+<meta itemprop="dateModified" content="2016-08-21T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1466">
+
+
+
+<meta itemprop="keywords" content="bayesian-statistics,github,hugo,political-science,r,statistics,webscraping,bayes,bayesian-statistics,brazil,electionsbr,eu,geo-reference,ggplot2,github,ideal-points,irt,jags,r,r-markdown,rmarkdown,rotten-tomatoes,rselenium,rstan,stan,the-economist,tidyverse,webscraping," />
+
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="./css/google-font.css" />
+            <link rel="stylesheet" href="./css/font-awesome.min.css" />
+            <link rel="stylesheet" href="./css/main.css" />
+            <link rel="stylesheet" href="./css/add-on.css" />
+            <link rel="stylesheet" href="./css/monokai-sublime.css">
+        
+
+        
+
+        
+        
+        
+            
+        
+
+
+
+
+    </head>
+    <body>
+
+        
+        <div id="wrapper">
+
+    
+    
+<header id="header">
+    
+        <h2><a href="./"></i></a></h2>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="./about/">
+                        About
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/rstudio/blogdown">
+                        GitHub
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://twitter.com/rstudio">
+                        Twitter
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li id="share-nav" class="share-menu" style="display:none;">
+                <a class="fa-share-alt" href="#share-menu">Share</a>
+            </li>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="q" value="site:/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="q" value="site:/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="./about/">
+                            <h3>
+                                
+                                About
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/rstudio/blogdown">
+                            <h3>
+                                
+                                GitHub
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://twitter.com/rstudio">
+                            <h3>
+                                
+                                Twitter
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    <li>
+                        <a href="./2017/02/01/how-to-make-a-github-pages-blog-with-rstudio-and-hugo/"><p>How to make a GitHub pages blog with RStudio and Hugo</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="./brad_pitt_movies.html"><p>Ranking Brad Pitt’s Movies in R</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="./background-image-rmarkdown.html"><p>Tips and Tricks for R Markdown html</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="./colour-table.html"><p>Make a colour table in R with ggplot2</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="./suicides-in-ireland.html"><p>Suicides in Ireland</p></a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        
+</section>
+
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li><a href="//twitter.com/share?url=%2fre-creating-plots-from-the-economist-in-r.html&text=Re-creating%20Plots%20from%20The%20Economist%20in%20R%20and%20ggplot2&via=" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=%2fre-creating-plots-from-the-economist-in-r.html" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=%2fre-creating-plots-from-the-economist-in-r.html" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=%2fre-creating-plots-from-the-economist-in-r.html&title=Re-creating%20Plots%20from%20The%20Economist%20in%20R%20and%20ggplot2" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=%2fre-creating-plots-from-the-economist-in-r.html&title=Re-creating%20Plots%20from%20The%20Economist%20in%20R%20and%20ggplot2" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=%2fre-creating-plots-from-the-economist-in-r.html&title=Re-creating%20Plots%20from%20The%20Economist%20in%20R%20and%20ggplot2" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by &body=%2fre-creating-plots-from-the-economist-in-r.html" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</section>
+
+    
+    <div id="main">
+        
+        
+        <article class="post">
+    <header>
+    <div class="title">
+        
+            <h1><a href="./re-creating-plots-from-the-economist-in-r.html">Re-creating Plots from The Economist in R and ggplot2</a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='2016-08-21'>
+            August 21, 2016</time>
+        <span class="author"></span>
+        
+        
+    </div>
+</header>
+
+
+    <section id="social-share">
+        <ul class="icons">
+            
+
+
+<li><a href="//twitter.com/share?url=%2fre-creating-plots-from-the-economist-in-r.html&text=Re-creating%20Plots%20from%20The%20Economist%20in%20R%20and%20ggplot2&via=" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=%2fre-creating-plots-from-the-economist-in-r.html" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=%2fre-creating-plots-from-the-economist-in-r.html" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=%2fre-creating-plots-from-the-economist-in-r.html&title=Re-creating%20Plots%20from%20The%20Economist%20in%20R%20and%20ggplot2" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=%2fre-creating-plots-from-the-economist-in-r.html&title=Re-creating%20Plots%20from%20The%20Economist%20in%20R%20and%20ggplot2" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=%2fre-creating-plots-from-the-economist-in-r.html&title=Re-creating%20Plots%20from%20The%20Economist%20in%20R%20and%20ggplot2" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by &body=%2fre-creating-plots-from-the-economist-in-r.html" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+    
+
+    <div id="content">
+
+
+<p><img src="http://i.imgur.com/1xvEaYe.png?3" align="middle" style="width:200px; height:350px;"></p>
+<p>The Economist is well known for its graphs and images, and I personally like them a lot. I was doing some work on Brexit when I spied the image above, and thought how much I would like to make something similar. Since my go-to environment is R, and its go-to plotting package <code>ggplot2</code>, I thought I’d try to recreate the image using these tools. (Hat tip: I was half-way through doing this, and getting a little irritated with British place names, when I came across this fantastic <a href="http://rpubs.com/rouille/191996">RPub</a>, which helped a lot with the area names. The code below that deals with cleaning up and merging the administrative area data comes from Benjamin. Thanks, chief!)</p>
+<p>The data that we start off with is available from the UK <a href="http://www.electoralcommission.org.uk/find-information-by-subject/elections-and-referendums/past-elections-and-referendums/eu-referendum">Electoral Commission</a>.</p>
+<pre class="r"><code>library(rgdal)
+library(maptools)
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(httr)
+library(ggmap)
+library(scales)
+
+
+brex &lt;- read_csv(&quot;https://raw.githubusercontent.com/RobertMyles/RobertMyles.github.io/master/_data/EU-referendum-result-data.csv&quot;)
+
+# Fix up place names:
+
+uk.map &lt;- readOGR(dsn = &quot;GBR_adm_shp&quot;, layer = &quot;GBR_adm2&quot;, verbose = FALSE)
+uk.map@data$NAME_2 &lt;- as.character(uk.map@data$NAME_2)
+uk.map@data$NAME_2[56]  &lt;- &quot;City of London&quot;
+uk.map@data$NAME_2[140] &lt;- &quot;Aberdeen City&quot;
+uk.map@data$NAME_2[145] &lt;- &quot;Dundee City&quot;
+uk.map@data$NAME_2[150] &lt;- &quot;City of Edinburgh&quot;
+uk.map@data$NAME_2[154] &lt;- &quot;Glasgow City&quot;
+uk.map@data$NAME_2[159] &lt;- &quot;North Ayrshire&quot;
+uk.map@data$NAME_2[162] &lt;- &quot;Perth and Kinross&quot;
+uk.map@data$NAME_2[171] &lt;- &quot;Isle of Anglesey&quot;
+uk.map@data$NAME_2[188] &lt;- &quot;Rhondda Cynon Taf&quot;
+
+url &lt;- &quot;https://en.wikipedia.org/wiki/List_of_English_districts&quot;
+tables &lt;- GET(url)
+tables &lt;- readHTMLTable(rawToChar(tables$content))
+n.rows &lt;- unlist(lapply(tables, function(t) dim(t)[1]))
+
+districts &lt;- tables[[which.max(n.rows)]]
+names(districts) &lt;- c(&quot;Name&quot;, &quot;Website&quot;, &quot;Population2015&quot;, &quot;Type&quot;,
+&quot;CeremonialCounty&quot;)
+districts$Name &lt;- gsub(&quot;&amp;&quot;, &quot;and&quot;, districts$Name)
+districts$Name[133] &lt;- &quot;Kingston upon Hull&quot;
+districts$id     &lt;- NA
+districts$Leave  &lt;- 0
+districts$Remain &lt;- 0
+districts$Valid  &lt;- 0
+
+
+wEngland &lt;- which(uk.map@data$NAME_1 == &quot;England&quot;)
+for(i in wEngland ) {
+  if(uk.map$TYPE_2[i] == &quot;Administrative County&quot; | uk.map$TYPE_2[i] == &quot;Metropolitan County&quot; |
+     uk.map$TYPE_2[i] == &quot;County&quot; | uk.map$TYPE_2[i] == &quot;Metropolitan Borough (city)&quot;) {
+    match &lt;- grep(uk.map$NAME_2[i], districts$CeremonialCounty)
+    for(j in match) if(is.na(districts$id[j]) ) districts$id[j] &lt;- uk.map$ID_2[i]
+  } else {
+    match &lt;- match(uk.map$NAME_2[i], districts$Name)
+    districts$id[match] &lt;- uk.map$ID_2[i]
+  }
+}
+
+for(i in 1:nrow(districts) ) {
+  match &lt;- match(districts$Name[i], brex$Area)
+  if(is.na(match) ) match &lt;- grep(districts$Name[i], brex$Area)
+  districts$Leave[i]  &lt;- brex$Leave[match]
+  districts$Remain[i] &lt;- brex$Remain[match]
+  districts$Valid[i]  &lt;- brex$Valid_Votes[match]
+}
+
+england &lt;- with(districts, data.frame(Name   = uk.map@data$NAME_2[wEngland],
+           Leave  = tapply(Leave, id, sum, na.rm = TRUE),
+           Remain = tapply(Remain, id, sum, na.rm = TRUE),
+           Valid  = tapply(Valid, id, sum, na.rm = TRUE),
+           Country = &quot;England&quot;,
+           id     = uk.map@data$ID_2[wEngland]))
+
+wIreland &lt;- which(uk.map@data$NAME_1 == &quot;Northern Ireland&quot;)
+
+ireland &lt;- with(brex, data.frame(Name   = uk.map@data$NAME_2[wIreland],
+                                 Country = &quot;N. Ireland&quot;,
+                                 Leave  = rep(Leave[grep(&quot;N&quot;,Region_Code)], each = length(wIreland) ),
+                                 Remain = rep(Remain[grep(&quot;N&quot;,Region_Code)], each = length(wIreland) ),
+                                 Valid  = rep(Valid_Votes[grep(&quot;N&quot;,Region_Code)], each = length(wIreland) ),
+                                 id     = uk.map@data$ID_2[wIreland]))
+
+scotland &lt;- with(brex, data.frame(Name   = Area[grep(&quot;S&quot;,Region_Code)], 
+                                  Leave  = Leave[grep(&quot;S&quot;,Region_Code)], 
+                                  Country = &quot;Scotland&quot;,
+                                  Remain = Remain[grep(&quot;S&quot;,Region_Code)], 
+                                  Valid  = Valid_Votes[grep(&quot;S&quot;,Region_Code)],
+                                  id     = rep(NA,length(grep(&quot;S&quot;,Region_Code)) ) ) )
+
+for(i in 1:nrow(scotland) ) {
+  match &lt;- match(scotland$Name[i],uk.map@data$NAME_2)
+  scotland$id[i] &lt;- uk.map@data$ID_2[match]
+}
+wales &lt;- with(brex, data.frame(Name   = Area[grep(&quot;W&quot;,Region_Code)], 
+                               Leave  = Leave[grep(&quot;W&quot;,Region_Code)], 
+                               Country = &quot;Wales&quot;,
+                               Remain = Remain[grep(&quot;W&quot;,Region_Code)], 
+                               Valid  = Valid_Votes[grep(&quot;W&quot;,Region_Code)],
+                               id     = length(grep(&quot;W&quot;,Region_Code) ) ) )
+
+for(i in 1:nrow(wales) ) {
+  match &lt;- match(wales$Name[i],uk.map@data$NAME_2)
+  wales$id[i] &lt;- uk.map@data$ID_2[match]
+}
+
+cities.name2 &lt;- c(&quot;Blackburn, UK&quot;, &quot;Port Talbot, UK&quot;, &quot;Northampton, UK&quot;, &quot;London, UK&quot;)
+cities.coordinates &lt;- geocode(cities.name2, messaging = FALSE)
+cities.lon &lt;- cities.coordinates$lon
+cities.lat &lt;- cities.coordinates$lat
+
+
+uk &lt;- rbind(england, ireland, scotland, wales)
+uk$pct_Leave  &lt;- 100*uk$Leave/uk$Valid
+uk$pct_Remain &lt;- 100*uk$Remain/uk$Valid
+
+uk.points &lt;- fortify(uk.map, region = &quot;ID_2&quot;)
+uk$id &lt;- as.character(uk$id)
+uk.plot &lt;- left_join(uk.points,uk)</code></pre>
+<p> </p>
+<p>All of this has given us <em>almost</em> what we need. The areas in the Economist’s image don’t quite match up with the administrative districts from the Electoral Commission data, in the sense that many are amalgamations of admistrative districts. Since we don’t have any variable in our dataset describing this mapping, we’ll have to do this manually.</p>
+<pre class="r"><code>uk.plot$Import_shock &lt;- NA
+
+One &lt;- c(&quot;Cumbria&quot;, &quot;Lancashire&quot;, &quot;Northamptonshire&quot;, &quot;Leicestershire&quot;, &quot;Leicester&quot;, &quot;Blackburn with Darwen&quot;, &quot;Manchester&quot;, &quot;Rutland&quot;)
+Two &lt;- c(&quot;Telford and Wrekin&quot;, &quot;Derbyshire&quot;, &quot;West Midlands&quot;, &quot;Stoke-on-Trent&quot;, &quot;Shropshire&quot;, &quot;Staffordshire&quot;, &quot;Nottinghamshire&quot;, &quot;Derby&quot;, &quot;Nottingham&quot;, &quot;West Yorkshire&quot;)
+Three &lt;- c(&quot;Herefordshire&quot;, &quot;Worcestershire&quot;, &quot;Essex&quot;, &quot;Warwickshire&quot;, &quot;Southend-on-Sea&quot;, &quot;Thurrock&quot;, &quot;Havering&quot;)
+Four &lt;- c(&quot;Bridgend&quot;, &quot;Isle of Anglesey&quot;, &quot;Gwynedd&quot;, &quot;Ceredigion&quot;, &quot;Carmarthenshire&quot;, &quot;Pembrokeshire&quot;, &quot;Swansea&quot;, &quot;Rhondda Cynon Taf&quot;, &quot;Neath Port Talbot&quot;, &quot;Caerphilly&quot;, &quot;Merthyr Tydfil&quot;, &quot;Torfaen&quot;, &quot;Somerset&quot;, &quot;Dorset&quot;, &quot;Isle of Wight&quot;, &quot;Hampshire&quot;, &quot;Conwy&quot;, &quot;Suffolk&quot;, &quot;Durham&quot;, &quot;Tyne and Wear&quot;, &quot;Denbighshire&quot;, &quot;Cambridgeshire&quot;, &quot;Luton&quot;, &quot;Hertfordshire&quot;, &quot;Bedfordshire&quot;, &quot;Berkshire&quot;, &quot;Poole&quot;, &quot;Southampton&quot;, &quot;Portsmouth&quot;, &quot;Redcar and Cleveland&quot;, &quot;Stockton-on-Tees&quot;, &quot;Darlington&quot;, &quot;Hartlepool&quot;, &quot;Bornemouth&quot;, &quot;Blaenau Gwent&quot;)
+Five &lt;- c(&quot;Northumberland&quot;, &quot;Norfolk&quot;, &quot;South Yorkshire&quot;, &quot;Enfield&quot;, &quot;Brent&quot;)
+Six &lt;- c(&quot;South Ayrshire&quot;, &quot;North Ayshire&quot;, &quot;Dumfries and Galloway&quot;, &quot;South Lanarkshire&quot;, &quot;North Lanarkshire&quot;, &quot;East Ayrshire&quot;, &quot;Renfrewshire&quot;, &quot;West Dunbartonshire&quot;, &quot;East Renfrewshire&quot;, &quot;Glasgow City&quot;, &quot;East Dunbartonshire&quot;, &quot;Inverclyde&quot;, &quot;Lincolnshire&quot;, &quot;West Sussex&quot;, &quot;East Sussex&quot;, &quot;Brighton and Hove&quot;, &quot;Surrey&quot;, &quot;Oxfordshire&quot;, &quot;Buckinghamshire&quot;, &quot;Milton Keynes&quot;, &quot;Peterborough&quot;, &quot;Sutton&quot;, &quot;Croydon&quot;)
+Seven &lt;- c(&quot;Angus&quot;, &quot;Dundee City&quot;, &quot;Scottish Borders&quot;, &quot;East Lothian&quot;, &quot;Midlothian&quot;, &quot;Fife&quot;, &quot;Perth and Kinross&quot;, &quot;City of Edinburgh&quot;, &quot;Stirling&quot;, &quot;Falkirk&quot;, &quot;West Lothian&quot;, &quot;Clackmannanshire&quot;, &quot;Powys&quot;, &quot;Cheshire&quot;, &quot;Vale of Glamorgan&quot;, &quot;Newport&quot;, &quot;Cardiff&quot;, &quot;Warrington&quot;, &quot;Halton&quot;, &quot;Flintshire&quot;, &quot;Wrexham&quot;, &quot;Monmouthshire&quot;, &quot;Bromley&quot;, &quot;Hillingdon&quot;, &quot;Harrow&quot;)
+Eight &lt;- c(&quot;Devon&quot;, &quot;East Riding of Yorkshire&quot;, &quot;Kent&quot;, &quot;Merseyside&quot;, &quot;North East Lincolnshire&quot;, &quot;Swindon&quot;, &quot;Wiltshire&quot;, &quot;Gloucestershire&quot;, &quot;South Gloucestershire&quot;, &quot;North Somerset&quot;, &quot;Torbay&quot;, &quot;Bath and North East Somerset&quot;, &quot;Bristol&quot;, &quot;Kingston upon Hull&quot;, &quot;North Lincolnshire&quot;, &quot;Medway&quot;)
+Nine &lt;- c(&quot;Highlands&quot;, &quot;Argyll and Bute&quot;, &quot;North Yorkshire&quot;, &quot;Cornwall&quot;, &quot;Eilean Siar&quot;)
+
+
+uk.plot1 &lt;- uk.plot %&gt;% 
+  filter(Name != &quot;Shetland Islands&quot;) %&gt;% 
+  filter(Country != &quot;N. Ireland&quot;) %&gt;% 
+  mutate(Import_shock = if_else(Name %in% One, 1, if_else(Name %in% Two, 2, if_else(Name %in% Three, 3, if_else(Name %in% Four, 4, if_else(Name %in% Five, 5, if_else(Name %in% Six, 6, if_else(Name %in% Seven, 7, if_else(Name %in% Eight, 8, if_else(Name %in% Nine, 9, 9)))))))))) %&gt;% 
+  filter(long &gt; -10)</code></pre>
+<p> </p>
+<p>So, after all that data tidying, we’re ready to make our plot. Since the Economist uses the ITC Officina Sans font, you’ll need that on your computer (or something similar). With the <code>extrafont</code> package, we can take avail of these, well, extra fonts.</p>
+<pre class="r"><code>library(extrafont)
+font_import()
+# There are various folders on my mac with fonts in them:
+font_import(&quot;/Users/robert/Library/Fonts/&quot;)
+font_import(&quot;/System/Library/Fonts/&quot;)
+font_import(&quot;/Library/Fonts/&quot;)
+loadfonts()
+# see what&#39;s available:
+fonts()</code></pre>
+<p> </p>
+<p>The following code makes the plot that I wanted, with the image saved and the font that I need embedded in the pdf that is produced. In Rstudio, no text will appear, as this font is not supported. But it’ll be in the pdf.</p>
+<pre class="r"><code>MM &lt;- ggplot() + 
+  geom_polygon(data = uk.plot1, aes(x = long, y = lat, group = group, fill = Import_shock), colour = &quot;white&quot;, size = 0.1) +
+  scale_fill_distiller(palette = &quot;Reds&quot;, breaks = pretty_breaks(n = 8)) +
+  geom_point(aes(x = cities.lon, y = cities.lat), color = &quot;black&quot;, size = 2.5, shape = 21, fill = &quot;black&quot;) +
+  geom_point(aes(x = cities.lon, y = cities.lat), color = &quot;white&quot;, size = 1, shape = 21, fill = &quot;white&quot;) +
+  theme_nothing(legend = T) + 
+  annotate(&quot;text&quot;, x=-4.75, y=52.5, label=&quot;WALES&quot;, size=4, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  annotate(&quot;text&quot;, x=1.12, y=53.65, label=&quot;ENGLAND&quot;, size=4, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  annotate(&quot;text&quot;, x=-2.2, y=57.9, label=&quot;SCOTLAND&quot;, size=4, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  annotate(&quot;text&quot;, x=-4.7, y=51.42, label=&quot;Port Talbot&quot;, size=3.45, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  annotate(&quot;text&quot;, x=.3, y=52.15, label=&quot;Northampton&quot;, size=3.45, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  annotate(&quot;segment&quot;, x = -3.3, xend = -2.5, y = 54, yend = 54) +
+  annotate(&quot;segment&quot;, x = -2.5, xend = -2.5, y = 54, yend = 53.85) +
+  annotate(&quot;text&quot;, x=-4.22, y=54, label=&quot;Blackburn&quot;, size=3.45, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  xlim(range(uk.plot1$long)) + ylim(range(uk.plot1$lat)) +
+  theme(plot.background = element_rect(fill = &quot;#A4D3EE&quot;, colour = &quot;#A4D3EE&quot;), panel.background = element_rect(fill = &quot;#A4D3EE&quot;, colour = &quot;#A4D3EE&quot;), legend.position = &quot;none&quot;) +
+  coord_map()
+  
+
+ggsave(&quot;Brexit_test.pdf&quot;, MM)
+embed_fonts(&quot;Brexit_test.pdf&quot;)</code></pre>
+<p>  <img src="http://i.imgur.com/P43D0jh.png" /></p>
+<p> </p>
+<p>It’s not <em>exactly</em> the same (I could <em>not</em> get that legend to work right!), but I think it’s a pretty close match. Good, stuff, R :clap: .</p>
+<p>P.s. I know there are themes available to get close to the Economist’s image style, but I wanted do it myself :smiley:. Anyway, if you’d like to include the <code>theme_economist()</code> function from the <code>ggthemes</code> package, it’s easy:</p>
+<pre class="r"><code>Eco &lt;- ggplot() + 
+  geom_polygon(data = uk.plot1, aes(x = long, y = lat, group = group, fill = Import_shock), colour = &quot;white&quot;, size = 0.1) +
+  scale_fill_distiller(palette = &quot;Reds&quot;, breaks = pretty_breaks(n = 8)) +
+  geom_point(aes(x = cities.lon, y = cities.lat), color = &quot;black&quot;, size = 2.5, shape = 21, fill = &quot;black&quot;) +
+  geom_point(aes(x = cities.lon, y = cities.lat), color = &quot;white&quot;, size = 1, shape = 21, fill = &quot;white&quot;) +
+  theme_economist() +
+  annotate(&quot;text&quot;, x=-4.75, y=52.5, label=&quot;WALES&quot;, size=4, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  annotate(&quot;text&quot;, x=1.12, y=53.65, label=&quot;ENGLAND&quot;, size=4, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  annotate(&quot;text&quot;, x=-2.2, y=57.9, label=&quot;SCOTLAND&quot;, size=4, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  annotate(&quot;text&quot;, x=-4.7, y=51.42, label=&quot;Port Talbot&quot;, size=3.45, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  annotate(&quot;text&quot;, x=.3, y=52.15, label=&quot;Northampton&quot;, size=3.45, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  annotate(&quot;segment&quot;, x = -3.3, xend = -2.5, y = 54, yend = 54) +
+  annotate(&quot;segment&quot;, x = -2.5, xend = -2.5, y = 54, yend = 53.85) +
+  annotate(&quot;text&quot;, x=-4.22, y=54, label=&quot;Blackburn&quot;, size=3.45, family = &quot;ITCOfficinaSans LT Book&quot;) +
+  xlim(range(uk.plot1$long)) + ylim(range(uk.plot1$lat)) +
+  theme(axis.ticks = element_blank(), axis.title = element_blank(), axis.text = element_blank(), panel.grid.major.y = element_blank(), legend.position = &quot;none&quot;) + 
+  coord_map()
+
+ggsave(&quot;Brexit_test_Econ.pdf&quot;, Eco)
+embed_fonts(&quot;Brexit_test_Econ.pdf&quot;)</code></pre>
+<p>The combination is better, actually:</p>
+<div class="figure">
+<img src="http://i.imgur.com/t5322ak.png" />
+
+</div>
+<p>If we put them side by side, you can see that we didn’t actually do a bad job.</p>
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/ivQ5t">
+<a href="//imgur.com/ivQ5t"></a>
+</blockquote>
+<script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+<p>Update: there are (of course) also <a href="http://rpsychologist.com/creating-a-typical-textbook-illustration-of-statistical-power-using-either-ggplot-or-base-graphics?utm_content=buffer9beb5&amp;utm_medium=social&amp;utm_source=twitter.com&amp;utm_campaign=buffer">other great examples</a> of using ggplot2 to recreate images, in this case textbook statistical distributions</p>
+
+
+
+    </div>
+
+    <footer>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+                        Category
+                    
+                
+            </li>
+        
+    
+
+    
+    
+        <li><a href='./categories/r'>R</a></li>
+    
+</ul>
+
+    </footer>
+</article>
+<ul class="actions pagination">
+    
+        <li><a href="./geo-reference-an-image-in-r.html"
+                class="button big previous">Geo-reference an image in R</a></li>
+    
+
+    
+        <li><a href="./electionsbr.html"
+                class="button big next">Map-making with R and electionsBR</a></li>
+    
+</ul>
+
+
+
+
+    </div>
+    
+<section id="sidebar">
+
+    
+        <section id="intro">
+            
+            
+            
+            <ul class="icons">
+                
+                
+            </ul>
+        </section>
+
+    
+        <section id="recent-posts">
+            <ul class="posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="./2017/02/01/how-to-make-a-github-pages-blog-with-rstudio-and-hugo/">How to make a GitHub pages blog with RStudio and Hugo</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2017-02-01'>
+                                    February 1, 2017</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="./brad_pitt_movies.html">Ranking Brad Pitt’s Movies in R</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2017-01-11'>
+                                    January 11, 2017</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="./background-image-rmarkdown.html">Tips and Tricks for R Markdown html</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2017-01-02'>
+                                    January 2, 2017</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="./colour-table.html">Make a colour table in R with ggplot2</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2016-12-29'>
+                                    December 29, 2016</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="./suicides-in-ireland.html">Suicides in Ireland</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2016-12-21'>
+                                    December 21, 2016</time>
+                            </header>
+                        </article>
+                    </li>
+                
+
+                
+                    <li>
+                        <ul class="actions">
+                            <li><a href=
+                            
+                                "/post/"
+                            
+                            class="button">View more posts</a></li>
+                        </ul>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+    
+    
+    
+        <section id="categories">
+            <ul class="posts">
+                <header>
+                    <h3><a href="./categories/">Categories</a></h3>
+                </header>
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="./categories/bayesian-statistics/">bayesian-statistics</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="./categories/github/">github</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="./categories/hugo/">hugo</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="./categories/political-science/">political-science</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="./categories/r/">r</a>
+                                <span style="float:right;">14</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="./categories/statistics/">statistics</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="./categories/webscraping/">webscraping</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+            </ul>
+        </section>
+    
+
+    
+        
+
+    
+        <section id="footer">
+            <ul class="icons">
+                
+                
+            </ul>
+
+            <p class="copyright">&copy; Lithium Theme. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
+        </section>
+
+</section>
+
+            </div>
+        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+        
+
+        
+        
+            
+        
+
+        
+        
+            <script src="./js/jquery.min.js"></script>
+            <script src="./js/skel.min.js"></script>
+            <script src="./js/util.js"></script>
+            <script src="./js/main.js"></script>
+            <script src="./js/backToTop.js"></script>
+            <script src="./js/highlight.pack.js"></script>
+        
+
+        
+
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+            
+    </body>
+</html>
+

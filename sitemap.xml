@@ -3,56 +3,61 @@
   
   <url>
     <loc>/</loc>
+    <lastmod>2017-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2017/02/01/how-to-make-a-github-pages-blog-with-rstudio-and-hugo/</loc>
+    <lastmod>2017-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/brad_pitt_movies.html</loc>
     <lastmod>2017-01-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2017/01/11/ranking-brad-pitts-movies-in-r/</loc>
-    <lastmod>2017-01-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/2017/01/02/tips-and-tricks-for-r-markdown-html/</loc>
+    <loc>/background-image-rmarkdown.html</loc>
     <lastmod>2017-01-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/12/29/make-a-colour-table-in-r-with-ggplot2/</loc>
+    <loc>/colour-table.html</loc>
     <lastmod>2016-12-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/12/21/suicides-in-ireland/</loc>
+    <loc>/suicides-in-ireland.html</loc>
     <lastmod>2016-12-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/10/20/theme-specific-voting-in-the-european-parliament/</loc>
+    <loc>/meps.html</loc>
     <lastmod>2016-10-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/10/09/map-making-with-r-and-electionsbr/</loc>
+    <loc>/electionsbr.html</loc>
     <lastmod>2016-10-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/08/21/re-creating-plots-from-the-economist-in-r-and-ggplot2/</loc>
+    <loc>/re-creating-plots-from-the-economist-in-r.html</loc>
     <lastmod>2016-08-21T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/08/13/geo-reference-an-image-in-r/</loc>
+    <loc>/geo-reference-an-image-in-r.html</loc>
     <lastmod>2016-08-13T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/08/05/easier-web-scraping-in-r/</loc>
+    <loc>/easier-web-scraping-in-r.html</loc>
     <lastmod>2016-08-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/05/21/bayesian-irt-in-r-and-stan/</loc>
+    <loc>/bayesian-irt-in-r-and-stan.html</loc>
     <lastmod>2016-05-21T00:00:00+00:00</lastmod>
   </url>
   
@@ -62,22 +67,22 @@
   </url>
   
   <url>
-    <loc>/2016/05/03/bayesian-stats----book-recommendations/</loc>
+    <loc>/books-on-bayes-stats.html</loc>
     <lastmod>2016-05-03T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/04/27/web-navigation-in-r-with-rselenium/</loc>
+    <loc>/web-navigation-and-scraping-with-r.html</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/04/15/write-your-thesis-or-paper-in-r-markdown/</loc>
+    <loc>/r-markdown.html</loc>
     <lastmod>2016-04-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2016/04/13/stan-or-jags-for-bayesian-ideal-point-irt/</loc>
+    <loc>/stan-jags.html</loc>
     <lastmod>2016-04-13T00:00:00+00:00</lastmod>
   </url>
   
