@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Webscraping on Lithium Theme</title>
+    <link>/categories/webscraping/</link>
+    <description>Recent content in Webscraping on Lithium Theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 05 Aug 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/categories/webscraping/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Easier web scraping in R</title>
+      <link>/2016/08/05/easier-web-scraping-in-r/</link>
+      <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/08/05/easier-web-scraping-in-r/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
+
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;In an earlier &lt;a href=&#34;http://robertmyles.github.io//Web-Navigation-and-Scraping-with-R.html&#34;&gt;post&lt;/a&gt;, I described some ways in which you can interact with a web browser using R and &lt;code&gt;RSelenium&lt;/code&gt;. This is ideal when you need to access data through drop-down menus and search bars. However, working with &lt;code&gt;RSelenium&lt;/code&gt; can be tricky. There are, of course, easier ways to get information from the internet using R.&lt;/p&gt;
+&lt;p&gt;Perhaps the most straightforward way is to use &lt;code&gt;rvest&lt;/code&gt;, in tandem with other packages of the &lt;a href=&#34;https://barryrowlingson.github.io/hadleyverse/#1&#34;&gt;Hadleyverse&lt;/a&gt;&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, such as &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;tidyr&lt;/code&gt; for data preparation and cleaning after the webscrape. I’m going to use a simple example that I came across recently in my work, getting the name of each mayor in Brazil.&lt;/p&gt;
+&lt;p&gt;Finding out who was &lt;em&gt;elected&lt;/em&gt; to the mayor’s office in each municipality in Brazil is easy: that data exists and is available on the &lt;a href=&#34;http://www.tse.jus.br/&#34;&gt;website&lt;/a&gt; of the &lt;em&gt;Tribunal Superior Eleitoral&lt;/em&gt;. However, just because someone was elected to office (in this case in 2014) does not mean that they are still in office now, two years later. After searching around the web for a bit, I realised that this data is not available as a dataset.&lt;/p&gt;
+&lt;p&gt;After wandering to the website of the &lt;a href=&#34;http://www.ibge.gov.br/home/&#34;&gt;IBGE&lt;/a&gt;, a Brazilian statistics agency, I found a way to get the name of the mayor currently in charge of each municipality. Each municipality has its own webpage on the IGBE’s dedicated &lt;a href=&#34;http://www.cidades.ibge.gov.br/xtras/home.php&#34;&gt;Cidades@&lt;/a&gt; site.&lt;/p&gt;
+&lt;p&gt;For example, you will see the a webpage for the municipality of Acrelândia, shown in the image below. As you can see, the name of the mayor (“Prefeito”) is on the right-hand side of the page. Since we now know we can get this for each municipality, we have three tasks to do in order to get this info into R:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;find out what part of the url changes as we move from city to city on the website;&lt;/li&gt;
+&lt;li&gt;send the corresponding information to the server using R;&lt;/li&gt;
+&lt;li&gt;scrape the page and tidy up the resulting data in R.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/MGqKffr.png&#34; style=&#34;width:750px;height:500px;&#34;&gt;&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;The url for &lt;a href=&#34;http://www.cidades.ibge.gov.br/xtras/perfil.php?lang=&amp;amp;codmun=120001&amp;amp;search=acre%7Cacrelandia&#34;&gt;Acrelândia&lt;/a&gt; is unique at: “codmun=120001” and “search=acre|acrelandia”.&lt;br /&gt;
+The number in “codmun” is available as the IBGE municipal code (although missing the final digit, strangely…but that’s not a problem, we just take it off the end for each one) and the rest is just the state and the municipality, all information that is easy to get from various sources. For this example, I’ve uploaded this basic dataset to Github so we can use it here.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(dplyr)
+library(tidyr)
+library(readr)
+library(stringr)
+library(stringi)
+library(rvest)
+
+## read in data and create variables for webscraping:
+Mayors &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/RobertMyles/RobertMyles.github.io/master/_data/IBGE_codes.csv&amp;quot;) %&amp;gt;% 
+  select(-c(UF, Cod.Mun)) %&amp;gt;% 
+  dplyr::rename(Code_IBGE = Cod.IBGE) %&amp;gt;% 
+  mutate(MUNIC2 = tolower(.$MUNIC)) %&amp;gt;% 
+  mutate(MUNIC2 = gsub(&amp;quot; &amp;quot;, &amp;quot;-&amp;quot;, .$MUNIC2)) %&amp;gt;% 
+  mutate(Name_UF2 = tolower(.$Name_UF)) %&amp;gt;% 
+  mutate(Code2 = unlist(str_extract_all(.$Code_IBGE, &amp;quot;[0-9]{6}&amp;quot;))) %&amp;gt;% 
+  unite(col = Link, Name_UF2, MUNIC2, sep = &amp;quot;|&amp;quot;, remove = F) %&amp;gt;% 
+  arrange(ACR_UF) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;  In the code snippet above, we’ve taken out unnecessary columns, renamed one, changed the names of the municipalities to lower case (for the url), taken six numbers of the IBGE code for use in the webscrape and joined the state and municipality names together, with &lt;code&gt;|&lt;/code&gt; seperating them, as in the url for each municipality webpage. We also need to create some empty data frames to fill, and remove the municipality of Brasília, which does not have a &lt;em&gt;Prefeito&lt;/em&gt;, just a &lt;a href=&#34;http://www.cidades.ibge.gov.br/xtras/perfil.php?lang=&amp;amp;codmun=530010&amp;amp;search=distrito-federal%7Cbrasilia&#34;&gt;governor&lt;/a&gt;, which is all done below:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;url &amp;lt;- &amp;quot;http://www.cidades.ibge.gov.br/xtras/perfil.php?lang=&amp;amp;codmun=&amp;quot;
+
+link &amp;lt;- Mayors$Link
+grep(&amp;quot;distrito federal|brasilia&amp;quot;, link)
+link &amp;lt;- link[-804]
+link2 &amp;lt;- Mayors$Code2
+link2 &amp;lt;- link2[-804]
+
+Prefeitos &amp;lt;- data.frame()
+Cidades &amp;lt;- data.frame()
+Pref &amp;lt;- data.frame()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next comes our webscrape, which is incredibly easy with &lt;code&gt;rvest&lt;/code&gt; (&lt;code&gt;xml2&lt;/code&gt; is likewise easy). The only hard part of this entire scrape is getting the words “Prefeito” along with the name of the mayor out of the document. This relies on regex, which can be tricky. But trial and error should lead you to the right answer for whatever you need. Or search &lt;a href=&#34;http://www.rexegg.com/regex-quickstart.html&#34;&gt;Google&lt;/a&gt;, of course.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;for(i in 1:length(link)){
+  URL &amp;lt;- paste(url, link2[i], &amp;quot;&amp;amp;search=&amp;quot;, link[i], sep = &amp;quot;&amp;quot;)
+  pref &amp;lt;- read_html(URL)
+  pref1 &amp;lt;- html_nodes(pref, xpath = &amp;#39;//*[@id=&amp;quot;mod_perfil_infosbasicas&amp;quot;]&amp;#39;)
+  str &amp;lt;- html_text(pref1)
+  str1 &amp;lt;- unlist(str_extract_all(str, &amp;quot;Prefeito[\\w A-Z]*&amp;quot;))
+  print(str1)
+  Prefeitos &amp;lt;- rbind(Prefeitos, str1, stringsAsFactors = F)
+  City &amp;lt;- link[i]
+  Cidades &amp;lt;- rbind(Cidades, City, stringsAsFactors = F)
+  Pref &amp;lt;- cbind(Prefeitos, Cidades)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;With a little tidying, we have a nice little dataset of each current mayors for each municipality in Brazil.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;colnames(Pref) &amp;lt;- c(&amp;quot;Prefeito&amp;quot;, &amp;quot;Municipio&amp;quot;) 
+Pref$Prefeito &amp;lt;- gsub(&amp;quot;Prefeito&amp;quot;, &amp;quot;&amp;quot;, Pref$Prefeito)
+Pref$Prefeito &amp;lt;- stri_trans_general(Pref$Prefeito, &amp;quot;Latin-ASCII&amp;quot;)
+Pref1 &amp;lt;- Pref 
+Pref1$Municipio &amp;lt;- Pref1$Municipio %&amp;gt;% 
+  str_split_fixed(&amp;quot;\\|&amp;quot;, n = 2) %&amp;gt;% 
+  toupper()
+Pref$Name_UF &amp;lt;- Pref1$Municipio[,1]
+Pref$MUNIC &amp;lt;- Pref1$Municipio[,2]
+Pref &amp;lt;- select(Pref, -Municipio)
+Mayors$MUNIC &amp;lt;- gsub(&amp;quot;[-]&amp;quot;, &amp;quot; &amp;quot;, Mayors$MUNIC)
+Pref$MUNIC &amp;lt;- gsub(&amp;quot;[-]&amp;quot;, &amp;quot; &amp;quot;, Pref$MUNIC)
+rm(Pref1)
+
+Prefeitos &amp;lt;- full_join(Mayors, Pref)
+
+Prefeitos &amp;lt;- select(Prefeitos, -c(Link, MUNIC2, Name_UF2, Code2))
+Prefeitos &amp;lt;- Prefeitos[,c(1:5, 7, 6)]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/TRMOSkV.png&#34; style=&#34;width:650px;height:400px;&#34;&gt;&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; Supposedly, Hadley Wickham doesn’t actually like this term, but I’ll use it anyway, I’m sure he wouldn’t mind :smiley:. &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/VuCDpaX.png?1&#34; /&gt;&lt;/p&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

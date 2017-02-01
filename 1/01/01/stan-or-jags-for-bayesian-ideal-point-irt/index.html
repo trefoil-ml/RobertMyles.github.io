@@ -16,9 +16,7 @@
 
         
         
-            
-                <meta name="description" content="A website built through Hugo and blogdown.">
-            
+            <meta name="description" content="Bayesian IRT models can be computer intensive. Which performs better, Stan or JAGS?">
         
 
         
@@ -28,12 +26,12 @@
 
 
 <meta name="twitter:title" content="Stan or JAGS for Bayesian ideal-point IRT?"/>
-<meta name="twitter:description" content="Anybody who has ever tried to run even a moderately-sized Bayesian IRT model in R (for ideal points as in the political science literature, or otherwise) will know that these models can take a long time. It’s not R’s fault: these are usually big models with lots of parameters, and naturally take longer.1 Not to mention the fact that Bayesian computation is more computationally intense than other methods. Historically (okay, I’m talking about the last twenty years, maybe ‘historically’ is a little strong), the sampling software BUGS (Bayesian Inference Using Gibbs Sampling) and then JAGS were used to run Bayesian models (JAGS is still pretty common, and BUGS too, though not as much)."/>
+<meta name="twitter:description" content="Bayesian IRT models can be computer intensive. Which performs better, Stan or JAGS?"/>
 
 
 
         <meta property="og:title" content="Stan or JAGS for Bayesian ideal-point IRT?" />
-<meta property="og:description" content="Anybody who has ever tried to run even a moderately-sized Bayesian IRT model in R (for ideal points as in the political science literature, or otherwise) will know that these models can take a long time. It’s not R’s fault: these are usually big models with lots of parameters, and naturally take longer.1 Not to mention the fact that Bayesian computation is more computationally intense than other methods. Historically (okay, I’m talking about the last twenty years, maybe ‘historically’ is a little strong), the sampling software BUGS (Bayesian Inference Using Gibbs Sampling) and then JAGS were used to run Bayesian models (JAGS is still pretty common, and BUGS too, though not as much)." />
+<meta property="og:description" content="Bayesian IRT models can be computer intensive. Which performs better, Stan or JAGS?" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/1/01/01/stan-or-jags-for-bayesian-ideal-point-irt/" />
 
@@ -51,7 +49,7 @@
 
         
 <meta itemprop="name" content="Stan or JAGS for Bayesian ideal-point IRT?">
-<meta itemprop="description" content="Anybody who has ever tried to run even a moderately-sized Bayesian IRT model in R (for ideal points as in the political science literature, or otherwise) will know that these models can take a long time. It’s not R’s fault: these are usually big models with lots of parameters, and naturally take longer.1 Not to mention the fact that Bayesian computation is more computationally intense than other methods. Historically (okay, I’m talking about the last twenty years, maybe ‘historically’ is a little strong), the sampling software BUGS (Bayesian Inference Using Gibbs Sampling) and then JAGS were used to run Bayesian models (JAGS is still pretty common, and BUGS too, though not as much).">
+<meta itemprop="description" content="Bayesian IRT models can be computer intensive. Which performs better, Stan or JAGS?">
 
 
 
@@ -59,7 +57,7 @@
 
 
 
-<meta itemprop="keywords" content="blog,r,bayes,bayesian,bayesian-statistics,brazil,electionsbr,eu,european-statistics-day,geo-referencing,ggplot2,ideal-points,irt,jags,plot,r,r-markdown,regression,rotten-tomatoes,rselenium,rstan,rstudio,rvest,stan,tidyverse,webscraping," />
+<meta itemprop="keywords" content="bayesian-statistics,political-science,r,statistics,webscraping,bayes,bayesian-statistics,brazil,electionsbr,eu,geo-reference,ggplot2,ideal-points,irt,jags,r,r-markdown,rmarkdown,rotten-tomatoes,rselenium,rstan,stan,the-economist,tidyverse,webscraping," />
 
         
 
@@ -204,23 +202,23 @@
 
                 
                     <li>
-                        <a href="../../../../2017/02/01/stan/"><p>Stan</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="../../../../2016/12/30/a-plain-markdown-post/"><p>A Plain Markdown Post</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="../../../../2015/07/23/hello-r-markdown/"><p>Hello R Markdown</p></a>
-                    </li>
-                
-                    <li>
                         <a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/"><p>Bayesian IRT in R and Stan</p></a>
                     </li>
                 
                     <li>
                         <a href="../../../../1/01/01/bayesian-stats----book-recommendations/"><p>Bayesian Stats -- Book Recommendations</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/easier-web-scraping-in-r/"><p>Easier web scraping in R</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/geo-reference-an-image-in-r/"><p>Geo-reference an image in R</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/make-a-colour-table-in-r-with-ggplot2/"><p>Make a colour table in R with ggplot2</p></a>
                     </li>
                 
             </ul>
@@ -295,6 +293,8 @@
             <h1><a href="../../../../1/01/01/stan-or-jags-for-bayesian-ideal-point-irt/">Stan or JAGS for Bayesian ideal-point IRT?</a></h1>
             
         
+        
+            <p>Bayesian IRT models can be computer intensive. Which performs better, Stan or JAGS?</p>
         
     </div>
     <div class="meta">
@@ -429,8 +429,8 @@
     
 
     
-        <li><a href="../../../../1/01/01/stan-or-jags-for-bayesian-ideal-point-irt/"
-                class="button big next">Stan or JAGS for Bayesian ideal-point IRT?</a></li>
+        <li><a href="../../../../1/01/01/re-creating-plots-from-the-economist-in-r-and-ggplot2/"
+                class="button big next">Re-creating Plots from The Economist in R and ggplot2</a></li>
     
 </ul>
 
@@ -470,48 +470,6 @@
                     <li>
                         <article>
                             <header>
-                                <h3><a href="../../../../2017/02/01/stan/">Stan</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2017-02-01'>
-                                    February 1, 2017</time>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="../../../../2016/12/30/a-plain-markdown-post/">A Plain Markdown Post</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2016-12-30'>
-                                    December 30, 2016</time>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="../../../../2015/07/23/hello-r-markdown/">Hello R Markdown</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2015-07-23'>
-                                    July 23, 2015</time>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
                                 <h3><a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/">Bayesian IRT in R and Stan</a></h3>
                                 
                                     
@@ -527,6 +485,48 @@
                         <article>
                             <header>
                                 <h3><a href="../../../../1/01/01/bayesian-stats----book-recommendations/">Bayesian Stats -- Book Recommendations</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/easier-web-scraping-in-r/">Easier web scraping in R</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/geo-reference-an-image-in-r/">Geo-reference an image in R</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/make-a-colour-table-in-r-with-ggplot2/">Make a colour table in R with ggplot2</a></h3>
                                 
                                     
                                 
@@ -570,8 +570,17 @@
                     <li>
                         <article>
                             <header>
-                                <a href="../../../../categories/blog/">blog</a>
-                                <span style="float:right;">14</span>
+                                <a href="../../../../categories/bayesian-statistics/">bayesian-statistics</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/political-science/">political-science</a>
+                                <span style="float:right;">1</span>
                             </header>
                         </article>
                     </li>
@@ -580,7 +589,25 @@
                         <article>
                             <header>
                                 <a href="../../../../categories/r/">r</a>
-                                <span style="float:right;">2</span>
+                                <span style="float:right;">12</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/statistics/">statistics</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/webscraping/">webscraping</a>
+                                <span style="float:right;">1</span>
                             </header>
                         </article>
                     </li>

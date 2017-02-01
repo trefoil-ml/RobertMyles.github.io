@@ -6,130 +6,59 @@
     <description>Recent content in R Markdown on Lithium Theme</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Mon, 02 Jan 2017 00:00:00 +0000</lastBuildDate>
     <atom:link href="/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Hello R Markdown</title>
-      <link>/2015/07/23/hello-r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
+      <title>Tips and Tricks for R Markdown html</title>
+      <link>/2017/01/02/tips-and-tricks-for-r-markdown-html/</link>
+      <pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2015/07/23/hello-r-markdown/</guid>
+      <guid>/2017/01/02/tips-and-tricks-for-r-markdown-html/</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
 
-&lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;R Markdown&lt;/h1&gt;
-&lt;p&gt;This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;a href=&#34;http://rmarkdown.rstudio.com&#34; class=&#34;uri&#34;&gt;http://rmarkdown.rstudio.com&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can embed an R code chunk like this:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(cars)
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-fit &amp;lt;- lm(dist ~ speed, data = cars)
-fit
-## 
-## Call:
-## lm(formula = dist ~ speed, data = cars)
-## 
-## Coefficients:
-## (Intercept)        speed  
-##     -17.579        3.932&lt;/code&gt;&lt;/pre&gt;
-&lt;/div&gt;
-&lt;div id=&#34;including-plots&#34; class=&#34;section level1&#34;&gt;
-&lt;h1&gt;Including Plots&lt;/h1&gt;
-&lt;p&gt;You can also embed plots. See Figure &lt;a href=&#34;#fig:pie&#34;&gt;1&lt;/a&gt; for example:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c(&amp;#39;Sky&amp;#39;, &amp;#39;Sunny side of pyramid&amp;#39;, &amp;#39;Shady side of pyramid&amp;#39;),
-  col = c(&amp;#39;#0292D8&amp;#39;, &amp;#39;#F7EA39&amp;#39;, &amp;#39;#C4B632&amp;#39;),
-  init.angle = -50, border = NA
-)&lt;/code&gt;&lt;/pre&gt;
-&lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;/2015/07/23/hello-r-markdown/figures/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
-&lt;p class=&#34;caption&#34;&gt;
-Figure 1: A fancy pie chart.
-&lt;/p&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-
-&lt;!-- BLOGDOWN-HEAD
-
-
-
-
-/BLOGDOWN-HEAD --&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Tips and Tricks for R Markdown html</title>
-      <link>/1/01/01/tips-and-tricks-for-r-markdown-html/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/1/01/01/tips-and-tricks-for-r-markdown-html/</guid>
-      <description>
-
-&lt;p&gt;Here are a couple of little tips and tricks that I&amp;rsquo;ve picked up for use with RMarkdown html documents (including presentations and notebooks). This post is aimed at the R user who doesn&amp;rsquo;t know much, if anything, about html and css.&lt;/p&gt;
-
-&lt;h2 id=&#34;background-images&#34;&gt;Background images&lt;/h2&gt;
-
-&lt;p&gt;Sometimes it&amp;rsquo;s useful (or just nice) to have a background image of some sort in a presentation or notebook. This could be the logo of your university or company, for example. To do this for a R Markdown document, you will need to do three things:&lt;/p&gt;
-
+&lt;p&gt;Here are a couple of little tips and tricks that I’ve picked up for use with RMarkdown html documents (including presentations and notebooks). This post is aimed at the R user who doesn’t know much, if anything, about html and css.&lt;/p&gt;
+&lt;div id=&#34;background-images&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Background images&lt;/h2&gt;
+&lt;p&gt;Sometimes it’s useful (or just nice) to have a background image of some sort in a presentation or notebook. This could be the logo of your university or company, for example. To do this for a R Markdown document, you will need to do three things:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;create a separate .css file,&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;have/create an image, made suitably transparent,&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;change the YAML in the R Markdown document.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;create a separate .css file,&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;have/create an image, made suitably transparent,&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;change the YAML in the R Markdown document.&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;You can create a css file in any text editor. In this example I&amp;rsquo;m calling it &amp;lsquo;custom.css&amp;rsquo;. Include these lines (my image is called &lt;code&gt;results.jpg&lt;/code&gt;):&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;body{
-   background-image: url(&#39;results.jpg&#39;);
+&lt;p&gt;You can create a css file in any text editor. In this example I’m calling it ‘custom.css’. Include these lines (my image is called &lt;code&gt;results.jpg&lt;/code&gt;):&lt;/p&gt;
+&lt;pre class=&#34;css&#34;&gt;&lt;code&gt;body{
+   background-image: url(&amp;#39;results.jpg&amp;#39;);
    min-height: 500px;
-    /* Set background image to fixed (don&#39;t scroll along with the page) */
+    /* Set background image to fixed (don&amp;#39;t scroll along with the page) */
     background-attachment: fixed;
     background-position: right top;
     /* Set the background image to no repeat */
     background-repeat: no-repeat;
     /* Scale the background image to be as large as possible */
     background-size: cover;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
+}&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The image itself will need to be quite transparent. You can do that with imagemagick. On a mac terminal, the command is:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;convert IMAGE -fill white -colorize 50% NEW_IMAGE
-&lt;/code&gt;&lt;/pre&gt;
-
+&lt;pre class=&#34;bash&#34;&gt;&lt;code&gt;convert IMAGE -fill white -colorize 50% NEW_IMAGE&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;After this, we just need to change our YAML at the top of the R Markdown document like so:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;---
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;---
 title: &amp;quot;R Notebooks&amp;quot;
 output:
   html_notebook:
     css: custom.css
----
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You&amp;rsquo;ll have something interesting like this:&lt;/p&gt;
-
+---&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You’ll have something interesting like this:&lt;/p&gt;
 &lt;p&gt;&lt;img src = &#39;http://i.imgur.com/slwkLCg.png&#39;&gt;&lt;/p&gt;
-
 &lt;p&gt;This image could of course be anything, like a company logo, for example. You could also leave a large portion of it white to place the image in the corner or side of the screen.&lt;/p&gt;
-
-&lt;h2 id=&#34;two-columns&#34;&gt;Two columns&lt;/h2&gt;
-
-&lt;p&gt;Another useful thing that we can do with css is create two columns, particularly useful in a presentation. In order to do that, add the following lines to the css file you&amp;rsquo;re using:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;#left {
+&lt;/div&gt;
+&lt;div id=&#34;two-columns&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Two columns&lt;/h2&gt;
+&lt;p&gt;Another useful thing that we can do with css is create two columns, particularly useful in a presentation. In order to do that, add the following lines to the css file you’re using:&lt;/p&gt;
+&lt;pre class=&#34;css&#34;&gt;&lt;code&gt;#left {
   left:-8.33%;
   text-align: left;
   float: left;
@@ -144,23 +73,17 @@ output:
   text-align: right;
   z-index:-10;
   width:50%;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
+}&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;When you want to use these columns in your R Markdown document, use them like so, with a bit of html:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div id=&amp;quot;left&amp;quot;&amp;gt;
+&lt;pre class=&#34;html&#34;&gt;&lt;code&gt;&amp;lt;div id=&amp;quot;left&amp;quot;&amp;gt;
   #content
 &amp;lt;/div&amp;gt;
 &amp;lt;div id=&amp;quot;right&amp;quot;&amp;gt;
   #content
 &amp;lt;/div&amp;gt;
-
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;For example, this code:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;&amp;lt;div id=&amp;quot;left&amp;quot;&amp;gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;&amp;lt;div id=&amp;quot;left&amp;quot;&amp;gt;
 $$y_i \backsim Normal(\mu_i, \sigma)$$
 $$\mu_i = \alpha + \beta x_i$$
 $$\sigma \backsim Uniform(0, 1)$$
@@ -174,57 +97,39 @@ $$\alpha \backsim Normal(0, 10)$$
 - `sigma prior`
 - `beta prior`
 - `alpha prior`
-&amp;lt;/div&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
+&amp;lt;/div&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;produces this:&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&#39;http://i.imgur.com/Kpvf8mX.png&#39;&gt;&lt;/p&gt;
-
-&lt;p&gt;Likewise, an external css file can be used to change defaults. I think the default R code snippet text size is a little small in the R Notebooks, as is all the text in an R Notebook if you&amp;rsquo;re using them for presentations. You can easily change the defaults by putting:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;body{ /* Normal  */
+&lt;p&gt;Likewise, an external css file can be used to change defaults. I think the default R code snippet text size is a little small in the R Notebooks, as is all the text in an R Notebook if you’re using them for presentations. You can easily change the defaults by putting:&lt;/p&gt;
+&lt;pre class=&#34;css&#34;&gt;&lt;code&gt;body{ /* Normal  */
    font-size: 16px;
 }
 code.r{ /* Code block */
   font-size: 14px;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
+}&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;in the css file, which will make the normal text and the R code text bigger. If you want to make all the text slightly bigger in the entire document without an external css file, you can just put &lt;font&gt; tags at the start and end of the R Markdown document:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;font size=6&amp;gt;
+&lt;pre class=&#34;html&#34;&gt;&lt;code&gt;&amp;lt;font size=6&amp;gt;
 # content
-&amp;lt;/font&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Similarly, bits of html can come in handy when you want to change little elements of the document. &lt;code&gt;&amp;lt;br&amp;gt;&lt;/code&gt; will give you a vertical space, and using &lt;code&gt;&amp;lt;bdi&amp;gt;&lt;/code&gt; tags can be useful for changing the style of particular words, especially useful for words that are presented as &amp;lsquo;code&amp;rsquo; in back ticks. For example:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;bdi style=&amp;quot;color:#36648B&amp;quot;&amp;gt;`variable_1`&amp;lt;/bdi&amp;gt;.
+&amp;lt;/font&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Similarly, bits of html can come in handy when you want to change little elements of the document. &lt;code&gt;&amp;lt;br&amp;gt;&lt;/code&gt; will give you a vertical space, and using &lt;code&gt;&amp;lt;bdi&amp;gt;&lt;/code&gt; tags can be useful for changing the style of particular words, especially useful for words that are presented as ‘code’ in back ticks. For example:&lt;/p&gt;
+&lt;pre class=&#34;html&#34;&gt;&lt;code&gt;&amp;lt;bdi style=&amp;quot;color:#36648B&amp;quot;&amp;gt;`variable_1`&amp;lt;/bdi&amp;gt;.
 
 &amp;lt;bdi style=&amp;quot;font-size:70%;&amp;quot;&amp;gt;(**`?dplyr::select`**)&amp;lt;/bdi&amp;gt;
-
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;will make &amp;lsquo;variable_1&amp;rsquo; appear in code-style text and be blue (&lt;bdi style=&#34;color:#36648B&#34;&gt;&lt;code&gt;variable_1&lt;/code&gt;&lt;/bdi&gt;), whereas &amp;lsquo;?dplyr::select&amp;rsquo; will be bold and 70% of the size that it would otherwise be. (&lt;bdi style=&#34;font-size:70%;&#34;&gt;(&lt;strong&gt;&lt;code&gt;?dplyr::select&lt;/code&gt;&lt;/strong&gt;)&lt;/bdi&gt;)&lt;/p&gt;
-
-&lt;h2 id=&#34;revealjs-logos&#34;&gt;revealjs logos&lt;/h2&gt;
-
+&lt;p&gt;will make ‘variable_1’ appear in code-style text and be blue (&lt;bdi style=&#34;color:#36648B&#34;&gt;&lt;code&gt;variable_1&lt;/code&gt;&lt;/bdi&gt;), whereas ‘?dplyr::select’ will be bold and 70% of the size that it would otherwise be. (&lt;bdi style=&#34;font-size:70%;&#34;&gt;(&lt;strong&gt;&lt;code&gt;?dplyr::select&lt;/code&gt;&lt;/strong&gt;)&lt;/bdi&gt;)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;revealjs-logos&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;revealjs logos&lt;/h2&gt;
 &lt;p&gt;The image of the two columns above was part of a revealjs presentation done in R Markdown. revealjs gives you really slick options for presentations, but can be a lot of extra work in terms of customizing the output. Logos, for example, which are so common (and necessary) in presentations, are not included by default and can be tricky and annoying to include.&lt;/p&gt;
-
 &lt;p&gt;We can get what we want with a little html and some YAML options. In the example below, I used an external html file called &lt;code&gt;Logo_prefix.html&lt;/code&gt;, which is referenced in the &lt;code&gt;includes:&lt;/code&gt; section of the YAML header. The html file contains the following, which uses an image called &lt;code&gt;logo.png&lt;/code&gt;. The size can be adjusted using the &lt;code&gt;style=&amp;quot;&amp;quot;&lt;/code&gt; part below.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&lt;pre class=&#34;html&#34;&gt;&lt;code&gt;&amp;lt;!DOCTYPE html&amp;gt;
 &amp;lt;html&amp;gt;
  &amp;lt;div class=&amp;quot;bottombar&amp;quot;&amp;gt;
     &amp;lt;h1 class=&amp;quot;title&amp;quot;&amp;gt;&amp;lt;/h1&amp;gt;&amp;lt;image class=&amp;quot;logo&amp;quot; src=&amp;quot;logo.png&amp;quot; style=&amp;quot;width:180px; height:85px;&amp;quot;&amp;gt;
 &amp;lt;/div&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;And the RMarkdown YAML I used (for a course in statistics in R in Portuguese; the &lt;code&gt;r Sys.Date()&lt;/code&gt; is a nice trick to put the current date on the presentation):&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;---
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And the RMarkdown YAML I used (for a course in statistics in R in Portuguese; the 2017-02-01 is a nice trick to put the current date on the presentation):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;---
 title: &amp;quot;Introdução a estatística no `R`, Dia 2&amp;quot;
 author: &amp;quot;Robert McDonnell&amp;quot;
 date: &amp;quot;`r Sys.Date()`&amp;quot;
@@ -235,144 +140,17 @@ output:
     css: custom.css
     includes:
       before_body: Logo_prefix.html
----
-&lt;/code&gt;&lt;/pre&gt;
+---&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This includes a small logo in the upper right corner of every slide. To get this to work properly, you will need to dig into the css of the particular revealjs theme that you are using (here I’m using sky), I can’t even remember exactly how I did that… like I said, customizing revealjs can be annoying.&lt;/p&gt;
+&lt;/div&gt;
 
-&lt;p&gt;This includes a small logo in the upper right corner of every slide. To get this to work properly, you will need to dig into the css of the particular revealjs theme that you are using (here I&amp;rsquo;m using sky), I can&amp;rsquo;t even remember exactly how I did that&amp;hellip; like I said, customizing revealjs can be annoying.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Write your thesis or paper in R Markdown!</title>
-      <link>/1/01/01/write-your-thesis-or-paper-in-r-markdown/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/1/01/01/write-your-thesis-or-paper-in-r-markdown/</guid>
-      <description>
 
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;!-- BLOGDOWN-HEAD
 
-&lt;p&gt;There are many reasons why you would want to use some variant of Markdown for writing, and indeed, posts are common on the net as to why you should.&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; A simple summary of the reasons are that Markdown is: 1) easy; 2) easy; 3) yup, you guessed it &amp;ndash; it&amp;rsquo;s easy.&lt;/p&gt;
 
-&lt;p&gt;One variant of Markdown is R Markdown, developed by the &lt;a href=&#34;https://www.rstudio.com/&#34;&gt;RStudio&lt;/a&gt; team, and in particular the genius that is &lt;a href=&#34;http://yihui.name/knitr/&#34;&gt;Yihui Xie&lt;/a&gt;, creator of the &lt;code&gt;knitr&lt;/code&gt; R package. R Markdown is pretty much like regular Markdown, except you get a whole load of nice extra features, including the ability to run code chunks, produce .pdfs and presentations, and even .docx (if you really, really want to&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;). Indeed, the ioslides presentation format lets you use the power of html and css to make browser-based presentations.&lt;/p&gt;
 
-&lt;p&gt;But surely academic papers require certain formats, and sometimes mathematical expressions and funny Greek letters? Well, sure. Academic papers, particularly theses, often have set formats that you must adhere to. And since Markdown is quite a simple language, it doesn&amp;rsquo;t have the advanced power of {% raw %}\(\LaTeX\){% endraw %} to position things in specific ways.&lt;/p&gt;
 
-&lt;h3 id=&#34;raw-latex-endraw-in-r-markdown&#34;&gt;{% raw %}\(\LaTeX\){% endraw %} in R Markdown&lt;/h3&gt;
-
-&lt;p&gt;Enter R Markdown! Although you might (depends on the Markdown) have to do something like &lt;code&gt;{% raw %}\\(\LaTeX\\){% endraw %}&lt;/code&gt; to get the word {% raw %}\(\LaTeX\){% endraw %} in your Markdown, with R Markdown it&amp;rsquo;s just &lt;code&gt;$ \LaTeX $&lt;/code&gt;. I used Mathjax characters in my thesis, and all worked fine using this method (&lt;a href=&#34;http://www.onemathematicalcat.org/MathJaxDocumentation/TeXSyntax.htm&#34;&gt;here&amp;rsquo;s&lt;/a&gt; a nice link showing all the possible characters you can create with Mathjax). Nice &amp;lsquo;n&amp;rsquo; easy, lemon squeezy. Inline {% raw %}\(\LaTeX\){% endraw %} expressions get one &lt;code&gt;$&lt;/code&gt;, centred equations get two: &lt;code&gt;$$&lt;/code&gt;, and both need the equivalent to finish the expression. For example, in my first &lt;a href=&#34;http://robertmyles.github.io//post1.html&#34;&gt;post&lt;/a&gt;, I had the equation:&lt;/p&gt;
-
-&lt;p&gt;{% raw %}
-  $$y_{ij} = \beta_j\boldsymbol{x_i} - \alpha_j.$$
- {% endraw %}&lt;/p&gt;
-
-&lt;p&gt;In R Markdown, this is:&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;$$ y_{ij} = \beta_j\boldsymbol{x_i} - \alpha_j.$$&lt;/code&gt; Simple!&lt;/p&gt;
-
-&lt;p&gt;So that&amp;rsquo;s math and funny characters done. What else can we do in R Markdown?&lt;/p&gt;
-
-&lt;h3 id=&#34;images&#34;&gt;Images&lt;/h3&gt;
-
-&lt;p&gt;Well, all the image-placement power of {% raw %}\(\LaTeX\){% endraw %} is also available. So &lt;code&gt;\begin{figure}&lt;/code&gt; (or subfigure and wrapfigure), &lt;code&gt;\centering&lt;/code&gt;, &lt;code&gt;\includegraphics&lt;/code&gt; and &lt;code&gt;\caption&lt;/code&gt; all work as they should. I found minipage to be particularly helpful. You can use &lt;code&gt;\&lt;/code&gt; with two spaces after it to organise blank space, or &lt;code&gt;\newpage&lt;/code&gt; to force a new page.&lt;/p&gt;
-
-&lt;p&gt;Of course, that supposing that you want to use {% raw %}\(\LaTeX\){% endraw %} for images. R Markdown&amp;rsquo;s own syntax for images is quite simple: &lt;code&gt;![Caption](file.png)&lt;/code&gt;, where &amp;lsquo;Caption&amp;rsquo; is your image caption and &amp;lsquo;file.png&amp;rsquo; your image file (you can use other formats, such as .pdf too). However, positioning may become a problem using this image-placing syntax. It&amp;rsquo;s worth taking the extra time to learn the {% raw %}\(\LaTeX\){% endraw %} if you don&amp;rsquo;t know it.&lt;/p&gt;
-
-&lt;h3 id=&#34;tables&#34;&gt;Tables&lt;/h3&gt;
-
-&lt;p&gt;Tables are a &lt;em&gt;little&lt;/em&gt; annoying sometimes in any Markdown. It depends. If the simple one works for you, then great &amp;ndash; they&amp;rsquo;re quick and easy. If you have to use grid tables, things take longer (for some reason, only grid tables worked for me sometimes). There&amp;rsquo;s a &lt;a href=&#34;http://pandoc.org/README.html#tables&#34;&gt;simple guide&lt;/a&gt; on the pandoc site, since it is pandoc that is actually converting to and fro in all these different formats (pandoc is amazing). But a basic one is &lt;em&gt;really&lt;/em&gt; simple (from the pandoc site):&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/TcbAp2U.png&#34; alt=&#34;Table&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The table numbers will automatically increment, and the caption is set after the &lt;code&gt;:&lt;/code&gt; part. Indeed, &lt;code&gt;table&lt;/code&gt; is not even needed, using &lt;code&gt;:&lt;/code&gt; with give you a caption with &lt;code&gt;Table 1:&lt;/code&gt;, for your first table in the document.&lt;/p&gt;
-
-&lt;h3 id=&#34;code&#34;&gt;Code&lt;/h3&gt;
-
-&lt;p&gt;There may be a need for you to display code segments, particularly in a quantitative paper or thesis. Again, it&amp;rsquo;s very simple. In R Markdown, you do the following:&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(&amp;quot;readr&amp;quot;)
-data &amp;lt;- read_csv(&amp;quot;example.csv&amp;quot;)
-data &amp;lt;- data[1:6, ]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;{% endhighlight %}&lt;/p&gt;
-
-&lt;p&gt;Which should produce:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(&amp;quot;readr&amp;quot;)
-data &amp;lt;- read_csv(&amp;quot;example.csv&amp;quot;)
-data &amp;lt;- data[1:6, ]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This useful for plotting simple graphs and things like that. The example I&amp;rsquo;ve shown &lt;em&gt;wouldn&amp;rsquo;t&lt;/em&gt; be a particularly good idea, since R will load in &lt;code&gt;example.csv&lt;/code&gt; every time you produce the pdf using the &amp;lsquo;knit&amp;rsquo; button in RStudio. The &lt;code&gt;{r}&lt;/code&gt; prt also has optional arguments, such as &lt;code&gt;eval&lt;/code&gt;, which can be set to &lt;code&gt;TRUE&lt;/code&gt; or &lt;code&gt;FALSE&lt;/code&gt;, and tells R Markdown whether to evaluate the expression or not (useful for examples where you want to show the code but not run it).&lt;/p&gt;
-
-&lt;h3 id=&#34;chapters-and-headings&#34;&gt;Chapters and Headings&lt;/h3&gt;
-
-&lt;p&gt;Chapters and Headings are laughably simple in any Markdown, and R Markdown is no exception. &lt;code&gt;# Header 1&lt;/code&gt; will create the largest-sized header, &lt;code&gt;## Header 2&lt;/code&gt; a smaller one, and so on. To have these numbered, we&amp;rsquo;ll have to use another excellent feature of Markdown, the YAML block that goes on the top of the document.&lt;/p&gt;
-
-&lt;h3 id=&#34;the-yaml-block&#34;&gt;The YAML block&lt;/h3&gt;
-
-&lt;p&gt;The YAML block is what makes your R Markdown document possibly really fancy. It&amp;rsquo;s here that the {% raw %}\(\LaTeX\){% endraw %} packages are loaded, and here that you can specify various options that will have an impact on your document. So what the hell &lt;em&gt;is&lt;/em&gt; a YAML block, anyway? Well, maybe the easiest way to explain that is to show you mine&lt;sup id=&#34;a3&#34;&gt;&lt;a href=&#34;#fn3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; from my PhD &lt;a href=&#34;{{ site.url }}/assets/Explaining the Determinants of Foreign Policy Voting Behaviour in the Brazilian Houses of Legislature.pdf&#34;&gt;thesis&lt;/a&gt;. It starts and ends with &lt;code&gt;---&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&#34;highlight-r-linenos-table&#34;&gt;{% highlight R linenos=table %}&lt;/h2&gt;
-
-&lt;p&gt;title: &amp;ldquo;Explaining the Determinants of Foreign Policy Voting Behaviour in the Brazilian Houses of Legislature, with a Focus on the Senate&amp;rdquo;
-author: &amp;ldquo;Robert Myles McDonnell&amp;rdquo;
-date: &amp;ldquo;&amp;rdquo;
-fontsize: 12pt
-header-includes:
-   - \usepackage{booktabs}
-   - \usepackage{dcolumn}
-   - \usepackage{wrapfig}
-   - \usepackage{subcaption}
-   - \usepackage{caption}
-   - \usepackage[font=small,labelfont=bf]{caption}
-   - \hypersetup{colorlinks=false}
-documentclass: &amp;ldquo;article&amp;rdquo;
-output:
-  pdf_document:
-    fig_caption: yes
-    fig_height: 6
-    fig_width: 7
-    latex_engine: pdflatex
-    number_sections: yes
-    toc: yes
-    toc_depth: 4
-    citation_package: &amp;ldquo;natbib&amp;rdquo;
-linestretch: 2
-mainfont: &amp;ldquo;Linux Libertine O&amp;rdquo;
-bibliography: ThesisLibrary.bib
-csl: american-political-science-association.csl&lt;/p&gt;
-
-&lt;h2 id=&#34;biblio-style-apalike&#34;&gt;biblio-style: apalike&lt;/h2&gt;
-
-&lt;p&gt;{% endhighlight %}&lt;/p&gt;
-
-&lt;p&gt;So, that&amp;rsquo;s quite extended, but maybe you won&amp;rsquo;t need all these things. One important thing to remember with the YAML block is that indentation &lt;em&gt;matters&lt;/em&gt;. When you have something like &lt;code&gt;output:&lt;/code&gt;, then the line &lt;code&gt;pdf document:&lt;/code&gt; is &lt;strong&gt;two&lt;/strong&gt; spaces indented. &lt;code&gt;fig_caption: yes&lt;/code&gt; is &lt;strong&gt;two more&lt;/strong&gt; spaces indented (four in total) and so are the other options to pdf_document. If you get your spacing wrong, it won&amp;rsquo;t work.&lt;/p&gt;
-
-&lt;p&gt;Many of the options are self-explanatory: &lt;code&gt;linestretch&lt;/code&gt; is line-spacing, for example. One important option is &lt;code&gt;toc&lt;/code&gt; and its option &lt;code&gt;toc_depth&lt;/code&gt;. This is the &lt;strong&gt;t&lt;/strong&gt;able &lt;strong&gt;o&lt;/strong&gt;f &lt;strong&gt;c&lt;/strong&gt;ontents. &lt;code&gt;toc_depth&lt;/code&gt; is telling R Markdown how many levels you&amp;rsquo;d like: Chapter 4.1, Chapter 4.1.1 etc. More advanced elements can be changed too. For example, this thesis had a &lt;code&gt;documentclass&lt;/code&gt; of article, but you can write your own document class and therefore produce radically different documents. One example is an R Markdown &lt;a href=&#34;https://github.com/danielkrizian/resume_template&#34;&gt;version&lt;/a&gt; of Friggeri&amp;rsquo;s popular CV template. Other examples are rapidly proliferating on the web. The RStudio team have a new R package &lt;a href=&#34;https://github.com/rstudio/rticles&#34;&gt;rticles&lt;/a&gt; that has document templates for various academic journal styles. Load &amp;lsquo;em up, and you&amp;rsquo;ve already got an easy R Markdown template for the journal in question. And for papers, enable the &lt;code&gt;abstract:&lt;/code&gt; option in the YAML header, write your abstract there, and voilà! You&amp;rsquo;ve got yourself a nice abstract.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;So if writing your thesis (or a paper) in Microsoft Word or something similar sounds like an ordeal, and you&amp;rsquo;re really not such an expert on {% raw %}\(\LaTeX\){% endraw %}, maybe you should consider doing it in R Markdown. It has all the easiness of Markdown, with a couple of nice extras that help you make a quality document. See my thesis if you don&amp;rsquo;t believe me! :wink:&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;Update:&lt;br /&gt;
-A colleague asked me how I produced the first few pages of my thesis, and I realised that I forgot to mention that you can include other documents, for example tex files, that may need to be part of your thesis. Many theses have strict guidelines for the introductory pages, which can be included in your R Markdown file as part of the YAML header section. The option is &lt;code&gt;includes&lt;/code&gt;, and it has the sub-options &lt;code&gt;in_header&lt;/code&gt;, &lt;code&gt;before_body&lt;/code&gt; and &lt;code&gt;after body&lt;/code&gt;. Like before, the spacing is meaningful in the YAML header, so these sub-options will need to be indented two spaces. For introductory pages of a thesis, your tex file will go in &lt;code&gt;before_body&lt;/code&gt;. (I have to admit that this option never worked well for me, I simply merged the .pdf produced from the tex file and the .pdf produced from the R Markdown document with Preview in OS X, but for others, it seems to work fine.) See &lt;a href=&#34;http://rmarkdown.rstudio.com/markdown_document_format.html&#34;&gt;here&lt;/a&gt; for examples. See &lt;a href=&#34;https://github.com/danilofreire/kcl-thesis-template-markdown&#34;&gt;here&lt;/a&gt; for a Markdown template for King&amp;rsquo;s College London&amp;rsquo;s PhD guidelines, by &lt;a href=&#34;http://danilofreire.com/&#34;&gt;Danilo Freire&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; For example, &lt;a href=&#34;http://markdown-guide.readthedocs.org/en/latest/basics.html&#34;&gt;this cheatsheet&lt;/a&gt; &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn2&#34;&gt;2&lt;/b&gt; In my experience, I think you&amp;rsquo;re just going to end up editing these in Word anyway so I don&amp;rsquo;t know that it&amp;rsquo;s worth the bother to do in RStudio. You can if you want, I suppose.&lt;a href=&#34;#a2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn3&#34;&gt;3&lt;/b&gt; I&amp;rsquo;m including extra things here that I used over the process of making the thesis pdf, but it wasn&amp;rsquo;t what I used exactly in the end. I had some problems, that I can&amp;rsquo;t recall right now, with rendering bibliographical items so I switched to the default LaTeX renderer, pdflatex. Using this means you can&amp;rsquo;t use other fonts, like the Linux Libertine font above.&lt;a href=&#34;#a3&#34;&gt;↩&lt;/a&gt;
-&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/vywFhKA.png?1&#34; /&gt;&lt;/p&gt;
+/BLOGDOWN-HEAD --&gt;
 </description>
     </item>
     

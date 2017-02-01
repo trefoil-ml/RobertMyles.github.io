@@ -6,97 +6,302 @@
     <description>Recent content in Bayesian Statistics on Lithium Theme</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Sat, 21 May 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="/tags/bayesian-statistics/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Bayesian Stats -- Book Recommendations</title>
-      <link>/1/01/01/bayesian-stats----book-recommendations/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Bayesian IRT in R and Stan</title>
+      <link>/2016/05/21/bayesian-irt-in-r-and-stan/</link>
+      <pubDate>Sat, 21 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>/1/01/01/bayesian-stats----book-recommendations/</guid>
-      <description>&lt;p&gt;The first time I came across Bayes&amp;rsquo; Theorem&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, I must admit I was pretty confused. It was in &lt;a href=&#34;http://www.amazon.com/Introductory-Statistics-9th-Neil-Weiss/dp/0321691229/ref=pd_cp_14_1?ie=UTF8&amp;amp;refRID=15HFJDGMBF49CXAD9W9S&#34;&gt;Introductory Statistics&lt;/a&gt; by Neil A. Weiss, the course book in a statistics course I was taking at the time. Neither the logic of it nor the formula for it made much sense to me. For somebody new to probability, I was still trying to figure out what the hell P(A) actually &lt;em&gt;meant&lt;/em&gt;.&lt;/p&gt;
+      <guid>/2016/05/21/bayesian-irt-in-r-and-stan/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+/BLOGDOWN-BODY-BEFORE --&gt;
 
-&lt;p&gt;Looking back, the funny thing is that it is the branch of statistics that &lt;em&gt;isn&amp;rsquo;t&lt;/em&gt; wont to use Bayes&amp;rsquo; Theorem that I find confusing.&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; Bayesian statistics now makes perfect sense to me. Indeed, it follows human intuition (even if the formula looks weird for anybody new to probability). The probability of the hypothesis we have in mind, given the data we observe (that would be the &lt;code&gt;P(A|B)&lt;/code&gt; part, but we can rewrite it as &lt;code&gt;Pr(Hypothesis|Data)&lt;/code&gt;; this is also called the &lt;em&gt;posterior&lt;/em&gt; ) is&amp;hellip; what exactly?&lt;br /&gt;
-Well, it&amp;rsquo;s a combination of the initial plausibility of our hypothesis (&lt;code&gt;P(A)&lt;/code&gt;, also called the &lt;em&gt;prior&lt;/em&gt; ), multiplied by what&amp;rsquo;s called the likelihood (&lt;code&gt;P(B|A)&lt;/code&gt;, or &lt;code&gt;Pr(Data|Hypothesis)&lt;/code&gt;), which is the data we would expect to see if our hypothesis were correct. The denominator is often called the &amp;lsquo;evidence&amp;rsquo; or something similarly opaque, but it is merely the numerator plus its converse, that is to say, the probability that our original hypothesis is wrong by the likelihood of our data, assuming that our hypothesis is wrong. In any case, its function is just to make sure our probabilities sum to one, as they should.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/v7y6SVt.png?3&#34; align=&#34;middle&#34; style=&#34;width:300px; height:250px;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;The code below on Stan is also available as an &lt;a href=&#34;http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R&#34;&gt;&lt;code&gt;RPub webpage&lt;/code&gt;&lt;/a&gt;, if you’d rather work through the examples than read all of the post.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;One of the first areas where Bayesian modelling gained an entry point into the social sciences (and in particular political science) was in the area of legislator ideal points, with the use of the Item-Response Theory (IRT) models from the educational testing literature in psychology. This topic proved to be the perfect subject for the comparison of Bayesian and frequentist methods, since ideal point creation usually depends on nominal voting data, which may contain a lot of missing data (legislators who miss votes or abstain) and a huge number of parameters (hundreds of roll-calls by hundreds of legislators). The benefits of Bayesian methods over frequentist techniques for ideal point analysis is discussed at length elsewhere&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, but here I’ll talk about a side-effect of using Bayesian methods for creating ideal points from roll-call data, that is, the long time it can take to run these models on a desktop computer. (In the following discussion, I refer to ‘legislators’, but these IRT models apply to all types of response to a question, whether the ‘question’ is a vote by a politician or a judge or questions on a test or survey.)&lt;/p&gt;
+&lt;p&gt;To create ideal points in &lt;code&gt;R&lt;/code&gt;, you have three or four main options if you want to use ol’ &lt;a href=&#34;http://robertmyles.github.io//Books-on-Bayes-Stats.html&#34;&gt;Bayes&lt;/a&gt;. First, there is the ready-made &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; command of the package &lt;a href=&#34;https://cran.r-project.org/web/packages/pscl/index.html&#34;&gt;pscl&lt;/a&gt; by Simon Jackman &amp;amp; co. &lt;code&gt;pscl&lt;/code&gt; includes some very handy little functions for those interested in generating ideal points from legislative voting data – summary statistics and plots are all easy to make, and come ready-made, such as party loyalty statistics, for example. However, &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; suffers somewhat from being so ‘ready’: it is a bit unsuited for more complex or indivualistic models compared to some of the options mentioned later. I’ve also repeatedly run into problems with &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; when trying to use some of the &lt;code&gt;pscl&lt;/code&gt; package options (&lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;dropList()&lt;/bdi&gt;, for example), or when estimating multidimensional models. In terms of &lt;a href=&#34;https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo&#34;&gt;MCMC&lt;/a&gt;, only one chain at a time may be run. In fact, it is what it says on the tin: it’s a Bayesian version of W-NOMINATE, which means it has the advantages of that program (easy to use) and the disadvantages (when it doesn’t work you’re not sure why…a bit ‘black-box’).&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;MCMCpack&lt;/code&gt; package also allows for the creation of ideal points, although its output is slightly less friendly to the beginner (an &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;mcmclist&lt;/bdi&gt; object). Its &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;MCMCirt1d()&lt;/bdi&gt; command is pretty similar to &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; but allows for setting ‘soft’ constraints rather than the spike prior that pscl uses to pin down the position of (at least) two legislators. This is better for two reasons, in my opinion. First, it avoids a hard constraint on legislators for legislatures in which we do not have strong &lt;em&gt;a priori&lt;/em&gt; evidence to suppose that, for example, Legislator X is an extremist to the right, or Legislator Y to the left (the use of extremist legislators on either end of the supposed scale ‘anchors’ it). With &lt;code&gt;MCMCpack&lt;/code&gt;, the ideal points of the constrained legislators are drawn from a truncated normal distribution (truncated at zero) and so Legislator X (our extremist to the right) simply cannot have an ideal point on the left side of the scale and the opposite for our left-side extremist legislator (the use of these soft constraints obviates the need for them actually &lt;em&gt;being&lt;/em&gt; extremists too). I’ve also found &lt;code&gt;MCMCpack&lt;/code&gt; to be faster, although I haven’t tested that formally. In either case, both functions are quite similar. &lt;code&gt;MCMCpack&lt;/code&gt; also has functions for dynamic models, robust &amp;amp; multidimensional models, and Ordinal IRT. They’ve all worked well for me with the exception of &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;MCMCirtkd()&lt;/bdi&gt;, the multidimensional model function, which never seems to get started.&lt;/p&gt;
+&lt;p&gt;The next option is to use the &lt;code&gt;BUGS&lt;/code&gt; modelling language, either with &lt;code&gt;BUGS&lt;/code&gt; itself or its cousin &lt;code&gt;JAGS&lt;/code&gt;, both of which have been heavily used in the literature but can be &lt;strong&gt;extremely&lt;/strong&gt; slow, for reasons outlined in &lt;a href=&#34;http://robertmyles.github.io//Stan-JAGS.html&#34;&gt;this blog post&lt;/a&gt;. I don’t recommend their use for ideal points.&lt;/p&gt;
+&lt;p&gt;Next, we have &lt;a href=&#34;http://mc-stan.org/&#34;&gt;Stan&lt;/a&gt;, which doesn’t have the simpler syntax of &lt;code&gt;JAGS&lt;/code&gt; &amp;amp; &lt;code&gt;BUGS&lt;/code&gt;, but is simply incomparably better in terms of speed. However, since it’s newer, you won’t find the amount of resources available for &lt;code&gt;BUGS&lt;/code&gt;, for example (like &lt;a href=&#34;https://www.jstatsoft.org/article/view/v036c01&#34;&gt;here&lt;/a&gt;). There are a few resources: a simple one-dimensional model can be seen on Pablo Barberá’s &lt;a href=&#34;https://github.com/pablobarbera/quant3materials/blob/master/bayesian/lab14_IRT_issues.R&#34;&gt;github&lt;/a&gt;; a friend of mine, Guilherme Duarte, has an example of a dynamic model on his github &lt;a href=&#34;https://github.com/duarteguilherme/Quinn-Martin-Replication&#34;&gt;too&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;There are some other resources available, but relate to slightly different IRT models, more common in the educational-testing literature, and less so in ideal point studies: the ‘Rasch’ &lt;a href=&#34;http://www.stat.columbia.edu/~gelman/research/unpublished/stan_v_stata.pdf&#34;&gt;model&lt;/a&gt;; the &lt;a href=&#34;https://rpubs.com/rfarouni/64284&#34;&gt;2PL model&lt;/a&gt; (in which a ‘yes’ answer has a specific associated movement in the dimensional space and the discrimination parameter only takes on postive values; in the ideal-point model of &lt;a href=&#34;https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/Jackman2001.pdf&#34;&gt;Jackman&lt;/a&gt; it can possess negative and positive values).&lt;/p&gt;
+&lt;p&gt;Since there are so few Stan resources for ideal point IRT models, I thought I’d post a few models here. The code is also available as an &lt;a href=&#34;http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R&#34;&gt;RPub webpage&lt;/a&gt;, as mentioned earlier. The statistical model we’ll employ is:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[y_{ij} = \beta_j\bf{x_i} - \alpha_j,\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where (&lt;span class=&#34;math inline&#34;&gt;\(y_{ij}\)&lt;/span&gt; are the votes, in binary form (1 = ‘Yes’; 2 = ‘No’); the &lt;span class=&#34;math inline&#34;&gt;\(\bf x_i\)&lt;/span&gt; are the ideal points of the legislators; and &lt;span class=&#34;math inline&#34;&gt;\(\beta_j\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\alpha_j\)&lt;/span&gt; are the discrimination and difficulty parameters of the model.&lt;/p&gt;
+&lt;p&gt;Starting from scratch in &lt;code&gt;R&lt;/code&gt; in a new session (you’ll need a C++ compiler if you don’t have one, see &lt;a href=&#34;https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started&#34;&gt;here&lt;/a&gt;):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;RStan&amp;quot;)
+library(&amp;quot;RStan&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ideal points are created from a &lt;em&gt;j&lt;/em&gt; &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; &lt;em&gt;m&lt;/em&gt; matrix of voting data (&lt;em&gt;j&lt;/em&gt; legislators voting on &lt;em&gt;m&lt;/em&gt; votes), coded &lt;bdi style=&#34;font-family:courier&#34;&gt;1&lt;/bdi&gt; for ‘yes’ and &lt;bdi style=&#34;font-family:courier&#34;&gt;0&lt;/bdi&gt; for ‘no’ and abstentions. Missing data are &lt;bdi style=&#34;font-family:courier&#34;&gt;NA&lt;/bdi&gt;, and are deleted out before running in Stan. We can easily simulate data for this type of thing, but let’s use a real database. This data is from the 53rd legislature of the Brazilian Federal Senate (with thanks to &lt;a href=&#34;http://www.cebrap.org.br/v2/pages/home&#34;&gt;CEBRAP&lt;/a&gt;, who built the original database, this comes from an extended version I created), we’ll download it from my Github repo. You’ll need to install &lt;code&gt;readr&lt;/code&gt; if you don’t have it. (I also have the bad habit of naming my data as “data”… not generally a great idea. It’ll be ok here, though.)&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(readr)
+data &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/RobertMyles/Bayesian-Ideal-Point-IRT-Models/master/Senate_Example.csv&amp;quot;)
+colnames(data)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So let’s take a look at the data. You’ll see the column names are “VoteNumber”, “SenNumber”, “SenatorUpper”, “Vote”, “Party”, “GovCoalition”, “State”, “FP”, “Origin”, “Contentious”, “IndGov”, and “VoteType”. I’ve kept them in this state so that we can tidy things up and manipulate things a little, stuff you’ll probably have to do any time you deal with real data of this sort. We can also have a look later at different plotting options using some of these variables. First, let’s change the votes, which are in the format “S” (&lt;em&gt;Sim&lt;/em&gt;, ‘Yes’), “N” (‘No’), “A” (Abstention), and “O” (Obstruction), to numeric format.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data$Vote[data$Vote==&amp;quot;S&amp;quot;] &amp;lt;- 1
+data$Vote[data$Vote==&amp;quot;N&amp;quot;] &amp;lt;- 0
+data$Vote[data$Vote  %in% c(NA,&amp;quot;O&amp;quot;,&amp;quot;A&amp;quot;)] &amp;lt;- NA
+data$Vote &amp;lt;- as.numeric(data$Vote)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Next, we’ll create the ‘vote matrix’. This is the &lt;em&gt;j&lt;/em&gt; &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; &lt;em&gt;m&lt;/em&gt; matrix that we will use to create the ideal points with Stan. The rows will be the legislators and the columns the votes. We will also need to deal with the issue of &lt;a href=&#34;http://polmeth.wustl.edu/files/polmeth/river03.pdf&#34;&gt;‘constraints’&lt;/a&gt;: we need to identify &lt;em&gt;d(d + 1)&lt;/em&gt; legislators in &lt;em&gt;d&lt;/em&gt; dimensions and constrain their ideal points in some way. For now, we’ll just organise our vote matrix in such a way that the two legislators that will be constrained are placed in rows 1 and 2 of the matrix. For this example, we can use Senators Agripino and Suplicy, who belong to two parties that are generally considered to be on opposite sides of the political ‘space’ that we will place our ideal points upon. Organizing things in this way is not necessary but makes the Stan model code cleaner later on.&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data$FullID &amp;lt;- paste(data$SenatorUpper, data$Party, sep=&amp;quot;:&amp;quot;)
+NameID &amp;lt;- unique(data$FullID)
+J &amp;lt;- length(unique(NameID))
+M &amp;lt;- length(unique(data$VoteNumber))
+grep(&amp;quot;JOSE AGRIPINO:PFL&amp;quot;, NameID)  #34
+grep(&amp;quot;EDUARDO SUPLICY:PT&amp;quot;, NameID) #12
+NameID &amp;lt;- NameID[c(34, 12, 1:11, 13:33, 35:J)]
 
-&lt;p&gt;As you can see, all of those &lt;code&gt;P(|)&lt;/code&gt;s and &lt;code&gt;Pr&lt;/code&gt;s can make things confusing &amp;ndash; underneath it all, it&amp;rsquo;s simpler. First of all, the &lt;code&gt;Pr()&lt;/code&gt; notation and the denominator are often left out, making the theorem look more like this:&lt;/p&gt;
+y &amp;lt;- matrix(NA,J,M)
+Rows &amp;lt;- match(data$FullID, NameID)
+Cols &amp;lt;- unique(data$VoteNumber)
+Columns &amp;lt;- match(data$VoteNumber, Cols)
 
-&lt;p&gt;{% raw %}
-  $$posterior \propto prior \centerdot likelihood.$$
- {% endraw %}&lt;/p&gt;
+for(i in 1:dim(data)[1]){
+  y[Rows[i],Columns[i]] &amp;lt;- data$Vote[i]
+}
 
-&lt;p&gt;The plausibility of our idea, now that we have seen data, is proportional to its original plausibility times the likelihood. Well, reasonably simpler, but the fact is that most people are not comfortable thinking in terms of probability. Given that Bayes&amp;rsquo; Theorem is the basic foundation block for an entire body of statistical literature&lt;sup id=&#34;a3&#34;&gt;&lt;a href=&#34;#fn3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;, one can see how things could get out of hand pretty quickly &amp;ndash; hence the need for good books on the subject. I didn&amp;rsquo;t learn &lt;em&gt;any&lt;/em&gt; Bayesian statistics in any class I ever had, I learned everything I know (astoundingly little) from reading plenty of books, sometimes the whole way through, sometimes just certain parts until I got bored, from reading on the web, from making many mistakes in &lt;code&gt;R&lt;/code&gt; &amp;ndash; gradually, I found my way and built my understanding of Bayesian stats. Given that I read (or skimmed) quite a lot of books on the topic, I thought I&amp;rsquo;d share my two cents on those I came across. There are certainly many more, depending on the specific area of the sciences or on the level of technicality assumed, but these are the ones that I read and either loved, liked somewhat, got bored, or simply got lost (some of them are waaay too difficult&amp;hellip;at least for me). Let&amp;rsquo;s dive in. They&amp;rsquo;re in no particular order, by the way.&lt;/p&gt;
+dimnames(y) &amp;lt;- list(unique(NameID), unique(data$VoteNumber))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I presume you’re using RStudio. Clicking on the viewer should show you the vote matrix, which should look like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/iOh3lfY.png?1&#34;&gt;&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Next we’ll make a dataframe of legislator variables which we’ll use later on, and one of vote characteristics.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ldata &amp;lt;- data.frame(FullID = unique(NameID), 
+                    Party = data$Party[match(unique(NameID), 
+                                             data$FullID)], 
+                    GovCoalition = data$GovCoalition[match(unique(NameID),
+                                                           data$FullID)],
+                    Name = data$SenatorUpper[match(unique(NameID), 
+                                                   data$FullID)], 
+                    State = data$State[match(unique(NameID), 
+                                             data$FullID)], 
+                    row.names = NULL, 
+                    stringsAsFactors = FALSE)
 
-&lt;p align=&#34;center&#34;&gt;&lt;img src=&#34;http://i.imgur.com/b0EkBG5.jpg?1&#34;/&gt;&lt;/p&gt;
+vdata &amp;lt;- data.frame(VoteNumber = unique(data$VoteNumber), 
+                    VoteType = data$VoteType[match(unique(data$VoteNumber),
+                                                   data$VoteNumber)],
+                    SenNumber = data$SenNumber[match(unique(data$VoteNumber),
+                                                     data$VoteNumber)],
+                    Origin = data$Origin[match(unique(data$VoteNumber),
+                                               data$VoteNumber)],
+                    Contentious = data$Contentious[match(unique(data$VoteNumber),
+                                                         data$VoteNumber)], 
+                    IndGov = data$IndGov[match(unique(data$VoteNumber),
+                                               data$VoteNumber)],
+                    stringsAsFactors = F)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Stan is not like &lt;code&gt;JAGS&lt;/code&gt; and &lt;code&gt;BUGS&lt;/code&gt; in that &lt;bdi style=&#34;font-family:courier&#34;&gt;NA&lt;/bdi&gt; is unwieldy to incorporate. The best thing to do is to delete missing data out, as can be seen in Barberá’s script linked to earlier, which I’ll copy here.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;N &amp;lt;- length(y)
+j &amp;lt;- rep(1:J, times=M)
+m &amp;lt;- rep(1:M, each=J)
 
-&lt;p&gt;Probably the first book that comes to mind is one of the first that I read on the topic, Simon Jackman&amp;rsquo;s &lt;a href=&#34;http://onlinelibrary.wiley.com/book/10.1002/9780470686621&#34;&gt;Bayesian Analysis for the Social Sciences&lt;/a&gt;. Jackman&amp;rsquo;s book&lt;sup id=&#34;a4&#34;&gt;&lt;a href=&#34;#fn4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt; has a nice introduction to the topic and the first few chapters are reasonably easy to follow. However, his mathematics are detailed and even a bit pedantic (nothing wrong with that in an academic book) and things can get heavy going &lt;em&gt;very&lt;/em&gt; quickly. Reading through derivations of the conjugacy of probability distributions convinced me I needed to a) go back and re-learn calculus &lt;em&gt;again&lt;/em&gt; (which I did), and b) go a little further back in the tree of books on Bayesian statistics.&lt;/p&gt;
+miss &amp;lt;- which(is.na(y))
+N &amp;lt;- N - length(miss)
+j &amp;lt;- j[-miss]
+m &amp;lt;- m[-miss]
+y &amp;lt;- y[-miss]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we’ll set our initial values. There are various ways to do this, ranging from leaving it up to Stan (i.e. not setting any values) to creating lists with specific starting values for each parameter. What we’ll do here is use the starting values as a way to start the parties off in separate places. This has several advantages: we already know that these parties don’t vote together very often (i.e., they are parties of the government and the opposition) and so we can speed up the model by starting the legislators off where we already know they’ll be (i.e. right-wing parties on the right etc.). This also has the benefit of making it less likely that we’ll end up with ‘sign-flips’, where a legislator with a bi-modal posterior distribution has an ideal point from the ‘wrong’ mode.&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; For the discrimination and difficulty paramters, we’ll use a random sample from normal distributions. We’ll also save all this information as &lt;code&gt;stan.data&lt;/code&gt;, which is the list of data we’ll use with Stan.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ldata$ThetaStart &amp;lt;- rnorm(J, 0, 1)
+ldata$ThetaStart[ldata$Party==&amp;quot;PFL&amp;quot; | ldata$Party==&amp;quot;PTB&amp;quot; | ldata$Party==&amp;quot;PSDB&amp;quot; | ldata$Party==&amp;quot;PPB&amp;quot;] &amp;lt;- 2
+ldata$ThetaStart[ldata$Party==&amp;quot;PT&amp;quot; | ldata$Party==&amp;quot;PSOL&amp;quot; | ldata$Party==&amp;quot;PCdoB&amp;quot;] &amp;lt;- -2
+ThetaStart &amp;lt;- ldata$ThetaStart
 
-&lt;p align=&#34;center&#34;&gt;&lt;img src=&#34;http://i.imgur.com/jpNFefC.png?1&#34;/&gt;&lt;/p&gt;
+initF &amp;lt;- function() {
+  list(theta=ThetaStart, beta=rnorm(M, 0, 2), alpha=rnorm(M, 0, 2))
+}
 
-&lt;p&gt;This led me down a few interesting paths, from de Finetti&amp;rsquo;s famous &amp;ldquo;PROBABILITY DOES NOT EXIST&amp;rdquo; statement, which I originally saw in Jackman&amp;rsquo;s book and then hunted down the original (I enjoyed the start quite a lot but then got bored), to learning &lt;code&gt;JAGS&lt;/code&gt; to go along with Jackman&amp;rsquo;s examples, to some rather unnecessary and heavy-going books (&lt;a href=&#34;http://link.springer.com/book/10.1007%2F978-1-4612-4024-2&#34;&gt;Tanner&lt;/a&gt;, for example). However, I decided to go the &amp;lsquo;source&amp;rsquo; (in a modern context) and so I started reading Bernardo and Smith&amp;rsquo;s &lt;a href=&#34;http://onlinelibrary.wiley.com/book/10.1002/9780470316870&#34;&gt;Bayesian Theory&lt;/a&gt;, which really helped to give me a solid understanding of the concepts involved. It&amp;rsquo;s a detailed read, and well recommended if you want a deeper understanding of the concepts behind Bayesian statistics.&lt;/p&gt;
+stan.data &amp;lt;- list(J=J, M=M, N=N, j=j, m=m, y=y, ThetaStart=ThetaStart)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Stan model code differs from those mentioned above in a few aspects. Firstly, variables need to be declared, along with their type. For example, &lt;em&gt;J&lt;/em&gt;, which is our index for the number of senators, is declared in the following code as an integer. The parameters are likewise declared, as real numbers. The model code has three blocks: data, parameters and the model itself (there are other blocks possible, such as&lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;generated data&lt;/bdi&gt;, see the Stan &lt;a href=&#34;http://mc-stan.org/documentation/&#34;&gt;manual&lt;/a&gt;. Stan code is also imperative – the order of the blocks matters.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stan.code &amp;lt;- &amp;quot;
+    data {
+    int&amp;lt;lower=1&amp;gt; J; //Senators
+    int&amp;lt;lower=1&amp;gt; M; //Proposals
+    int&amp;lt;lower=1&amp;gt; N; //no. of observations
+    int&amp;lt;lower=1, upper=J&amp;gt; j[N]; //Senator for observation n
+    int&amp;lt;lower=1, upper=M&amp;gt; m[N]; //Proposal for observation n
+    int&amp;lt;lower=0, upper=1&amp;gt; y[N]; //vote of observation n
+    }
+    parameters {
+    real alpha[M];
+    real beta[M];
+    real theta[J];
+    }
+    model {
+    alpha ~ normal(0,5); 
+    beta ~ normal(0,5); 
+    theta ~ normal(0,1); 
+    theta[1] ~ normal(1, .01);
+    theta[2] ~ normal(-1, .01);  
+    for (n in 1:N)
+    y[n] ~ bernoulli_logit(theta[j[n]] * beta[m[n]] - alpha[m[n]]);
+    }&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;This IRT model can be run using either the logistic or probit link function, however, since Stan has a built in &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;bernoulli_logit&lt;/bdi&gt;, we’ll use that. You can see from the model block above that we have specified specific prior distributions for &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;theta[1]&lt;/bdi&gt; and &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;theta[2]&lt;/bdi&gt;. These are our constrained legislators – Agripino and Suplicy. We can do this using truncated normal distributions in Stan (i.e. &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;theta[1] ~ normal(1, .01)T[0,]&lt;/bdi&gt;, for example), but in my experience this makes things slower and increases the number of divergent transitions reported by Stan. We then use the &lt;code&gt;stan()&lt;/code&gt; command to run our model in Stan. Here, I’m using 1000 iterations just to show (as it doesn’t take too long); these IRT models generally need more iterations than other models, for good estimates from this data, I run 5000 iterations with 2500 burn-in. A couple of hundred iterations usually suffices in Stan, depending on the model. The number of chains and cores are linked to what I have available on my computer. You can check this with the parallel package using &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;detectCores()&lt;/bdi&gt;. A quick way to check convergence of the chains is with a graph of Rhat, shown below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stan.fit &amp;lt;- stan(model_code=stan.code, data=stan.data, iter=3000, 
+                 warmup=1500, chains=4, thin=5, init=initF, 
+                 verbose=TRUE, cores=4, seed=1234)
 
-&lt;p&gt;Moving from concepts to application, I found Donald Berry&amp;rsquo;s &lt;a href=&#34;http://www.amazon.com/Statistics-Bayesian-Perspective-Donald-Berry/dp/0534234720&#34;&gt;Statistics: a Bayesian Perspective&lt;/a&gt; really useful for getting a grip on the basic elements. The book is a bit dated now, and is targeted at an undergraduate audience, which is actually something in its favour. Up until Kruschke and McElreath&amp;rsquo;s books (mentioned later), most Bayesian stats books seemed to be aimed at people who were already experts in statistics (or knowledgeable, at least), with the aim of convincing them why they should switch to Bayesian methods. As a result, a lot of these books dive headlong into subjects that are not appropriate for most students (see Jackman&amp;rsquo;s conjugacy discussions, above) and have the effect of turning a lot of students off the material. Berry&amp;rsquo;s book, although limited, does the opposite.&lt;/p&gt;
+stan_rhat(stan.fit, bins=60)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/YNBevMV.png?1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Values of Rhat should be 1.03 or lower. As you can see, even from 1000 iterations, we can be confident these chains are converging.&lt;/p&gt;
+&lt;div id=&#34;graphing-ideal-points&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Graphing Ideal Points&lt;/h2&gt;
+&lt;p&gt;I find the best way to plot ideal points is by using ggplot2. It’s automatically loaded as part of rstan. I also prefer to use an mcmc.list object, simply because I’m more used to it. But you can use the &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;stan.fit&lt;/bdi&gt; object directly if you prefer.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;MS &amp;lt;- As.mcmc.list(stan.fit)
+sMS &amp;lt;- summary(MS)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are various things we can plot from the summary above. Of main interest is usually the ideal points, so we’ll start with those first. First, let’s extract the ideal points (“theta”) from the summary, along with the lower and upper ends of the 95% credible interval:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Theta &amp;lt;- sMS$statistics[grep(&amp;quot;theta&amp;quot;, row.names(sMS$statistics)),1]
+ThetaQ &amp;lt;- sMS$quantiles[grep(&amp;quot;theta&amp;quot;, row.names(sMS$statistics)),c(1,5)]
+Theta &amp;lt;- as.data.frame(cbind(Theta, ThetaQ))
+rm(ThetaQ)
+Theta$FullID &amp;lt;- ldata$FullID
+row.names(Theta) &amp;lt;- NULL
+colnames(Theta)[1:3] &amp;lt;- c(&amp;quot;Mean&amp;quot;, &amp;quot;Lower&amp;quot;, &amp;quot;Upper&amp;quot;)
+Theta &amp;lt;- merge(Theta, ldata, by=&amp;quot;FullID&amp;quot;)
+Theta &amp;lt;- Theta[order(Theta$Mean),]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have a dataframe of legislator characteristics alng with their ideal points. Since we’re dealing with a one-dimensional model here, the most straight-forward way to plot is along a scale ranging from the lowest ideal point to the highest. Here, I’ll colour the ideal points and their intervals by membership of the government coalition. I’ve used some other plotting options to make this plot the way I like it, but it’s easy to change things to your taste in ggplot2.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Y &amp;lt;- seq(from=1, to=length(Theta$Mean), by=1)
 
-&lt;p&gt;There are other statistics books that cover Bayesian ideas, such as &lt;a href=&#34;http://www.amazon.com/Introduction-Bayesian-Statistics-William-Bolstad/dp/0470141158&#34;&gt;Bolstad&amp;rsquo;s&lt;/a&gt; (I personally didn&amp;rsquo;t like his style) and deGroot &amp;amp; Schervish&amp;rsquo;s well-known &lt;a href=&#34;https://www.pearsonhighered.com/program/De-Groot-Probability-and-Statistics-4th-Edition/PGM146802.html&#34;&gt;book&lt;/a&gt;, which is a fine book, but very dry for my taste. There are also other introductory Bayesian statistics books, such as those by &lt;a href=&#34;http://www.springer.com/us/book/9780387712642&#34;&gt;Lynch&lt;/a&gt; and &lt;a href=&#34;http://www.springer.com/us/book/9780387922997&#34;&gt;Hoff&lt;/a&gt;, neither of which really stuck with me. Actually, most Bayesian stats books I read didn&amp;rsquo;t stick with me :smile: . (&lt;a href=&#34;http://www.amazon.com/Bayesian-Statistics-Introduction-Peter-Lee/dp/1118332571&#34;&gt;Lee&lt;/a&gt; also has an introductory text, but I haven&amp;rsquo;t read it.)&lt;/p&gt;
+ggplot(Theta, aes(x=Mean, y=Y)) + 
+  geom_point(aes(colour=GovCoalition),
+             shape=19, size=3) + 
+  geom_errorbarh(aes(xmin = Lower, xmax = Upper,colour = GovCoalition), 
+                 height = 0) + 
+  geom_text(aes(x = Upper, label = FullID, colour = GovCoalition), 
+            size = 2.5, hjust = -.05) + 
+  scale_colour_manual(values = c(&amp;quot;red&amp;quot;, &amp;quot;blue&amp;quot;)) +
+  theme(axis.text.y = element_blank(), 
+        axis.ticks.y = element_blank(), 
+        axis.title = element_blank(), 
+        legend.position = &amp;quot;none&amp;quot;, 
+        panel.grid.major.y = element_blank(),
+        panel.grid.major.x = element_line(linetype = 1, 
+                                          colour = &amp;quot;grey&amp;quot;),
+        panel.grid.minor = element_blank(),  
+        panel.background = element_rect(fill = &amp;quot;white&amp;quot;), 
+        panel.border = element_rect(colour = &amp;quot;black&amp;quot;, fill = NA, 
+                                    size = .4)) +
+  scale_x_continuous(limits = c(-2.7, 4))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/fE2LY5L.png?1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Of course, that’s not all the information we have in our ldata dataframe. We could plot things by party or by state. Let’s plot something by region (since there are a lot of states):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;St &amp;lt;- Theta[is.na(Theta$State)==FALSE,]  # take out president
+St$Region &amp;lt;- NA
+SE &amp;lt;- c(&amp;quot;SP&amp;quot;, &amp;quot;RJ&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;MG&amp;quot;)
+S &amp;lt;- c(&amp;quot;RS&amp;quot;, &amp;quot;PR&amp;quot;, &amp;quot;SC&amp;quot;)
+N &amp;lt;- c(&amp;quot;AM&amp;quot;, &amp;quot;RO&amp;quot;, &amp;quot;RR&amp;quot;, &amp;quot;TO&amp;quot;, &amp;quot;PA&amp;quot;, &amp;quot;AC&amp;quot;, &amp;quot;AP&amp;quot;)
+CW &amp;lt;- c(&amp;quot;DF&amp;quot;, &amp;quot;GO&amp;quot;, &amp;quot;MT&amp;quot;, &amp;quot;MS&amp;quot;)
+NE &amp;lt;- c(&amp;quot;CE&amp;quot;, &amp;quot;MA&amp;quot;, &amp;quot;AL&amp;quot;, &amp;quot;RN&amp;quot;, &amp;quot;PB&amp;quot;, &amp;quot;SE&amp;quot;, &amp;quot;PI&amp;quot;, &amp;quot;BA&amp;quot;, &amp;quot;PE&amp;quot;)
+St$Region[St$State %in% SE] &amp;lt;- &amp;quot;South-East&amp;quot;
+St$Region[St$State %in% S] &amp;lt;- &amp;quot;South&amp;quot;
+St$Region[St$State %in% NE] &amp;lt;- &amp;quot;North-East&amp;quot;
+St$Region[St$State %in% CW] &amp;lt;- &amp;quot;Centre-West&amp;quot;
+St$Region[St$State %in% N] &amp;lt;- &amp;quot;North&amp;quot;
 
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+nameorder &amp;lt;- St$FullID[order(St$Region, St$Mean)]
+St$FullID &amp;lt;- factor(St$FullID, levels=nameorder)
 
+ggplot(St, aes(x=Mean, y=FullID)) + 
+  geom_point(size = 3, aes(colour = Region)) + 
+  geom_errorbarh(aes(xmin = Lower, xmax = Upper, colour = Region), 
+                 height = 0) + 
+  facet_grid(Region ~ ., scales = &amp;quot;free_y&amp;quot;) +
+  scale_colour_manual(values = c(&amp;quot;orange&amp;quot;, &amp;quot;black&amp;quot;, &amp;quot;red&amp;quot;, 
+                                 &amp;quot;blue&amp;quot;, &amp;quot;darkgreen&amp;quot;)) + 
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/M4sx2az.png?1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;We can also analyse the other parameters of the model, and run multidimensional models too. See the &lt;a href=&#34;http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R&#34;&gt;RPub&lt;/a&gt; for the code for these.&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; There are many discussions on this topic, but &lt;a href=&#34;https://my.vanderbilt.edu/joshclinton/files/2011/10/CJ_LSQ2009.pdf&#34;&gt;Clinton &amp;amp; Jackman (2009)&lt;/a&gt; is a good place to start. An earlier &lt;a href=&#34;https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/ClintonJackmanRivers2004.pdf&#34;&gt;paper&lt;/a&gt; by Clinton, Jackman &amp;amp; Rivers makes the point somewhat more forcefully. &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;b id=&#34;fn2&#34;&gt;2&lt;/b&gt; For more on this point, see &lt;a href=&#34;https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/Jackman2001.pdf&#34;&gt;Jackman&lt;/a&gt; 2001, &lt;a href=&#34;http://polmeth.wustl.edu/files/polmeth/river03.pdf&#34;&gt;Rivers 2003&lt;/a&gt; paper cited in the main text, or the Appendix of my PhD &lt;a href=&#34;http://robertmyles.github.io//assets/Explaining%20the%20Determinants%20of%20Foreign%20Policy%20Voting%20Behaviour%20in%20the%20Brazilian%20Houses%20of%20Legislature.pdf&#34;&gt;thesis&lt;/a&gt;. &lt;a href=&#34;#a2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/VuCDpaX.png?1&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Bayesian Stats -- Book Recommendations</title>
+      <link>/2016/05/03/bayesian-stats----book-recommendations/</link>
+      <pubDate>Tue, 03 May 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/05/03/bayesian-stats----book-recommendations/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
+
+&lt;p&gt;The first time I came across Bayes’ Theorem&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, I must admit I was pretty confused. It was in &lt;a href=&#34;http://www.amazon.com/Introductory-Statistics-9th-Neil-Weiss/dp/0321691229/ref=pd_cp_14_1?ie=UTF8&amp;amp;refRID=15HFJDGMBF49CXAD9W9S&#34;&gt;Introductory Statistics&lt;/a&gt; by Neil A. Weiss, the course book in a statistics course I was taking at the time. Neither the logic of it nor the formula for it made much sense to me. For somebody new to probability, I was still trying to figure out what the hell P(A) actually &lt;em&gt;meant&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Looking back, the funny thing is that it is the branch of statistics that &lt;em&gt;isn’t&lt;/em&gt; wont to use Bayes’ Theorem that I find confusing.&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; Bayesian statistics now makes perfect sense to me. Indeed, it follows human intuition (even if the formula looks weird for anybody new to probability). The probability of the hypothesis we have in mind, given the data we observe (that would be the &lt;code&gt;P(A|B)&lt;/code&gt; part, but we can rewrite it as &lt;code&gt;Pr(Hypothesis|Data)&lt;/code&gt;; this is also called the &lt;em&gt;posterior&lt;/em&gt; ) is… what exactly?&lt;br /&gt;
+Well, it’s a combination of the initial plausibility of our hypothesis (&lt;code&gt;P(A)&lt;/code&gt;, also called the &lt;em&gt;prior&lt;/em&gt; ), multiplied by what’s called the likelihood (&lt;code&gt;P(B|A)&lt;/code&gt;, or &lt;code&gt;Pr(Data|Hypothesis)&lt;/code&gt;), which is the data we would expect to see if our hypothesis were correct. The denominator is often called the ‘evidence’ or something similarly opaque, but it is merely the numerator plus its converse, that is to say, the probability that our original hypothesis is wrong by the likelihood of our data, assuming that our hypothesis is wrong. In any case, its function is just to make sure our probabilities sum to one, as they should.&lt;/p&gt;
+&lt;p&gt;As you can see, all of those &lt;code&gt;P(|)&lt;/code&gt;s and &lt;code&gt;Pr&lt;/code&gt;s can make things confusing – underneath it all, it’s simpler. First of all, the &lt;code&gt;Pr()&lt;/code&gt; notation and the denominator are often left out, making the theorem look more like this:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[posterior \propto prior \centerdot likelihood.\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The plausibility of our idea, now that we have seen data, is proportional to its original plausibility times the likelihood. Well, reasonably simpler, but the fact is that most people are not comfortable thinking in terms of probability. Given that Bayes’ Theorem is the basic foundation block for an entire body of statistical literature&lt;sup id=&#34;a3&#34;&gt;&lt;a href=&#34;#fn3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;, one can see how things could get out of hand pretty quickly – hence the need for good books on the subject. I didn’t learn &lt;em&gt;any&lt;/em&gt; Bayesian statistics in any class I ever had, I learned everything I know (astoundingly little) from reading plenty of books, sometimes the whole way through, sometimes just certain parts until I got bored, from reading on the web, from making many mistakes in &lt;code&gt;R&lt;/code&gt; – gradually, I found my way and built my understanding of Bayesian stats. Given that I read (or skimmed) quite a lot of books on the topic, I thought I’d share my two cents on those I came across. There are certainly many more, depending on the specific area of the sciences or on the level of technicality assumed, but these are the ones that I read and either loved, liked somewhat, got bored, or simply got lost (some of them are waaay too difficult…at least for me). Let’s dive in. They’re in no particular order, by the way.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;http://i.imgur.com/b0EkBG5.jpg?1&#34;/&gt;
+&lt;/p&gt;
+&lt;p&gt;Probably the first book that comes to mind is one of the first that I read on the topic, Simon Jackman’s &lt;a href=&#34;http://onlinelibrary.wiley.com/book/10.1002/9780470686621&#34;&gt;Bayesian Analysis for the Social Sciences&lt;/a&gt;. Jackman’s book&lt;sup id=&#34;a4&#34;&gt;&lt;a href=&#34;#fn4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt; has a nice introduction to the topic and the first few chapters are reasonably easy to follow. However, his mathematics are detailed and even a bit pedantic (nothing wrong with that in an academic book) and things can get heavy going &lt;em&gt;very&lt;/em&gt; quickly. Reading through derivations of the conjugacy of probability distributions convinced me I needed to a) go back and re-learn calculus &lt;em&gt;again&lt;/em&gt; (which I did), and b) go a little further back in the tree of books on Bayesian statistics.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;http://i.imgur.com/jpNFefC.png?1&#34;/&gt;
+&lt;/p&gt;
+&lt;p&gt;This led me down a few interesting paths, from de Finetti’s famous “PROBABILITY DOES NOT EXIST” statement, which I originally saw in Jackman’s book and then hunted down the original (I enjoyed the start quite a lot but then got bored), to learning &lt;code&gt;JAGS&lt;/code&gt; to go along with Jackman’s examples, to some rather unnecessary and heavy-going books (&lt;a href=&#34;http://link.springer.com/book/10.1007%2F978-1-4612-4024-2&#34;&gt;Tanner&lt;/a&gt;, for example). However, I decided to go the ‘source’ (in a modern context) and so I started reading Bernardo and Smith’s &lt;a href=&#34;http://onlinelibrary.wiley.com/book/10.1002/9780470316870&#34;&gt;Bayesian Theory&lt;/a&gt;, which really helped to give me a solid understanding of the concepts involved. It’s a detailed read, and well recommended if you want a deeper understanding of the concepts behind Bayesian statistics.&lt;/p&gt;
+&lt;p&gt;Moving from concepts to application, I found Donald Berry’s &lt;a href=&#34;http://www.amazon.com/Statistics-Bayesian-Perspective-Donald-Berry/dp/0534234720&#34;&gt;Statistics: a Bayesian Perspective&lt;/a&gt; really useful for getting a grip on the basic elements. The book is a bit dated now, and is targeted at an undergraduate audience, which is actually something in its favour. Up until Kruschke and McElreath’s books (mentioned later), most Bayesian stats books seemed to be aimed at people who were already experts in statistics (or knowledgeable, at least), with the aim of convincing them why they should switch to Bayesian methods. As a result, a lot of these books dive headlong into subjects that are not appropriate for most students (see Jackman’s conjugacy discussions, above) and have the effect of turning a lot of students off the material. Berry’s book, although limited, does the opposite.&lt;/p&gt;
+&lt;p&gt;There are other statistics books that cover Bayesian ideas, such as &lt;a href=&#34;http://www.amazon.com/Introduction-Bayesian-Statistics-William-Bolstad/dp/0470141158&#34;&gt;Bolstad’s&lt;/a&gt; (I personally didn’t like his style) and deGroot &amp;amp; Schervish’s well-known &lt;a href=&#34;https://www.pearsonhighered.com/program/De-Groot-Probability-and-Statistics-4th-Edition/PGM146802.html&#34;&gt;book&lt;/a&gt;, which is a fine book, but very dry for my taste. There are also other introductory Bayesian statistics books, such as those by &lt;a href=&#34;http://www.springer.com/us/book/9780387712642&#34;&gt;Lynch&lt;/a&gt; and &lt;a href=&#34;http://www.springer.com/us/book/9780387922997&#34;&gt;Hoff&lt;/a&gt;, neither of which really stuck with me. Actually, most Bayesian stats books I read didn’t stick with me :smile: . (&lt;a href=&#34;http://www.amazon.com/Bayesian-Statistics-Introduction-Peter-Lee/dp/1118332571&#34;&gt;Lee&lt;/a&gt; also has an introductory text, but I haven’t read it.)&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;Sticking with introductory level, John Kruschke has a popular &lt;a href=&#34;https://sites.google.com/site/doingbayesiandataanalysis/&#34;&gt;book&lt;/a&gt; with its quirky dog cover.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;http://www.indiana.edu/~kruschke/DoingBayesianDataAnalysis/DBDA2Ecover.png&#34; /&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://www.indiana.edu/~kruschke/DoingBayesianDataAnalysis/DBDA2Ecover.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;I came a bit late to the Kruschke party, which meant that the two biggest advantages of the book (easy explanation of Bayesian stats and pre-written R functions) were not particularly useful to me, as I was already reasonably proficient in R and understood Bayesian stats quite well. Still, his book is very popular for a reason, which shows just how prevalent the problem of &amp;lsquo;writing-Bayesian-stats-books-for-people-who-are-already-awesome-at-statistics&amp;rsquo; is. However, I like to open things up and poke around, and his closed system of pre-written functions didn&amp;rsquo;t work so well for me (plus, the functions are quite badly written, in my opinion). Closed ecosystems of functions like this are a thing of the past (see &lt;a href=&#34;https://cran.r-project.org/web/packages/LaplacesDemon/index.html&#34;&gt;Laplace&amp;rsquo;s Demon&lt;/a&gt;), the future is incorporating well-known methods and function calls with Bayesian machinery running under the hood (such as &lt;a href=&#34;https://cran.r-project.org/web/packages/rstanarm/vignettes/rstanarm.html&#34;&gt;rstanarm&lt;/a&gt;). Anyway, for someone starting off, it&amp;rsquo;s a recommended read. Kruschke has some interesting &lt;a href=&#34;http://www.indiana.edu/~kruschke/BEST/BEST.pdf&#34;&gt;papers&lt;/a&gt; too.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;There are also some &amp;lsquo;classics&amp;rsquo; of Bayesian statistics, perhaps the most well-known being the canonical &lt;a href=&#34;http://www.stat.columbia.edu/~gelman/book/&#34;&gt;Bayesian Data Analysis&lt;/a&gt; by Andrew Gelman &amp;amp; co. I don&amp;rsquo;t know what keeps me away from this book. It&amp;rsquo;s very highly regarded (pretty much as &lt;em&gt;the&lt;/em&gt; book on Bayesian stats) and well-written, and has a section on computation with &lt;a href=&#34;http://mc-stan.org/&#34;&gt;Stan&lt;/a&gt; etc., but I just never seem to sit down and read it. Who knows why.&lt;sup id=&#34;a5&#34;&gt;&lt;a href=&#34;#fn5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;p align=&#34;center&#34;&gt;&lt;img src=&#34;http://i.imgur.com/hfaZkl3.png?1&#34;/&gt;&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;Of course, there are tons of books on this subject. I could literally fill a long blog post on the books I started and just didn&amp;rsquo;t like for whatever reason. There are some that are encyclopaedic (&lt;a href=&#34;http://webspace.qmul.ac.uk/pcongdon/&#34;&gt;Congdon&amp;rsquo;s&lt;/a&gt; long list of Bayesian books, for example), others, designed for business students, that were just kind of &amp;lsquo;meh&amp;rsquo;: &lt;a href=&#34;http://www.springer.com/us/book/9780387389837&#34;&gt;Marin &amp;amp; Robert&lt;/a&gt; and &lt;a href=&#34;http://www.wiley.com/WileyCDA/WileyTitle/productCd-0470863676.html&#34;&gt;Rossi&lt;/a&gt;, for example. Others are useful for learning Bayesian methods &lt;em&gt;and&lt;/em&gt; &lt;code&gt;R&lt;/code&gt;, such as Jim Albert&amp;rsquo;s &lt;a href=&#34;https://books.google.com.br/books/about/Bayesian_Computation_with_R.html?id=kVk_WHFfIrMC&amp;amp;redir_esc=y&#34;&gt;book&lt;/a&gt;, &lt;em&gt;Bayesian Computation with R&lt;/em&gt;. This is a really useful book actually, but like I said earlier with reference to Kruschke, by the time I came to it, I was already using &lt;code&gt;JAGS&lt;/code&gt; and on a different path (&lt;a href=&#34;http://robertmyles.github.io//Stan-JAGS.html&#34;&gt;ideal points&lt;/a&gt; etc.) and so I had no great use for Albert&amp;rsquo;s &lt;code&gt;R&lt;/code&gt; functions. Still, it&amp;rsquo;s a well-regarded book by an acknowledged &lt;code&gt;R&lt;/code&gt; expert. There are also good books on Bayesian econometrics (&lt;a href=&#34;http://www.wiley.com/legacy/wileychi/koopbayesian/&#34;&gt;Koop&lt;/a&gt;) and time-series (&lt;a href=&#34;https://books.google.com.br/books/about/Applied_Bayesian_Forecasting_and_Time_Se.html?id=LAcp-ZwnyxIC&amp;amp;redir_esc=y&#34;&gt;Pole, West &amp;amp; Harrison&lt;/a&gt;, haaard) and Jeff Gill has &lt;a href=&#34;https://www.crcpress.com/Bayesian-Methods-A-Social-and-Behavioral-Sciences-Approach-Third-Edition/Gill/9781439862483&#34;&gt;one&lt;/a&gt; for the social &amp;amp; behavioural sciences (I &lt;em&gt;really&lt;/em&gt; didn&amp;rsquo;t get into this);  there are also many others throughout the specific fields of the sciences.&lt;/p&gt;
-
-&lt;p align=&#34;center&#34;&gt;&lt;img src=&#34;http://i.imgur.com/M7y9pgs.png?2&#34;/&gt;&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;The emphasis on &lt;code&gt;R&lt;/code&gt; is something that has carried through to the newer batch of Bayesian statistics books, which place more emphasis on the &amp;lsquo;data analysis&amp;rsquo; part (that is, being empirical instead of theoretical, and getting your hands dirty with computer programming in &lt;code&gt;R&lt;/code&gt; from the off) than on theoretical underpinnings. You will find some targeted at a Python audience, for example, Davidson-Pilon&amp;rsquo;s &lt;a href=&#34;http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/&#34;&gt;book&lt;/a&gt;, which is available as an editable github-type-webbook on the net, as well as a printed book. (Its title will tell you a bit about the Python audience it aims for &amp;ndash; more computer programmers than the academic/statistician audience that use &lt;code&gt;R&lt;/code&gt;. Indeed, most of the Python Bayesian analysis resources are found on the web as opposed to in books. Although some are just books on the web in &lt;a href=&#34;http://www.greenteapress.com/thinkbayes/thinkbayes.pdf&#34;&gt;pdf format&lt;/a&gt;.) For me personally, this is good news. I liked the theoretical knowledge that I gained from Bernardo &amp;amp; Smith, but once I had to delve into understanding matrix algebra (just to see a linear regression derivation) or complex characteristics of probability distributions, I was already thinking of how I&amp;rsquo;d rather have a beer. Programming, at least for me, is a perfect way to connect the theory and the concepts to the reality of actually &lt;em&gt;doing&lt;/em&gt; some Bayesian analysis.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;This brings me nicely to two books that I think really utilise this approach to good effect, one recent, one a decade or so old: Richard McElreath&amp;rsquo;s &lt;a href=&#34;http://xcelab.net/rm/statistical-rethinking/&#34;&gt;Statistical Rethinking&lt;/a&gt; (new) and Gelman &amp;amp; Hill&amp;rsquo;s &lt;a href=&#34;http://www.stat.columbia.edu/~gelman/arm/&#34;&gt;Data Analysis Using Regression and Multilevel/Hierarchical Models&lt;/a&gt; (older). While I&amp;rsquo;ve only recently started reading McElreath&amp;rsquo;s book, it seems like &lt;strong&gt;exactly&lt;/strong&gt; the type of book that I would have liked to have when I started out. No complicated mathematics, just sensible advice and a heavy emphasis on doing analysis in R. The book is well-written (and very well backed up with references, there&amp;rsquo;s a ton of information to follow-up from the endnotes if you&amp;rsquo;re so inclined) and contains lucid arguments for why the author believes we need to approach statistics from a fresh angle. Although I haven&amp;rsquo;t finished it, I do recommend it already.&lt;/p&gt;
-
-&lt;p&gt;It&amp;rsquo;s similar in some ways to Gelman &amp;amp; Hill&amp;rsquo;s book, and one can see the influence of Andrew Gelman (particularly through his emphasis on the &amp;lsquo;doing&amp;rsquo; of Bayesian statistics) in Statistical Rethinking. &lt;em&gt;Data Analysis Using&amp;hellip;&lt;/em&gt; is likewise focused on analysis, learned through computer programming. It features both frequentist and Bayesian takes on statistical methods, and contains detailed computer code for (the now somewhat dated) &lt;code&gt;BUGS&lt;/code&gt; language (see &lt;a href=&#34;http://robertmyles.github.io//Stan-JAGS.html&#34;&gt;here&lt;/a&gt; (also linked to above) for why &lt;code&gt;BUGS&lt;/code&gt; and its cousin &lt;code&gt;JAGS&lt;/code&gt; are not always optimal for Bayesian analysis). It also contains some sage advice for researchers: try out simple models using quick methods like &lt;code&gt;lm()&lt;/code&gt; as you build up your model (advice that I certainly needed on at least one occasion).&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p align=&#34;center&#34;&gt;&lt;img src=&#34;http://i.imgur.com/oH57M4t.png?1&#34;/&gt;&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;So that&amp;rsquo;s my take on Bayesian statistics/data analysis books. As befits the age we live in, you&amp;rsquo;ll likely learn just as much from sites like &lt;a href=&#34;http://stackoverflow.com/search?q=Bayesian+&#34;&gt;Stack Overflow&lt;/a&gt; or from &lt;a href=&#34;https://darrenjw.wordpress.com/2012/11/20/getting-started-with-bayesian-variable-selection-using-jags-and-rjags/&#34;&gt;blog&lt;/a&gt; &lt;a href=&#34;https://twiecki.github.io/blog/2015/11/10/mcmc-sampling/&#34;&gt;posts&lt;/a&gt; and &lt;a href=&#34;https://rpubs.com/corey_sparks/30893&#34;&gt;RPubs&lt;/a&gt; and &lt;a href=&#34;https://github.com/RobertMyles/Bayesian-Ideal-Point-IRT-Models&#34;&gt;Github&lt;/a&gt; than you will from books. Academic papers often helped me more than books too. Still, a good book can teach you a hell of a lot in a consistent way. There are many referenced in this post, some better than others, but all have their qualities. For me specifically, someone who is not mad about reading lots of mathematics, the last two are my recommendations. For others, this will obviously be different (I know someone who loves Jackman&amp;rsquo;s book, for example).&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;By the way, there are some informal books on the subject, such as Nate Silver&amp;rsquo;s &lt;a href=&#34;http://www.penguinrandomhouse.com/books/305826/the-signal-and-the-noise-by-nate-silver/9780143125082/&#34;&gt;The Signal and the Noise&lt;/a&gt;, or McGrayne&amp;rsquo;s &lt;a href=&#34;https://www.amazon.ca/Theory-That-Would-Not-Die/dp/0300169698/181-0429523-7916830?ie=UTF8&amp;amp;tag=vglnk-ca-c250-20&#34;&gt;The Theory That Would Not Die&lt;/a&gt;. I&amp;rsquo;ve given Amazon or publisher links for all these books, bar a few, but they can be found in other places too&amp;hellip;you know what I&amp;rsquo;m talking about. Buy the ones you like, though!&lt;/em&gt; :cop:&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; Maybe this formula wouldn&amp;rsquo;t have made much sense to the ol&amp;rsquo; Reverend Thomas Bayes either, since he used the Newtonian style of geometric exposition. For the history of the theorem, see &lt;a href=&#34;https://www.amazon.ca/Theory-That-Would-Not-Die/dp/0300169698/181-0429523-7916830?ie=UTF8&amp;amp;tag=vglnk-ca-c250-20&#34;&gt;McGrayne&lt;/a&gt;. For a history of statistics in general, including Bayes (and Laplace, who probably did much more to develop Bayesian statistics than Bayes ever did) see the fantastic &lt;a href=&#34;http://www.hup.harvard.edu/catalog.php?isbn=9780674403413&#34;&gt;Stigler&lt;/a&gt;. &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn2&#34;&gt;2&lt;/b&gt; That would be &amp;lsquo;frequentist&amp;rsquo; or &amp;lsquo;classical&amp;rsquo; (or &amp;lsquo;traditional&amp;rsquo;) statistics (take your pick of adjective). Most of the Bayesian books above will have sections comparing the traditions. McElreath doesn&amp;rsquo;t bother, which is a nice development in its own way. &lt;a href=&#34;#a2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn3&#34;&gt;3&lt;/b&gt; Although there is only ever one core method:
-{% raw %} $$posterior \propto prior \times likehood $${% endraw %}. &lt;a href=&#34;#a3&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn4&#34;&gt;4&lt;/b&gt; I&amp;rsquo;ve learned much more from Jackman&amp;rsquo;s various political science articles, in which he uses Bayesian methods, than this book, to be honest. &lt;a href=&#34;#a4&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
+&lt;/div&gt;
+&lt;p&gt;I came a bit late to the Kruschke party, which meant that the two biggest advantages of the book (easy explanation of Bayesian stats and pre-written R functions) were not particularly useful to me, as I was already reasonably proficient in R and understood Bayesian stats quite well. Still, his book is very popular for a reason, which shows just how prevalent the problem of ‘writing-Bayesian-stats-books-for-people-who-are-already-awesome-at-statistics’ is. However, I like to open things up and poke around, and his closed system of pre-written functions didn’t work so well for me (plus, the functions are quite badly written, in my opinion). Closed ecosystems of functions like this are a thing of the past (see &lt;a href=&#34;https://cran.r-project.org/web/packages/LaplacesDemon/index.html&#34;&gt;Laplace’s Demon&lt;/a&gt;), the future is incorporating well-known methods and function calls with Bayesian machinery running under the hood (such as &lt;a href=&#34;https://cran.r-project.org/web/packages/rstanarm/vignettes/rstanarm.html&#34;&gt;rstanarm&lt;/a&gt;). Anyway, for someone starting off, it’s a recommended read. Kruschke has some interesting &lt;a href=&#34;http://www.indiana.edu/~kruschke/BEST/BEST.pdf&#34;&gt;papers&lt;/a&gt; too.&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;There are also some ‘classics’ of Bayesian statistics, perhaps the most well-known being the canonical &lt;a href=&#34;http://www.stat.columbia.edu/~gelman/book/&#34;&gt;Bayesian Data Analysis&lt;/a&gt; by Andrew Gelman &amp;amp; co. I don’t know what keeps me away from this book. It’s very highly regarded (pretty much as &lt;em&gt;the&lt;/em&gt; book on Bayesian stats) and well-written, and has a section on computation with &lt;a href=&#34;http://mc-stan.org/&#34;&gt;Stan&lt;/a&gt; etc., but I just never seem to sit down and read it. Who knows why.&lt;sup id=&#34;a5&#34;&gt;&lt;a href=&#34;#fn5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;http://i.imgur.com/hfaZkl3.png?1&#34;/&gt;
+&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Of course, there are tons of books on this subject. I could literally fill a long blog post on the books I started and just didn’t like for whatever reason. There are some that are encyclopaedic (&lt;a href=&#34;http://webspace.qmul.ac.uk/pcongdon/&#34;&gt;Congdon’s&lt;/a&gt; long list of Bayesian books, for example), others, designed for business students, that were just kind of ‘meh’: &lt;a href=&#34;http://www.springer.com/us/book/9780387389837&#34;&gt;Marin &amp;amp; Robert&lt;/a&gt; and &lt;a href=&#34;http://www.wiley.com/WileyCDA/WileyTitle/productCd-0470863676.html&#34;&gt;Rossi&lt;/a&gt;, for example. Others are useful for learning Bayesian methods &lt;em&gt;and&lt;/em&gt; &lt;code&gt;R&lt;/code&gt;, such as Jim Albert’s &lt;a href=&#34;https://books.google.com.br/books/about/Bayesian_Computation_with_R.html?id=kVk_WHFfIrMC&amp;amp;redir_esc=y&#34;&gt;book&lt;/a&gt;, &lt;em&gt;Bayesian Computation with R&lt;/em&gt;. This is a really useful book actually, but like I said earlier with reference to Kruschke, by the time I came to it, I was already using &lt;code&gt;JAGS&lt;/code&gt; and on a different path (&lt;a href=&#34;http://robertmyles.github.io//Stan-JAGS.html&#34;&gt;ideal points&lt;/a&gt; etc.) and so I had no great use for Albert’s &lt;code&gt;R&lt;/code&gt; functions. Still, it’s a well-regarded book by an acknowledged &lt;code&gt;R&lt;/code&gt; expert. There are also good books on Bayesian econometrics (&lt;a href=&#34;http://www.wiley.com/legacy/wileychi/koopbayesian/&#34;&gt;Koop&lt;/a&gt;) and time-series (&lt;a href=&#34;https://books.google.com.br/books/about/Applied_Bayesian_Forecasting_and_Time_Se.html?id=LAcp-ZwnyxIC&amp;amp;redir_esc=y&#34;&gt;Pole, West &amp;amp; Harrison&lt;/a&gt;, haaard) and Jeff Gill has &lt;a href=&#34;https://www.crcpress.com/Bayesian-Methods-A-Social-and-Behavioral-Sciences-Approach-Third-Edition/Gill/9781439862483&#34;&gt;one&lt;/a&gt; for the social &amp;amp; behavioural sciences (I &lt;em&gt;really&lt;/em&gt; didn’t get into this); there are also many others throughout the specific fields of the sciences.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;http://i.imgur.com/M7y9pgs.png?2&#34;/&gt;
+&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;The emphasis on &lt;code&gt;R&lt;/code&gt; is something that has carried through to the newer batch of Bayesian statistics books, which place more emphasis on the ‘data analysis’ part (that is, being empirical instead of theoretical, and getting your hands dirty with computer programming in &lt;code&gt;R&lt;/code&gt; from the off) than on theoretical underpinnings. You will find some targeted at a Python audience, for example, Davidson-Pilon’s &lt;a href=&#34;http://camdavidsonpilon.github.io/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/&#34;&gt;book&lt;/a&gt;, which is available as an editable github-type-webbook on the net, as well as a printed book. (Its title will tell you a bit about the Python audience it aims for – more computer programmers than the academic/statistician audience that use &lt;code&gt;R&lt;/code&gt;. Indeed, most of the Python Bayesian analysis resources are found on the web as opposed to in books. Although some are just books on the web in &lt;a href=&#34;http://www.greenteapress.com/thinkbayes/thinkbayes.pdf&#34;&gt;pdf format&lt;/a&gt;.) For me personally, this is good news. I liked the theoretical knowledge that I gained from Bernardo &amp;amp; Smith, but once I had to delve into understanding matrix algebra (just to see a linear regression derivation) or complex characteristics of probability distributions, I was already thinking of how I’d rather have a beer. Programming, at least for me, is a perfect way to connect the theory and the concepts to the reality of actually &lt;em&gt;doing&lt;/em&gt; some Bayesian analysis.&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;This brings me nicely to two books that I think really utilise this approach to good effect, one recent, one a decade or so old: Richard McElreath’s &lt;a href=&#34;http://xcelab.net/rm/statistical-rethinking/&#34;&gt;Statistical Rethinking&lt;/a&gt; (new) and Gelman &amp;amp; Hill’s &lt;a href=&#34;http://www.stat.columbia.edu/~gelman/arm/&#34;&gt;Data Analysis Using Regression and Multilevel/Hierarchical Models&lt;/a&gt; (older). While I’ve only recently started reading McElreath’s book, it seems like &lt;strong&gt;exactly&lt;/strong&gt; the type of book that I would have liked to have when I started out. No complicated mathematics, just sensible advice and a heavy emphasis on doing analysis in R. The book is well-written (and very well backed up with references, there’s a ton of information to follow-up from the endnotes if you’re so inclined) and contains lucid arguments for why the author believes we need to approach statistics from a fresh angle. Although I haven’t finished it, I do recommend it already.&lt;/p&gt;
+&lt;p&gt;It’s similar in some ways to Gelman &amp;amp; Hill’s book, and one can see the influence of Andrew Gelman (particularly through his emphasis on the ‘doing’ of Bayesian statistics) in Statistical Rethinking. &lt;em&gt;Data Analysis Using…&lt;/em&gt; is likewise focused on analysis, learned through computer programming. It features both frequentist and Bayesian takes on statistical methods, and contains detailed computer code for (the now somewhat dated) &lt;code&gt;BUGS&lt;/code&gt; language (see &lt;a href=&#34;http://robertmyles.github.io//Stan-JAGS.html&#34;&gt;here&lt;/a&gt; (also linked to above) for why &lt;code&gt;BUGS&lt;/code&gt; and its cousin &lt;code&gt;JAGS&lt;/code&gt; are not always optimal for Bayesian analysis). It also contains some sage advice for researchers: try out simple models using quick methods like &lt;code&gt;lm()&lt;/code&gt; as you build up your model (advice that I certainly needed on at least one occasion).&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;http://i.imgur.com/oH57M4t.png?1&#34;/&gt;
+&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;So that’s my take on Bayesian statistics/data analysis books. As befits the age we live in, you’ll likely learn just as much from sites like &lt;a href=&#34;http://stackoverflow.com/search?q=Bayesian+&#34;&gt;Stack Overflow&lt;/a&gt; or from &lt;a href=&#34;https://darrenjw.wordpress.com/2012/11/20/getting-started-with-bayesian-variable-selection-using-jags-and-rjags/&#34;&gt;blog&lt;/a&gt; &lt;a href=&#34;https://twiecki.github.io/blog/2015/11/10/mcmc-sampling/&#34;&gt;posts&lt;/a&gt; and &lt;a href=&#34;https://rpubs.com/corey_sparks/30893&#34;&gt;RPubs&lt;/a&gt; and &lt;a href=&#34;https://github.com/RobertMyles/Bayesian-Ideal-Point-IRT-Models&#34;&gt;Github&lt;/a&gt; than you will from books. Academic papers often helped me more than books too. Still, a good book can teach you a hell of a lot in a consistent way. There are many referenced in this post, some better than others, but all have their qualities. For me specifically, someone who is not mad about reading lots of mathematics, the last two are my recommendations. For others, this will obviously be different (I know someone who loves Jackman’s book, for example).&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;&lt;em&gt;By the way, there are some informal books on the subject, such as Nate Silver’s &lt;a href=&#34;http://www.penguinrandomhouse.com/books/305826/the-signal-and-the-noise-by-nate-silver/9780143125082/&#34;&gt;The Signal and the Noise&lt;/a&gt;, or McGrayne’s &lt;a href=&#34;https://www.amazon.ca/Theory-That-Would-Not-Die/dp/0300169698/181-0429523-7916830?ie=UTF8&amp;amp;tag=vglnk-ca-c250-20&#34;&gt;The Theory That Would Not Die&lt;/a&gt;. I’ve given Amazon or publisher links for all these books, bar a few, but they can be found in other places too…you know what I’m talking about. Buy the ones you like, though!&lt;/em&gt; :cop:&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; Maybe this formula wouldn’t have made much sense to the ol’ Reverend Thomas Bayes either, since he used the Newtonian style of geometric exposition. For the history of the theorem, see &lt;a href=&#34;https://www.amazon.ca/Theory-That-Would-Not-Die/dp/0300169698/181-0429523-7916830?ie=UTF8&amp;amp;tag=vglnk-ca-c250-20&#34;&gt;McGrayne&lt;/a&gt;. For a history of statistics in general, including Bayes (and Laplace, who probably did much more to develop Bayesian statistics than Bayes ever did) see the fantastic &lt;a href=&#34;http://www.hup.harvard.edu/catalog.php?isbn=9780674403413&#34;&gt;Stigler&lt;/a&gt;. &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;b id=&#34;fn2&#34;&gt;2&lt;/b&gt; That would be ‘frequentist’ or ‘classical’ (or ‘traditional’) statistics (take your pick of adjective). Most of the Bayesian books above will have sections comparing the traditions. McElreath doesn’t bother, which is a nice development in its own way. &lt;a href=&#34;#a2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;b id=&#34;fn3&#34;&gt;3&lt;/b&gt; Although there is only ever one core method: &lt;span class=&#34;math display&#34;&gt;\[posterior \propto prior \times likehood \]&lt;/span&gt;. &lt;a href=&#34;#a3&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;b id=&#34;fn4&#34;&gt;4&lt;/b&gt; I’ve learned much more from Jackman’s various political science articles, in which he uses Bayesian methods, than this book, to be honest. &lt;a href=&#34;#a4&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;b id=&#34;fn5&#34;&gt;5&lt;/b&gt; Speaking of Gelman, he has a literal treasure trove of papers and web discussions on the subject of Bayesian data analysis. See his &lt;a href=&#34;http://andrewgelman.com/&#34;&gt;site&lt;/a&gt; for many links to those. &lt;a href=&#34;#a5&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/aB6eoBS.png?1&#34; /&gt;&lt;/p&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
 </description>
     </item>
     

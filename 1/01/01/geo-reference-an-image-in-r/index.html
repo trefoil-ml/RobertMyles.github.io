@@ -1,17 +1,11 @@
-
-
-
-    
-
-
-
-
 <!DOCTYPE HTML>
 
 <html>
     <head>
         
-            <title>Geo-reference an image in R - Lithium Theme</title>
+            
+                <title>Geo-reference an image in R</title>
+            
         
 
         <meta charset="utf-8" />
@@ -34,12 +28,12 @@
 
 
 <meta name="twitter:title" content="Geo-reference an image in R"/>
-<meta name="twitter:description" content="R is actually great for working with spatial data (for example, see here and here for fantastic graphs and maps made with R), however, you often need data that is actually spatial to get started! What do you do if you have an image, a map, let&rsquo;s say, that is not geo-referenced in any way? The regular answer to this problem is to use software such as QGIS to manually enter GPS coordinates, with the help of Google Maps or something similar."/>
+<meta name="twitter:description" content="R is actually great for working with spatial data (for example, see here and here for fantastic graphs and maps made with R), however, you often need data that is actually spatial to get started! What do you do if you have an image, a map, let’s say, that is not geo-referenced in any way? The regular answer to this problem is to use software such as QGIS to manually enter GPS coordinates, with the help of Google Maps or something similar."/>
 
 
 
         <meta property="og:title" content="Geo-reference an image in R" />
-<meta property="og:description" content="R is actually great for working with spatial data (for example, see here and here for fantastic graphs and maps made with R), however, you often need data that is actually spatial to get started! What do you do if you have an image, a map, let&rsquo;s say, that is not geo-referenced in any way? The regular answer to this problem is to use software such as QGIS to manually enter GPS coordinates, with the help of Google Maps or something similar." />
+<meta property="og:description" content="R is actually great for working with spatial data (for example, see here and here for fantastic graphs and maps made with R), however, you often need data that is actually spatial to get started! What do you do if you have an image, a map, let’s say, that is not geo-referenced in any way? The regular answer to this problem is to use software such as QGIS to manually enter GPS coordinates, with the help of Google Maps or something similar." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/1/01/01/geo-reference-an-image-in-r/" />
 
@@ -57,15 +51,15 @@
 
         
 <meta itemprop="name" content="Geo-reference an image in R">
-<meta itemprop="description" content="R is actually great for working with spatial data (for example, see here and here for fantastic graphs and maps made with R), however, you often need data that is actually spatial to get started! What do you do if you have an image, a map, let&rsquo;s say, that is not geo-referenced in any way? The regular answer to this problem is to use software such as QGIS to manually enter GPS coordinates, with the help of Google Maps or something similar.">
+<meta itemprop="description" content="R is actually great for working with spatial data (for example, see here and here for fantastic graphs and maps made with R), however, you often need data that is actually spatial to get started! What do you do if you have an image, a map, let’s say, that is not geo-referenced in any way? The regular answer to this problem is to use software such as QGIS to manually enter GPS coordinates, with the help of Google Maps or something similar.">
 
 
 
-<meta itemprop="wordCount" content="341">
+<meta itemprop="wordCount" content="313">
 
 
 
-<meta itemprop="keywords" content="blog,r,bayes,bayesian,bayesian-statistics,brazil,electionsbr,eu,european-statistics-day,geo-referencing,ggplot2,ideal-points,irt,jags,plot,r,r-markdown,regression,rotten-tomatoes,rselenium,rstan,rstudio,rvest,stan,tidyverse,webscraping," />
+<meta itemprop="keywords" content="bayesian-statistics,political-science,r,statistics,webscraping,bayes,bayesian-statistics,brazil,electionsbr,eu,geo-reference,ggplot2,ideal-points,irt,jags,r,r-markdown,rmarkdown,rotten-tomatoes,rselenium,rstan,stan,the-economist,tidyverse,webscraping," />
 
         
 
@@ -92,12 +86,17 @@
         
             
         
+
+
+
+
     </head>
     <body>
 
         
         <div id="wrapper">
 
+    
     
 <header id="header">
     
@@ -129,6 +128,10 @@
     </nav>
     <nav class="main">
         <ul>
+            
+            <li id="share-nav" class="share-menu" style="display:none;">
+                <a class="fa-share-alt" href="#share-menu">Share</a>
+            </li>
             
             <li class="search">
                 <a class="fa-search" href="#search">Search</a>
@@ -201,23 +204,23 @@
 
                 
                     <li>
-                        <a href="../../../../2017/02/01/stan/"><p>Stan</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="../../../../2016/12/30/a-plain-markdown-post/"><p>A Plain Markdown Post</p></a>
-                    </li>
-                
-                    <li>
-                        <a href="../../../../2015/07/23/hello-r-markdown/"><p>Hello R Markdown</p></a>
-                    </li>
-                
-                    <li>
                         <a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/"><p>Bayesian IRT in R and Stan</p></a>
                     </li>
                 
                     <li>
                         <a href="../../../../1/01/01/bayesian-stats----book-recommendations/"><p>Bayesian Stats -- Book Recommendations</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/easier-web-scraping-in-r/"><p>Easier web scraping in R</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/geo-reference-an-image-in-r/"><p>Geo-reference an image in R</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/make-a-colour-table-in-r-with-ggplot2/"><p>Make a colour table in R with ggplot2</p></a>
                     </li>
                 
             </ul>
@@ -227,11 +230,66 @@
         
 </section>
 
+    <section id="share-menu">
+    <section id="social-share-nav">
+        <ul class="links">
+            <header>
+                <h3>Share this post <i class="fa fa-smile-o"></i></h3>
+            </header>
+            
+
+
+<li><a href="//twitter.com/share?url=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f&text=Geo-reference%20an%20image%20in%20R&via=" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
+
+
+<li><a href="//plus.google.com/share?url=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f&title=Geo-reference%20an%20image%20in%20R" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f&title=Geo-reference%20an%20image%20in%20R" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f&title=Geo-reference%20an%20image%20in%20R" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by &body=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+</section>
+
     
     <div id="main">
+        
+        
         <article class="post">
-            
-            <header>
+    <header>
     <div class="title">
         
             <h1><a href="../../../../1/01/01/geo-reference-an-image-in-r/">Geo-reference an image in R</a></h1>
@@ -253,53 +311,124 @@
     </div>
 </header>
 
-            <div id="content">
-                <p>R is actually great for working with spatial data (for example, see <a href="http://spatial.ly/2012/03/mapped-british-shipping-1750-1800/">here</a> and <a href="https://pakillo.github.io/R-GIS-tutorial/#gmap">here</a> for fantastic graphs and maps made with R), however, you often need data that is <em>actually spatial</em> to get started! What do you do if you have an image, a map, let&rsquo;s say, that is not geo-referenced in any way?<br />
-The regular answer to this problem is to use software such as <a href="http://www.qgis.com/">QGIS</a> to manually enter GPS coordinates, with the <a href="http://www.gps-coordinates.net/">help</a> of Google Maps or something similar. But R can be used for this too, and it&rsquo;s quite easy to do.</p>
 
-<p>First, we load some necessary packages. Here, I&rsquo;m working with <code>.tiff</code> files that I will change into Geo-tiffs. For other formats, you will need some other packages (such as <code>png</code>, for example).</p>
+    <section id="social-share">
+        <ul class="icons">
+            
 
-<p>{% highlight R linenos=table %}</p>
 
-<p>library(raster)
-library(rgdal)</p>
+<li><a href="//twitter.com/share?url=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f&text=Geo-reference%20an%20image%20in%20R&via=" target="_blank" class="share-btn twitter">
+    <i class="fa fa-twitter"></i>
+    <p>Twitter</p>
+</a></li>
 
-<p>{% endhighlight %}</p>
 
+<li><a href="//plus.google.com/share?url=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f" target="_blank" class="share-btn google-plus">
+    <i class="fa fa-google-plus"></i>
+    <p>Google+</p>
+</a></li>
+
+
+<li><a href="//www.facebook.com/sharer/sharer.php?u=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f" target="_blank" class="share-btn facebook">
+    <i class="fa fa-facebook"></i>
+    <p>Facebook</p>
+</a></li>
+
+
+<li><a href="//reddit.com/submit?url=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f&title=Geo-reference%20an%20image%20in%20R" target="_blank" class="share-btn reddit">
+    <i class="fa fa-reddit-alien"></i>
+    <p>Reddit</p>
+</a></li>
+
+
+<li><a href="//www.linkedin.com/shareArticle?url=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f&title=Geo-reference%20an%20image%20in%20R" target="_blank" class="share-btn linkedin">
+    <i class="fa fa-linkedin"></i>
+    <p>LinkedIn</p>
+</a></li>
+
+
+<li><a href="//www.stumbleupon.com/submit?url=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f&title=Geo-reference%20an%20image%20in%20R" target="_blank" class="share-btn stumbleupon">
+    <i class="fa fa-stumbleupon"></i>
+    <p>StumbleUpon</p>
+</a></li>
+
+
+<li><a href="mailto:?subject=Check out this post by &body=%2f1%2f01%2f01%2fgeo-reference-an-image-in-r%2f" target="_blank" class="share-btn email">
+    <i class="fa fa-envelope"></i>
+    <p>Email</p>
+</a></li>
+
+        </ul>
+    </section>
+    
+
+    <div id="content">
+
+
+<p>R is actually great for working with spatial data (for example, see <a href="http://spatial.ly/2012/03/mapped-british-shipping-1750-1800/">here</a> and <a href="https://pakillo.github.io/R-GIS-tutorial/#gmap">here</a> for fantastic graphs and maps made with R), however, you often need data that is <em>actually spatial</em> to get started! What do you do if you have an image, a map, let’s say, that is not geo-referenced in any way?<br />
+The regular answer to this problem is to use software such as <a href="http://www.qgis.com/">QGIS</a> to manually enter GPS coordinates, with the <a href="http://www.gps-coordinates.net/">help</a> of Google Maps or something similar. But R can be used for this too, and it’s quite easy to do.</p>
+<p>First, we load some necessary packages. Here, I’m working with <code>.tiff</code> files that I will change into Geo-tiffs. For other formats, you will need some other packages (such as <code>png</code>, for example).</p>
+<pre class="r"><code>library(raster)
+library(rgdal)</code></pre>
 <p>Next, we read in the non-spatial image using the <code>raster</code> command. By plotting this in RStudio, the image can be cropped in the preview window, if you want to crop it down the area of interest. This is also useful if the image came with extra, non-map parts (logos etc.).</p>
-
-<p>{% highlight R linenos=table %}</p>
-
-<p>Map &lt;- raster(&ldquo;1.tiff&rdquo;)<br />
+<pre class="r"><code>Map &lt;- raster(&quot;1.tiff&quot;)  
 Map
 plot(Map)
-map2 &lt;- crop(Map, drawExtent(show=TRUE, col=&ldquo;red&rdquo;))
-plot(map2)</p>
-
-<p>{% endhighlight %}</p>
-
-<p>Now we can enter in the maximal points of the image, xmin/xmax and ymin/ymax, respectively. These coordinates refer to an area of São Paulo, Brazil. The x-axis is longitude, the y-axis latitude. You can get the coordinates from <a href="http://www.gps-coordinates.net/">www.gps-coordinates.net</a> for the area you need. We also need to tell R what type of map projection we are going to write into the image. Here we&rsquo;ll use <code>&quot;+proj=longlat +datum=WGS84&quot;</code>.</p>
-
-<p>{% highlight R linenos=table %}
-xmin(map2) &lt;- -46.67449772357941
-xmax(map2) &lt;- -46.524503231048584
+map2 &lt;- crop(Map, drawExtent(show = TRUE, col = &quot;red&quot;)) 
+plot(map2)</code></pre>
+<p>Now we can enter in the maximal points of the image, xmin/xmax and ymin/ymax, respectively. These coordinates refer to an area of São Paulo, Brazil. The x-axis is longitude, the y-axis latitude. You can get the coordinates from <a href="http://www.gps-coordinates.net/">www.gps-coordinates.net</a> for the area you need. We also need to tell R what type of map projection we are going to write into the image. Here we’ll use <code>&quot;+proj=longlat +datum=WGS84&quot;</code>.</p>
+<pre class="r"><code>xmin(map2) &lt;- -46.67449772357941 
+xmax(map2) &lt;- -46.524503231048584 
 ymin(map2) &lt;- -23.638627166908787
 ymax(map2) &lt;- -23.517227011061372
-crs(map2) &lt;- &ldquo;+proj=longlat +datum=WGS84&rdquo;
-{% endhighlight %}</p>
-
-<p>This part is the main piece of work. But after it&rsquo;s done, you&rsquo;ve got yourself a geo-referenced image. Here, we&rsquo;ll write it to the geo-tiff format I mentioned earlier.</p>
-
-<p>{% highlight R linenos=table %}</p>
-
-<p>writeRaster(map1, &ldquo;Gmap1.tiff&rdquo;, &ldquo;GTiff&rdquo;)</p>
-
-<p>{% endhighlight %}</p>
-
+crs(map2) &lt;- &quot;+proj=longlat +datum=WGS84&quot;</code></pre>
+<p>This part is the main piece of work. But after it’s done, you’ve got yourself a geo-referenced image. Here, we’ll write it to the geo-tiff format I mentioned earlier.</p>
+<pre class="r"><code>writeRaster(map1, &quot;Gmap1.tiff&quot;, &quot;GTiff&quot;)</code></pre>
 <p>Simple! :smiling_imp:</p>
 
-            </div>
-        </article>
+
+
+    </div>
+
+    <footer>
+        <ul class="stats">
+    
+        
+
+        
+        
+            <li>
+                
+                
+                    
+
+                    
+                        Category
+                    
+                
+            </li>
+        
+    
+
+    
+    
+    </footer>
+</article>
+<ul class="actions pagination">
+    
+        <li><a href="../../../../1/01/01/make-a-colour-table-in-r-with-ggplot2/"
+                class="button big previous">Make a colour table in R with ggplot2</a></li>
+    
+
+    
+        <li><a href="../../../../1/01/01/easier-web-scraping-in-r/"
+                class="button big next">Easier web scraping in R</a></li>
+    
+</ul>
+
+
+
+
     </div>
     
 <section id="sidebar">
@@ -333,48 +462,6 @@ crs(map2) &lt;- &ldquo;+proj=longlat +datum=WGS84&rdquo;
                     <li>
                         <article>
                             <header>
-                                <h3><a href="../../../../2017/02/01/stan/">Stan</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2017-02-01'>
-                                    February 1, 2017</time>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="../../../../2016/12/30/a-plain-markdown-post/">A Plain Markdown Post</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2016-12-30'>
-                                    December 30, 2016</time>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
-                                <h3><a href="../../../../2015/07/23/hello-r-markdown/">Hello R Markdown</a></h3>
-                                
-                                    
-                                
-                                <time class="published" datetime=
-                                    '2015-07-23'>
-                                    July 23, 2015</time>
-                            </header>
-                        </article>
-                    </li>
-                
-                    <li>
-                        <article>
-                            <header>
                                 <h3><a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/">Bayesian IRT in R and Stan</a></h3>
                                 
                                     
@@ -390,6 +477,48 @@ crs(map2) &lt;- &ldquo;+proj=longlat +datum=WGS84&rdquo;
                         <article>
                             <header>
                                 <h3><a href="../../../../1/01/01/bayesian-stats----book-recommendations/">Bayesian Stats -- Book Recommendations</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/easier-web-scraping-in-r/">Easier web scraping in R</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/geo-reference-an-image-in-r/">Geo-reference an image in R</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/make-a-colour-table-in-r-with-ggplot2/">Make a colour table in R with ggplot2</a></h3>
                                 
                                     
                                 
@@ -433,8 +562,17 @@ crs(map2) &lt;- &ldquo;+proj=longlat +datum=WGS84&rdquo;
                     <li>
                         <article>
                             <header>
-                                <a href="../../../../categories/blog/">blog</a>
-                                <span style="float:right;">14</span>
+                                <a href="../../../../categories/bayesian-statistics/">bayesian-statistics</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/political-science/">political-science</a>
+                                <span style="float:right;">1</span>
                             </header>
                         </article>
                     </li>
@@ -443,7 +581,25 @@ crs(map2) &lt;- &ldquo;+proj=longlat +datum=WGS84&rdquo;
                         <article>
                             <header>
                                 <a href="../../../../categories/r/">r</a>
-                                <span style="float:right;">2</span>
+                                <span style="float:right;">12</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/statistics/">statistics</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/webscraping/">webscraping</a>
+                                <span style="float:right;">1</span>
                             </header>
                         </article>
                     </li>

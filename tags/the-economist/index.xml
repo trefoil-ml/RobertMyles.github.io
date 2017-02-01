@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>The Economist on Lithium Theme</title>
+    <link>/tags/the-economist/</link>
+    <description>Recent content in The Economist on Lithium Theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 21 Aug 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/tags/the-economist/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Re-creating Plots from The Economist in R and ggplot2</title>
+      <link>/2016/08/21/re-creating-plots-from-the-economist-in-r-and-ggplot2/</link>
+      <pubDate>Sun, 21 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/08/21/re-creating-plots-from-the-economist-in-r-and-ggplot2/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/1xvEaYe.png?3&#34; align=&#34;middle&#34; style=&#34;width:200px; height:350px;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The Economist is well known for its graphs and images, and I personally like them a lot. I was doing some work on Brexit when I spied the image above, and thought how much I would like to make something similar. Since my go-to environment is R, and its go-to plotting package &lt;code&gt;ggplot2&lt;/code&gt;, I thought I’d try to recreate the image using these tools. (Hat tip: I was half-way through doing this, and getting a little irritated with British place names, when I came across this fantastic &lt;a href=&#34;http://rpubs.com/rouille/191996&#34;&gt;RPub&lt;/a&gt;, which helped a lot with the area names. The code below that deals with cleaning up and merging the administrative area data comes from Benjamin. Thanks, chief!)&lt;/p&gt;
+&lt;p&gt;The data that we start off with is available from the UK &lt;a href=&#34;http://www.electoralcommission.org.uk/find-information-by-subject/elections-and-referendums/past-elections-and-referendums/eu-referendum&#34;&gt;Electoral Commission&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(rgdal)
+library(maptools)
+library(dplyr)
+library(ggplot2)
+library(readr)
+library(httr)
+library(ggmap)
+library(scales)
+
+
+brex &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/RobertMyles/RobertMyles.github.io/master/_data/EU-referendum-result-data.csv&amp;quot;)
+
+# Fix up place names:
+
+uk.map &amp;lt;- readOGR(dsn = &amp;quot;GBR_adm_shp&amp;quot;, layer = &amp;quot;GBR_adm2&amp;quot;, verbose = FALSE)
+uk.map@data$NAME_2 &amp;lt;- as.character(uk.map@data$NAME_2)
+uk.map@data$NAME_2[56]  &amp;lt;- &amp;quot;City of London&amp;quot;
+uk.map@data$NAME_2[140] &amp;lt;- &amp;quot;Aberdeen City&amp;quot;
+uk.map@data$NAME_2[145] &amp;lt;- &amp;quot;Dundee City&amp;quot;
+uk.map@data$NAME_2[150] &amp;lt;- &amp;quot;City of Edinburgh&amp;quot;
+uk.map@data$NAME_2[154] &amp;lt;- &amp;quot;Glasgow City&amp;quot;
+uk.map@data$NAME_2[159] &amp;lt;- &amp;quot;North Ayrshire&amp;quot;
+uk.map@data$NAME_2[162] &amp;lt;- &amp;quot;Perth and Kinross&amp;quot;
+uk.map@data$NAME_2[171] &amp;lt;- &amp;quot;Isle of Anglesey&amp;quot;
+uk.map@data$NAME_2[188] &amp;lt;- &amp;quot;Rhondda Cynon Taf&amp;quot;
+
+url &amp;lt;- &amp;quot;https://en.wikipedia.org/wiki/List_of_English_districts&amp;quot;
+tables &amp;lt;- GET(url)
+tables &amp;lt;- readHTMLTable(rawToChar(tables$content))
+n.rows &amp;lt;- unlist(lapply(tables, function(t) dim(t)[1]))
+
+districts &amp;lt;- tables[[which.max(n.rows)]]
+names(districts) &amp;lt;- c(&amp;quot;Name&amp;quot;, &amp;quot;Website&amp;quot;, &amp;quot;Population2015&amp;quot;, &amp;quot;Type&amp;quot;,
+&amp;quot;CeremonialCounty&amp;quot;)
+districts$Name &amp;lt;- gsub(&amp;quot;&amp;amp;&amp;quot;, &amp;quot;and&amp;quot;, districts$Name)
+districts$Name[133] &amp;lt;- &amp;quot;Kingston upon Hull&amp;quot;
+districts$id     &amp;lt;- NA
+districts$Leave  &amp;lt;- 0
+districts$Remain &amp;lt;- 0
+districts$Valid  &amp;lt;- 0
+
+
+wEngland &amp;lt;- which(uk.map@data$NAME_1 == &amp;quot;England&amp;quot;)
+for(i in wEngland ) {
+  if(uk.map$TYPE_2[i] == &amp;quot;Administrative County&amp;quot; | uk.map$TYPE_2[i] == &amp;quot;Metropolitan County&amp;quot; |
+     uk.map$TYPE_2[i] == &amp;quot;County&amp;quot; | uk.map$TYPE_2[i] == &amp;quot;Metropolitan Borough (city)&amp;quot;) {
+    match &amp;lt;- grep(uk.map$NAME_2[i], districts$CeremonialCounty)
+    for(j in match) if(is.na(districts$id[j]) ) districts$id[j] &amp;lt;- uk.map$ID_2[i]
+  } else {
+    match &amp;lt;- match(uk.map$NAME_2[i], districts$Name)
+    districts$id[match] &amp;lt;- uk.map$ID_2[i]
+  }
+}
+
+for(i in 1:nrow(districts) ) {
+  match &amp;lt;- match(districts$Name[i], brex$Area)
+  if(is.na(match) ) match &amp;lt;- grep(districts$Name[i], brex$Area)
+  districts$Leave[i]  &amp;lt;- brex$Leave[match]
+  districts$Remain[i] &amp;lt;- brex$Remain[match]
+  districts$Valid[i]  &amp;lt;- brex$Valid_Votes[match]
+}
+
+england &amp;lt;- with(districts, data.frame(Name   = uk.map@data$NAME_2[wEngland],
+           Leave  = tapply(Leave, id, sum, na.rm = TRUE),
+           Remain = tapply(Remain, id, sum, na.rm = TRUE),
+           Valid  = tapply(Valid, id, sum, na.rm = TRUE),
+           Country = &amp;quot;England&amp;quot;,
+           id     = uk.map@data$ID_2[wEngland]))
+
+wIreland &amp;lt;- which(uk.map@data$NAME_1 == &amp;quot;Northern Ireland&amp;quot;)
+
+ireland &amp;lt;- with(brex, data.frame(Name   = uk.map@data$NAME_2[wIreland],
+                                 Country = &amp;quot;N. Ireland&amp;quot;,
+                                 Leave  = rep(Leave[grep(&amp;quot;N&amp;quot;,Region_Code)], each = length(wIreland) ),
+                                 Remain = rep(Remain[grep(&amp;quot;N&amp;quot;,Region_Code)], each = length(wIreland) ),
+                                 Valid  = rep(Valid_Votes[grep(&amp;quot;N&amp;quot;,Region_Code)], each = length(wIreland) ),
+                                 id     = uk.map@data$ID_2[wIreland]))
+
+scotland &amp;lt;- with(brex, data.frame(Name   = Area[grep(&amp;quot;S&amp;quot;,Region_Code)], 
+                                  Leave  = Leave[grep(&amp;quot;S&amp;quot;,Region_Code)], 
+                                  Country = &amp;quot;Scotland&amp;quot;,
+                                  Remain = Remain[grep(&amp;quot;S&amp;quot;,Region_Code)], 
+                                  Valid  = Valid_Votes[grep(&amp;quot;S&amp;quot;,Region_Code)],
+                                  id     = rep(NA,length(grep(&amp;quot;S&amp;quot;,Region_Code)) ) ) )
+
+for(i in 1:nrow(scotland) ) {
+  match &amp;lt;- match(scotland$Name[i],uk.map@data$NAME_2)
+  scotland$id[i] &amp;lt;- uk.map@data$ID_2[match]
+}
+wales &amp;lt;- with(brex, data.frame(Name   = Area[grep(&amp;quot;W&amp;quot;,Region_Code)], 
+                               Leave  = Leave[grep(&amp;quot;W&amp;quot;,Region_Code)], 
+                               Country = &amp;quot;Wales&amp;quot;,
+                               Remain = Remain[grep(&amp;quot;W&amp;quot;,Region_Code)], 
+                               Valid  = Valid_Votes[grep(&amp;quot;W&amp;quot;,Region_Code)],
+                               id     = length(grep(&amp;quot;W&amp;quot;,Region_Code) ) ) )
+
+for(i in 1:nrow(wales) ) {
+  match &amp;lt;- match(wales$Name[i],uk.map@data$NAME_2)
+  wales$id[i] &amp;lt;- uk.map@data$ID_2[match]
+}
+
+cities.name2 &amp;lt;- c(&amp;quot;Blackburn, UK&amp;quot;, &amp;quot;Port Talbot, UK&amp;quot;, &amp;quot;Northampton, UK&amp;quot;, &amp;quot;London, UK&amp;quot;)
+cities.coordinates &amp;lt;- geocode(cities.name2, messaging = FALSE)
+cities.lon &amp;lt;- cities.coordinates$lon
+cities.lat &amp;lt;- cities.coordinates$lat
+
+
+uk &amp;lt;- rbind(england, ireland, scotland, wales)
+uk$pct_Leave  &amp;lt;- 100*uk$Leave/uk$Valid
+uk$pct_Remain &amp;lt;- 100*uk$Remain/uk$Valid
+
+uk.points &amp;lt;- fortify(uk.map, region = &amp;quot;ID_2&amp;quot;)
+uk$id &amp;lt;- as.character(uk$id)
+uk.plot &amp;lt;- left_join(uk.points,uk)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;All of this has given us &lt;em&gt;almost&lt;/em&gt; what we need. The areas in the Economist’s image don’t quite match up with the administrative districts from the Electoral Commission data, in the sense that many are amalgamations of admistrative districts. Since we don’t have any variable in our dataset describing this mapping, we’ll have to do this manually.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;uk.plot$Import_shock &amp;lt;- NA
+
+One &amp;lt;- c(&amp;quot;Cumbria&amp;quot;, &amp;quot;Lancashire&amp;quot;, &amp;quot;Northamptonshire&amp;quot;, &amp;quot;Leicestershire&amp;quot;, &amp;quot;Leicester&amp;quot;, &amp;quot;Blackburn with Darwen&amp;quot;, &amp;quot;Manchester&amp;quot;, &amp;quot;Rutland&amp;quot;)
+Two &amp;lt;- c(&amp;quot;Telford and Wrekin&amp;quot;, &amp;quot;Derbyshire&amp;quot;, &amp;quot;West Midlands&amp;quot;, &amp;quot;Stoke-on-Trent&amp;quot;, &amp;quot;Shropshire&amp;quot;, &amp;quot;Staffordshire&amp;quot;, &amp;quot;Nottinghamshire&amp;quot;, &amp;quot;Derby&amp;quot;, &amp;quot;Nottingham&amp;quot;, &amp;quot;West Yorkshire&amp;quot;)
+Three &amp;lt;- c(&amp;quot;Herefordshire&amp;quot;, &amp;quot;Worcestershire&amp;quot;, &amp;quot;Essex&amp;quot;, &amp;quot;Warwickshire&amp;quot;, &amp;quot;Southend-on-Sea&amp;quot;, &amp;quot;Thurrock&amp;quot;, &amp;quot;Havering&amp;quot;)
+Four &amp;lt;- c(&amp;quot;Bridgend&amp;quot;, &amp;quot;Isle of Anglesey&amp;quot;, &amp;quot;Gwynedd&amp;quot;, &amp;quot;Ceredigion&amp;quot;, &amp;quot;Carmarthenshire&amp;quot;, &amp;quot;Pembrokeshire&amp;quot;, &amp;quot;Swansea&amp;quot;, &amp;quot;Rhondda Cynon Taf&amp;quot;, &amp;quot;Neath Port Talbot&amp;quot;, &amp;quot;Caerphilly&amp;quot;, &amp;quot;Merthyr Tydfil&amp;quot;, &amp;quot;Torfaen&amp;quot;, &amp;quot;Somerset&amp;quot;, &amp;quot;Dorset&amp;quot;, &amp;quot;Isle of Wight&amp;quot;, &amp;quot;Hampshire&amp;quot;, &amp;quot;Conwy&amp;quot;, &amp;quot;Suffolk&amp;quot;, &amp;quot;Durham&amp;quot;, &amp;quot;Tyne and Wear&amp;quot;, &amp;quot;Denbighshire&amp;quot;, &amp;quot;Cambridgeshire&amp;quot;, &amp;quot;Luton&amp;quot;, &amp;quot;Hertfordshire&amp;quot;, &amp;quot;Bedfordshire&amp;quot;, &amp;quot;Berkshire&amp;quot;, &amp;quot;Poole&amp;quot;, &amp;quot;Southampton&amp;quot;, &amp;quot;Portsmouth&amp;quot;, &amp;quot;Redcar and Cleveland&amp;quot;, &amp;quot;Stockton-on-Tees&amp;quot;, &amp;quot;Darlington&amp;quot;, &amp;quot;Hartlepool&amp;quot;, &amp;quot;Bornemouth&amp;quot;, &amp;quot;Blaenau Gwent&amp;quot;)
+Five &amp;lt;- c(&amp;quot;Northumberland&amp;quot;, &amp;quot;Norfolk&amp;quot;, &amp;quot;South Yorkshire&amp;quot;, &amp;quot;Enfield&amp;quot;, &amp;quot;Brent&amp;quot;)
+Six &amp;lt;- c(&amp;quot;South Ayrshire&amp;quot;, &amp;quot;North Ayshire&amp;quot;, &amp;quot;Dumfries and Galloway&amp;quot;, &amp;quot;South Lanarkshire&amp;quot;, &amp;quot;North Lanarkshire&amp;quot;, &amp;quot;East Ayrshire&amp;quot;, &amp;quot;Renfrewshire&amp;quot;, &amp;quot;West Dunbartonshire&amp;quot;, &amp;quot;East Renfrewshire&amp;quot;, &amp;quot;Glasgow City&amp;quot;, &amp;quot;East Dunbartonshire&amp;quot;, &amp;quot;Inverclyde&amp;quot;, &amp;quot;Lincolnshire&amp;quot;, &amp;quot;West Sussex&amp;quot;, &amp;quot;East Sussex&amp;quot;, &amp;quot;Brighton and Hove&amp;quot;, &amp;quot;Surrey&amp;quot;, &amp;quot;Oxfordshire&amp;quot;, &amp;quot;Buckinghamshire&amp;quot;, &amp;quot;Milton Keynes&amp;quot;, &amp;quot;Peterborough&amp;quot;, &amp;quot;Sutton&amp;quot;, &amp;quot;Croydon&amp;quot;)
+Seven &amp;lt;- c(&amp;quot;Angus&amp;quot;, &amp;quot;Dundee City&amp;quot;, &amp;quot;Scottish Borders&amp;quot;, &amp;quot;East Lothian&amp;quot;, &amp;quot;Midlothian&amp;quot;, &amp;quot;Fife&amp;quot;, &amp;quot;Perth and Kinross&amp;quot;, &amp;quot;City of Edinburgh&amp;quot;, &amp;quot;Stirling&amp;quot;, &amp;quot;Falkirk&amp;quot;, &amp;quot;West Lothian&amp;quot;, &amp;quot;Clackmannanshire&amp;quot;, &amp;quot;Powys&amp;quot;, &amp;quot;Cheshire&amp;quot;, &amp;quot;Vale of Glamorgan&amp;quot;, &amp;quot;Newport&amp;quot;, &amp;quot;Cardiff&amp;quot;, &amp;quot;Warrington&amp;quot;, &amp;quot;Halton&amp;quot;, &amp;quot;Flintshire&amp;quot;, &amp;quot;Wrexham&amp;quot;, &amp;quot;Monmouthshire&amp;quot;, &amp;quot;Bromley&amp;quot;, &amp;quot;Hillingdon&amp;quot;, &amp;quot;Harrow&amp;quot;)
+Eight &amp;lt;- c(&amp;quot;Devon&amp;quot;, &amp;quot;East Riding of Yorkshire&amp;quot;, &amp;quot;Kent&amp;quot;, &amp;quot;Merseyside&amp;quot;, &amp;quot;North East Lincolnshire&amp;quot;, &amp;quot;Swindon&amp;quot;, &amp;quot;Wiltshire&amp;quot;, &amp;quot;Gloucestershire&amp;quot;, &amp;quot;South Gloucestershire&amp;quot;, &amp;quot;North Somerset&amp;quot;, &amp;quot;Torbay&amp;quot;, &amp;quot;Bath and North East Somerset&amp;quot;, &amp;quot;Bristol&amp;quot;, &amp;quot;Kingston upon Hull&amp;quot;, &amp;quot;North Lincolnshire&amp;quot;, &amp;quot;Medway&amp;quot;)
+Nine &amp;lt;- c(&amp;quot;Highlands&amp;quot;, &amp;quot;Argyll and Bute&amp;quot;, &amp;quot;North Yorkshire&amp;quot;, &amp;quot;Cornwall&amp;quot;, &amp;quot;Eilean Siar&amp;quot;)
+
+
+uk.plot1 &amp;lt;- uk.plot %&amp;gt;% 
+  filter(Name != &amp;quot;Shetland Islands&amp;quot;) %&amp;gt;% 
+  filter(Country != &amp;quot;N. Ireland&amp;quot;) %&amp;gt;% 
+  mutate(Import_shock = if_else(Name %in% One, 1, if_else(Name %in% Two, 2, if_else(Name %in% Three, 3, if_else(Name %in% Four, 4, if_else(Name %in% Five, 5, if_else(Name %in% Six, 6, if_else(Name %in% Seven, 7, if_else(Name %in% Eight, 8, if_else(Name %in% Nine, 9, 9)))))))))) %&amp;gt;% 
+  filter(long &amp;gt; -10)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;So, after all that data tidying, we’re ready to make our plot. Since the Economist uses the ITC Officina Sans font, you’ll need that on your computer (or something similar). With the &lt;code&gt;extrafont&lt;/code&gt; package, we can take avail of these, well, extra fonts.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(extrafont)
+font_import()
+# There are various folders on my mac with fonts in them:
+font_import(&amp;quot;/Users/robert/Library/Fonts/&amp;quot;)
+font_import(&amp;quot;/System/Library/Fonts/&amp;quot;)
+font_import(&amp;quot;/Library/Fonts/&amp;quot;)
+loadfonts()
+# see what&amp;#39;s available:
+fonts()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;The following code makes the plot that I wanted, with the image saved and the font that I need embedded in the pdf that is produced. In Rstudio, no text will appear, as this font is not supported. But it’ll be in the pdf.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;MM &amp;lt;- ggplot() + 
+  geom_polygon(data = uk.plot1, aes(x = long, y = lat, group = group, fill = Import_shock), colour = &amp;quot;white&amp;quot;, size = 0.1) +
+  scale_fill_distiller(palette = &amp;quot;Reds&amp;quot;, breaks = pretty_breaks(n = 8)) +
+  geom_point(aes(x = cities.lon, y = cities.lat), color = &amp;quot;black&amp;quot;, size = 2.5, shape = 21, fill = &amp;quot;black&amp;quot;) +
+  geom_point(aes(x = cities.lon, y = cities.lat), color = &amp;quot;white&amp;quot;, size = 1, shape = 21, fill = &amp;quot;white&amp;quot;) +
+  theme_nothing(legend = T) + 
+  annotate(&amp;quot;text&amp;quot;, x=-4.75, y=52.5, label=&amp;quot;WALES&amp;quot;, size=4, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, x=1.12, y=53.65, label=&amp;quot;ENGLAND&amp;quot;, size=4, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, x=-2.2, y=57.9, label=&amp;quot;SCOTLAND&amp;quot;, size=4, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, x=-4.7, y=51.42, label=&amp;quot;Port Talbot&amp;quot;, size=3.45, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, x=.3, y=52.15, label=&amp;quot;Northampton&amp;quot;, size=3.45, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  annotate(&amp;quot;segment&amp;quot;, x = -3.3, xend = -2.5, y = 54, yend = 54) +
+  annotate(&amp;quot;segment&amp;quot;, x = -2.5, xend = -2.5, y = 54, yend = 53.85) +
+  annotate(&amp;quot;text&amp;quot;, x=-4.22, y=54, label=&amp;quot;Blackburn&amp;quot;, size=3.45, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  xlim(range(uk.plot1$long)) + ylim(range(uk.plot1$lat)) +
+  theme(plot.background = element_rect(fill = &amp;quot;#A4D3EE&amp;quot;, colour = &amp;quot;#A4D3EE&amp;quot;), panel.background = element_rect(fill = &amp;quot;#A4D3EE&amp;quot;, colour = &amp;quot;#A4D3EE&amp;quot;), legend.position = &amp;quot;none&amp;quot;) +
+  coord_map()
+  
+
+ggsave(&amp;quot;Brexit_test.pdf&amp;quot;, MM)
+embed_fonts(&amp;quot;Brexit_test.pdf&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;  &lt;img src=&#34;http://i.imgur.com/P43D0jh.png&#34; /&gt;&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;It’s not &lt;em&gt;exactly&lt;/em&gt; the same (I could &lt;em&gt;not&lt;/em&gt; get that legend to work right!), but I think it’s a pretty close match. Good, stuff, R :clap: .&lt;/p&gt;
+&lt;p&gt;P.s. I know there are themes available to get close to the Economist’s image style, but I wanted do it myself :smiley:. Anyway, if you’d like to include the &lt;code&gt;theme_economist()&lt;/code&gt; function from the &lt;code&gt;ggthemes&lt;/code&gt; package, it’s easy:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Eco &amp;lt;- ggplot() + 
+  geom_polygon(data = uk.plot1, aes(x = long, y = lat, group = group, fill = Import_shock), colour = &amp;quot;white&amp;quot;, size = 0.1) +
+  scale_fill_distiller(palette = &amp;quot;Reds&amp;quot;, breaks = pretty_breaks(n = 8)) +
+  geom_point(aes(x = cities.lon, y = cities.lat), color = &amp;quot;black&amp;quot;, size = 2.5, shape = 21, fill = &amp;quot;black&amp;quot;) +
+  geom_point(aes(x = cities.lon, y = cities.lat), color = &amp;quot;white&amp;quot;, size = 1, shape = 21, fill = &amp;quot;white&amp;quot;) +
+  theme_economist() +
+  annotate(&amp;quot;text&amp;quot;, x=-4.75, y=52.5, label=&amp;quot;WALES&amp;quot;, size=4, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, x=1.12, y=53.65, label=&amp;quot;ENGLAND&amp;quot;, size=4, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, x=-2.2, y=57.9, label=&amp;quot;SCOTLAND&amp;quot;, size=4, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, x=-4.7, y=51.42, label=&amp;quot;Port Talbot&amp;quot;, size=3.45, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  annotate(&amp;quot;text&amp;quot;, x=.3, y=52.15, label=&amp;quot;Northampton&amp;quot;, size=3.45, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  annotate(&amp;quot;segment&amp;quot;, x = -3.3, xend = -2.5, y = 54, yend = 54) +
+  annotate(&amp;quot;segment&amp;quot;, x = -2.5, xend = -2.5, y = 54, yend = 53.85) +
+  annotate(&amp;quot;text&amp;quot;, x=-4.22, y=54, label=&amp;quot;Blackburn&amp;quot;, size=3.45, family = &amp;quot;ITCOfficinaSans LT Book&amp;quot;) +
+  xlim(range(uk.plot1$long)) + ylim(range(uk.plot1$lat)) +
+  theme(axis.ticks = element_blank(), axis.title = element_blank(), axis.text = element_blank(), panel.grid.major.y = element_blank(), legend.position = &amp;quot;none&amp;quot;) + 
+  coord_map()
+
+ggsave(&amp;quot;Brexit_test_Econ.pdf&amp;quot;, Eco)
+embed_fonts(&amp;quot;Brexit_test_Econ.pdf&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The combination is better, actually:&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;http://i.imgur.com/t5322ak.png&#34; /&gt;
+
+&lt;/div&gt;
+&lt;p&gt;If we put them side by side, you can see that we didn’t actually do a bad job.&lt;/p&gt;
+&lt;blockquote class=&#34;imgur-embed-pub&#34; lang=&#34;en&#34; data-id=&#34;a/ivQ5t&#34;&gt;
+&lt;a href=&#34;//imgur.com/ivQ5t&#34;&gt;&lt;/a&gt;
+&lt;/blockquote&gt;
+&lt;script async src=&#34;//s.imgur.com/min/embed.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;
+&lt;p&gt;Update: there are (of course) also &lt;a href=&#34;http://rpsychologist.com/creating-a-typical-textbook-illustration-of-statistical-power-using-either-ggplot-or-base-graphics?utm_content=buffer9beb5&amp;amp;utm_medium=social&amp;amp;utm_source=twitter.com&amp;amp;utm_campaign=buffer&#34;&gt;other great examples&lt;/a&gt; of using ggplot2 to recreate images, in this case textbook statistical distributions&lt;/p&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

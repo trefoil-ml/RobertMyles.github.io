@@ -6,161 +6,124 @@
     <description>Recent content in Ideal Points on Lithium Theme</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Sat, 21 May 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="/tags/ideal-points/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Bayesian IRT in R and Stan</title>
-      <link>/1/01/01/bayesian-irt-in-r-and-stan/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <link>/2016/05/21/bayesian-irt-in-r-and-stan/</link>
+      <pubDate>Sat, 21 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>/1/01/01/bayesian-irt-in-r-and-stan/</guid>
-      <description>
+      <guid>/2016/05/21/bayesian-irt-in-r-and-stan/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
 
 &lt;p&gt;&lt;img src=&#34;http://i.imgur.com/v7y6SVt.png?3&#34; align=&#34;middle&#34; style=&#34;width:300px; height:250px;&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;The code below on Stan is also available as an &lt;a href=&#34;http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R&#34;&gt;&lt;code&gt;RPub webpage&lt;/code&gt;&lt;/a&gt;, if you&amp;rsquo;d rather work through the examples than read all of the post.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;One of the first areas where Bayesian modelling gained an entry point into the social sciences (and in particular political science) was in the area of legislator ideal points, with the use of the Item-Response Theory (IRT) models from the educational testing literature in psychology. This topic proved to be the perfect subject for the comparison of Bayesian and frequentist methods, since ideal point creation usually depends on nominal voting data, which may contain a lot of missing data (legislators who miss votes or abstain) and a huge number of parameters (hundreds of roll-calls by hundreds of legislators). The benefits of Bayesian methods over frequentist techniques for ideal point analysis is discussed at length elsewhere&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, but here I&amp;rsquo;ll talk about a side-effect of using Bayesian methods for creating ideal points from roll-call data, that is, the long time it can take to run these models on a desktop computer. (In the following discussion, I refer to &amp;lsquo;legislators&amp;rsquo;, but these IRT models apply to all types of response to a question, whether the &amp;lsquo;question&amp;rsquo; is a vote by a politician or a judge or questions on a test or survey.)&lt;/p&gt;
-
-&lt;p&gt;To create ideal points in &lt;code&gt;R&lt;/code&gt;, you have three or four main options if you want to use ol&amp;rsquo; &lt;a href=&#34;http://robertmyles.github.io//Books-on-Bayes-Stats.html&#34;&gt;Bayes&lt;/a&gt;. First, there is the ready-made &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; command of the package &lt;a href=&#34;https://cran.r-project.org/web/packages/pscl/index.html&#34;&gt;pscl&lt;/a&gt; by Simon Jackman &amp;amp; co. &lt;code&gt;pscl&lt;/code&gt; includes some very handy little functions for those interested in generating ideal points from legislative voting data &amp;ndash; summary statistics and plots are all easy to make, and come ready-made, such as party loyalty statistics, for example. However, &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; suffers somewhat from being so &amp;lsquo;ready&amp;rsquo;: it is a bit unsuited for more complex or indivualistic models compared to some of the options mentioned later. I&amp;rsquo;ve also repeatedly run into problems with &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; when trying to use some of the &lt;code&gt;pscl&lt;/code&gt; package options (&lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;dropList()&lt;/bdi&gt;, for example), or when estimating multidimensional models. In terms of &lt;a href=&#34;https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo&#34;&gt;MCMC&lt;/a&gt;, only one chain at a time may be run. In fact, it is what it says on the tin: it&amp;rsquo;s a Bayesian version of W-NOMINATE, which means it has the advantages of that program (easy to use) and the disadvantages (when it doesn&amp;rsquo;t work you&amp;rsquo;re not sure why&amp;hellip;a bit &amp;lsquo;black-box&amp;rsquo;).&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;MCMCpack&lt;/code&gt; package also allows for the creation of ideal points, although its output is slightly less friendly to the beginner (an &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;mcmclist&lt;/bdi&gt; object). Its &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;MCMCirt1d()&lt;/bdi&gt; command is pretty similar to &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; but allows for setting &amp;lsquo;soft&amp;rsquo; constraints rather than the spike prior that pscl uses to pin down the position of (at least) two legislators. This is better for two reasons, in my opinion. First, it avoids a hard constraint on legislators for legislatures in which we do not have strong &lt;em&gt;a priori&lt;/em&gt; evidence to suppose that, for example, Legislator X is an extremist to the right, or Legislator Y to the left (the use of extremist legislators on either end of the supposed scale &amp;lsquo;anchors&amp;rsquo; it). With &lt;code&gt;MCMCpack&lt;/code&gt;, the ideal points of the constrained legislators are drawn from a truncated normal distribution (truncated at zero) and so Legislator X (our extremist to the right) simply cannot have an ideal point on the left side of the scale and the opposite for our left-side extremist legislator (the use of these soft constraints obviates the need for them actually &lt;em&gt;being&lt;/em&gt; extremists too). I&amp;rsquo;ve also found &lt;code&gt;MCMCpack&lt;/code&gt; to be faster, although I haven&amp;rsquo;t tested that formally. In either case, both functions are quite similar. &lt;code&gt;MCMCpack&lt;/code&gt; also has functions for dynamic models, robust &amp;amp; multidimensional models, and Ordinal IRT. They&amp;rsquo;ve all worked well for me with the exception of &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;MCMCirtkd()&lt;/bdi&gt;, the multidimensional model function, which never seems to get started.&lt;/p&gt;
-
-&lt;p&gt;The next option is to use the &lt;code&gt;BUGS&lt;/code&gt; modelling language, either with &lt;code&gt;BUGS&lt;/code&gt; itself or its cousin &lt;code&gt;JAGS&lt;/code&gt;, both of which have been heavily used in the literature but can be &lt;strong&gt;extremely&lt;/strong&gt; slow, for reasons outlined in &lt;a href=&#34;http://robertmyles.github.io//Stan-JAGS.html&#34;&gt;this blog post&lt;/a&gt;. I don&amp;rsquo;t recommend their use for ideal points.&lt;/p&gt;
-
-&lt;p&gt;Next, we have &lt;a href=&#34;http://mc-stan.org/&#34;&gt;Stan&lt;/a&gt;, which doesn&amp;rsquo;t have the simpler syntax of &lt;code&gt;JAGS&lt;/code&gt; &amp;amp; &lt;code&gt;BUGS&lt;/code&gt;, but is simply incomparably better in terms of speed. However, since it&amp;rsquo;s newer, you won&amp;rsquo;t find the amount of resources available for &lt;code&gt;BUGS&lt;/code&gt;, for example (like &lt;a href=&#34;https://www.jstatsoft.org/article/view/v036c01&#34;&gt;here&lt;/a&gt;). There are a few resources: a simple one-dimensional model can be seen on Pablo Barberá&amp;rsquo;s &lt;a href=&#34;https://github.com/pablobarbera/quant3materials/blob/master/bayesian/lab14_IRT_issues.R&#34;&gt;github&lt;/a&gt;; a friend of mine, Guilherme Duarte, has an example of a dynamic model on his github &lt;a href=&#34;https://github.com/duarteguilherme/Quinn-Martin-Replication&#34;&gt;too&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;There are some other resources available, but relate to slightly different IRT models, more common in the educational-testing literature, and less so in ideal point studies: the &amp;lsquo;Rasch&amp;rsquo; &lt;a href=&#34;http://www.stat.columbia.edu/~gelman/research/unpublished/stan_v_stata.pdf&#34;&gt;model&lt;/a&gt;; the &lt;a href=&#34;https://rpubs.com/rfarouni/64284&#34;&gt;2PL model&lt;/a&gt; (in which a &amp;lsquo;yes&amp;rsquo; answer has a specific associated movement in the dimensional space and the discrimination parameter only takes on postive values; in the ideal-point model of &lt;a href=&#34;https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/Jackman2001.pdf&#34;&gt;Jackman&lt;/a&gt; it can possess negative and positive values).&lt;/p&gt;
-
-&lt;p&gt;Since there are so few Stan resources for ideal point IRT models, I thought I&amp;rsquo;d post a few models here. The code is also available as an &lt;a href=&#34;http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R&#34;&gt;RPub webpage&lt;/a&gt;, as mentioned earlier. The statistical model we&amp;rsquo;ll employ is:
-{% raw %}
-  $$y_{ij} = \beta_j\bf{x_i} - \alpha&lt;em&gt;j,$$
- {% endraw %}
-where ({% raw %}\(y&lt;/em&gt;{ij}\){% endraw %}) are the votes, in binary form (1 = &amp;lsquo;Yes&amp;rsquo;; 2 = &amp;lsquo;No&amp;rsquo;); the {% raw %}\(\bf x_i\){% endraw %} are the ideal points of the legislators; and  {% raw %} \(\beta_j\){% endraw %} and {% raw %}\(\alpha_j\){% endraw %} are the discrimination and difficulty parameters of the model.&lt;/p&gt;
-
-&lt;p&gt;Starting from scratch in &lt;code&gt;R&lt;/code&gt; in a new session (you&amp;rsquo;ll need a C++ compiler if you don&amp;rsquo;t have one, see &lt;a href=&#34;https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started&#34;&gt;here&lt;/a&gt;):&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-install.packages(&amp;ldquo;RStan&amp;rdquo;)
-library(&amp;ldquo;RStan&amp;rdquo;)
-{% endhighlight %}&lt;/p&gt;
-
-&lt;p&gt;Ideal points are created from a &lt;em&gt;j&lt;/em&gt; {% raw %}\(\times\){% endraw %} &lt;em&gt;m&lt;/em&gt; matrix of voting data (&lt;em&gt;j&lt;/em&gt; legislators voting on &lt;em&gt;m&lt;/em&gt; votes), coded &lt;bdi style=&#34;font-family:courier&#34;&gt;1&lt;/bdi&gt; for &amp;lsquo;yes&amp;rsquo; and &lt;bdi style=&#34;font-family:courier&#34;&gt;0&lt;/bdi&gt; for &amp;lsquo;no&amp;rsquo; and abstentions. Missing data are &lt;bdi style=&#34;font-family:courier&#34;&gt;NA&lt;/bdi&gt;, and are deleted out before running in Stan. We can easily simulate data for this type of thing, but let&amp;rsquo;s use a real database. This data is from the 53rd legislature of the Brazilian Federal Senate (with thanks to &lt;a href=&#34;http://www.cebrap.org.br/v2/pages/home&#34;&gt;CEBRAP&lt;/a&gt;, who built the original database, this comes from an extended version I created), we&amp;rsquo;ll download it from my Github repo. You&amp;rsquo;ll need to install &lt;code&gt;readr&lt;/code&gt; if you don&amp;rsquo;t have it. (I also have the bad habit of naming my data as &amp;ldquo;data&amp;rdquo;&amp;hellip; not generally a great idea. It&amp;rsquo;ll be ok here, though.)&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-library(readr)
-data &amp;lt;- read_csv(&amp;ldquo;&lt;a href=&#34;https://raw.githubusercontent.com/RobertMyles/Bayesian-Ideal-Point-IRT-Models/master/Senate_Example.csv&amp;quot;&#34;&gt;https://raw.githubusercontent.com/RobertMyles/Bayesian-Ideal-Point-IRT-Models/master/Senate_Example.csv&amp;quot;&lt;/a&gt;)
-colnames(data)
-{% endhighlight %}&lt;/p&gt;
-
-&lt;p&gt;So let&amp;rsquo;s take a look at the data. You&amp;rsquo;ll see the column names are &amp;ldquo;VoteNumber&amp;rdquo;, &amp;ldquo;SenNumber&amp;rdquo;, &amp;ldquo;SenatorUpper&amp;rdquo;, &amp;ldquo;Vote&amp;rdquo;, &amp;ldquo;Party&amp;rdquo;, &amp;ldquo;GovCoalition&amp;rdquo;, &amp;ldquo;State&amp;rdquo;, &amp;ldquo;FP&amp;rdquo;, &amp;ldquo;Origin&amp;rdquo;, &amp;ldquo;Contentious&amp;rdquo;, &amp;ldquo;IndGov&amp;rdquo;, and &amp;ldquo;VoteType&amp;rdquo;. I&amp;rsquo;ve kept them in this state so that we can tidy things up and manipulate things a little, stuff you&amp;rsquo;ll probably have to do any time you deal with real data of this sort. We can also have a look later at different plotting options using some of these variables. First, let&amp;rsquo;s change the votes, which are in the format &amp;ldquo;S&amp;rdquo; (&lt;em&gt;Sim&lt;/em&gt;, &amp;lsquo;Yes&amp;rsquo;), &amp;ldquo;N&amp;rdquo; (&amp;lsquo;No&amp;rsquo;), &amp;ldquo;A&amp;rdquo; (Abstention), and &amp;ldquo;O&amp;rdquo; (Obstruction), to numeric format.&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-data$Vote[data$Vote==&amp;ldquo;S&amp;rdquo;] &amp;lt;- 1
-data$Vote[data$Vote==&amp;ldquo;N&amp;rdquo;] &amp;lt;- 0
-data$Vote[data$Vote  %in% c(NA,&amp;ldquo;O&amp;rdquo;,&amp;ldquo;A&amp;rdquo;)] &amp;lt;- NA
-data$Vote &amp;lt;- as.numeric(data$Vote)
-{% endhighlight %}&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;Next, we&amp;rsquo;ll create the &amp;lsquo;vote matrix&amp;rsquo;. This is the &lt;em&gt;j&lt;/em&gt; {% raw %}\(\times\){% endraw %} &lt;em&gt;m&lt;/em&gt; matrix that we will use to create the ideal points with Stan. The rows will be the legislators and the columns the votes. We will also need to deal with the issue of &lt;a href=&#34;http://polmeth.wustl.edu/files/polmeth/river03.pdf&#34;&gt;&amp;lsquo;constraints&amp;rsquo;&lt;/a&gt;: we need to identify &lt;em&gt;d(d + 1)&lt;/em&gt; legislators in &lt;em&gt;d&lt;/em&gt; dimensions and constrain their ideal points in some way. For now, we&amp;rsquo;ll just organise our vote matrix in such a way that the two legislators that will be constrained are placed in rows 1 and 2 of the matrix. For this example, we can use Senators Agripino and Suplicy, who belong to two parties that are generally considered to be on opposite sides of the political &amp;lsquo;space&amp;rsquo; that we will place our ideal points upon. Organizing things in this way is not necessary but makes the Stan model code cleaner later on.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;
-{% highlight R linenos=table %}
-data$FullID &amp;lt;- paste(data$SenatorUpper, data$Party, sep=&amp;rdquo;:&amp;ldquo;)
+&lt;p&gt;&lt;em&gt;The code below on Stan is also available as an &lt;a href=&#34;http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R&#34;&gt;&lt;code&gt;RPub webpage&lt;/code&gt;&lt;/a&gt;, if you’d rather work through the examples than read all of the post.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;One of the first areas where Bayesian modelling gained an entry point into the social sciences (and in particular political science) was in the area of legislator ideal points, with the use of the Item-Response Theory (IRT) models from the educational testing literature in psychology. This topic proved to be the perfect subject for the comparison of Bayesian and frequentist methods, since ideal point creation usually depends on nominal voting data, which may contain a lot of missing data (legislators who miss votes or abstain) and a huge number of parameters (hundreds of roll-calls by hundreds of legislators). The benefits of Bayesian methods over frequentist techniques for ideal point analysis is discussed at length elsewhere&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;, but here I’ll talk about a side-effect of using Bayesian methods for creating ideal points from roll-call data, that is, the long time it can take to run these models on a desktop computer. (In the following discussion, I refer to ‘legislators’, but these IRT models apply to all types of response to a question, whether the ‘question’ is a vote by a politician or a judge or questions on a test or survey.)&lt;/p&gt;
+&lt;p&gt;To create ideal points in &lt;code&gt;R&lt;/code&gt;, you have three or four main options if you want to use ol’ &lt;a href=&#34;http://robertmyles.github.io//Books-on-Bayes-Stats.html&#34;&gt;Bayes&lt;/a&gt;. First, there is the ready-made &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; command of the package &lt;a href=&#34;https://cran.r-project.org/web/packages/pscl/index.html&#34;&gt;pscl&lt;/a&gt; by Simon Jackman &amp;amp; co. &lt;code&gt;pscl&lt;/code&gt; includes some very handy little functions for those interested in generating ideal points from legislative voting data – summary statistics and plots are all easy to make, and come ready-made, such as party loyalty statistics, for example. However, &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; suffers somewhat from being so ‘ready’: it is a bit unsuited for more complex or indivualistic models compared to some of the options mentioned later. I’ve also repeatedly run into problems with &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; when trying to use some of the &lt;code&gt;pscl&lt;/code&gt; package options (&lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;dropList()&lt;/bdi&gt;, for example), or when estimating multidimensional models. In terms of &lt;a href=&#34;https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo&#34;&gt;MCMC&lt;/a&gt;, only one chain at a time may be run. In fact, it is what it says on the tin: it’s a Bayesian version of W-NOMINATE, which means it has the advantages of that program (easy to use) and the disadvantages (when it doesn’t work you’re not sure why…a bit ‘black-box’).&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;MCMCpack&lt;/code&gt; package also allows for the creation of ideal points, although its output is slightly less friendly to the beginner (an &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;mcmclist&lt;/bdi&gt; object). Its &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;MCMCirt1d()&lt;/bdi&gt; command is pretty similar to &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;ideal()&lt;/bdi&gt; but allows for setting ‘soft’ constraints rather than the spike prior that pscl uses to pin down the position of (at least) two legislators. This is better for two reasons, in my opinion. First, it avoids a hard constraint on legislators for legislatures in which we do not have strong &lt;em&gt;a priori&lt;/em&gt; evidence to suppose that, for example, Legislator X is an extremist to the right, or Legislator Y to the left (the use of extremist legislators on either end of the supposed scale ‘anchors’ it). With &lt;code&gt;MCMCpack&lt;/code&gt;, the ideal points of the constrained legislators are drawn from a truncated normal distribution (truncated at zero) and so Legislator X (our extremist to the right) simply cannot have an ideal point on the left side of the scale and the opposite for our left-side extremist legislator (the use of these soft constraints obviates the need for them actually &lt;em&gt;being&lt;/em&gt; extremists too). I’ve also found &lt;code&gt;MCMCpack&lt;/code&gt; to be faster, although I haven’t tested that formally. In either case, both functions are quite similar. &lt;code&gt;MCMCpack&lt;/code&gt; also has functions for dynamic models, robust &amp;amp; multidimensional models, and Ordinal IRT. They’ve all worked well for me with the exception of &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;MCMCirtkd()&lt;/bdi&gt;, the multidimensional model function, which never seems to get started.&lt;/p&gt;
+&lt;p&gt;The next option is to use the &lt;code&gt;BUGS&lt;/code&gt; modelling language, either with &lt;code&gt;BUGS&lt;/code&gt; itself or its cousin &lt;code&gt;JAGS&lt;/code&gt;, both of which have been heavily used in the literature but can be &lt;strong&gt;extremely&lt;/strong&gt; slow, for reasons outlined in &lt;a href=&#34;http://robertmyles.github.io//Stan-JAGS.html&#34;&gt;this blog post&lt;/a&gt;. I don’t recommend their use for ideal points.&lt;/p&gt;
+&lt;p&gt;Next, we have &lt;a href=&#34;http://mc-stan.org/&#34;&gt;Stan&lt;/a&gt;, which doesn’t have the simpler syntax of &lt;code&gt;JAGS&lt;/code&gt; &amp;amp; &lt;code&gt;BUGS&lt;/code&gt;, but is simply incomparably better in terms of speed. However, since it’s newer, you won’t find the amount of resources available for &lt;code&gt;BUGS&lt;/code&gt;, for example (like &lt;a href=&#34;https://www.jstatsoft.org/article/view/v036c01&#34;&gt;here&lt;/a&gt;). There are a few resources: a simple one-dimensional model can be seen on Pablo Barberá’s &lt;a href=&#34;https://github.com/pablobarbera/quant3materials/blob/master/bayesian/lab14_IRT_issues.R&#34;&gt;github&lt;/a&gt;; a friend of mine, Guilherme Duarte, has an example of a dynamic model on his github &lt;a href=&#34;https://github.com/duarteguilherme/Quinn-Martin-Replication&#34;&gt;too&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;There are some other resources available, but relate to slightly different IRT models, more common in the educational-testing literature, and less so in ideal point studies: the ‘Rasch’ &lt;a href=&#34;http://www.stat.columbia.edu/~gelman/research/unpublished/stan_v_stata.pdf&#34;&gt;model&lt;/a&gt;; the &lt;a href=&#34;https://rpubs.com/rfarouni/64284&#34;&gt;2PL model&lt;/a&gt; (in which a ‘yes’ answer has a specific associated movement in the dimensional space and the discrimination parameter only takes on postive values; in the ideal-point model of &lt;a href=&#34;https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/Jackman2001.pdf&#34;&gt;Jackman&lt;/a&gt; it can possess negative and positive values).&lt;/p&gt;
+&lt;p&gt;Since there are so few Stan resources for ideal point IRT models, I thought I’d post a few models here. The code is also available as an &lt;a href=&#34;http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R&#34;&gt;RPub webpage&lt;/a&gt;, as mentioned earlier. The statistical model we’ll employ is:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[y_{ij} = \beta_j\bf{x_i} - \alpha_j,\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where (&lt;span class=&#34;math inline&#34;&gt;\(y_{ij}\)&lt;/span&gt; are the votes, in binary form (1 = ‘Yes’; 2 = ‘No’); the &lt;span class=&#34;math inline&#34;&gt;\(\bf x_i\)&lt;/span&gt; are the ideal points of the legislators; and &lt;span class=&#34;math inline&#34;&gt;\(\beta_j\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\alpha_j\)&lt;/span&gt; are the discrimination and difficulty parameters of the model.&lt;/p&gt;
+&lt;p&gt;Starting from scratch in &lt;code&gt;R&lt;/code&gt; in a new session (you’ll need a C++ compiler if you don’t have one, see &lt;a href=&#34;https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started&#34;&gt;here&lt;/a&gt;):&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;RStan&amp;quot;)
+library(&amp;quot;RStan&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ideal points are created from a &lt;em&gt;j&lt;/em&gt; &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; &lt;em&gt;m&lt;/em&gt; matrix of voting data (&lt;em&gt;j&lt;/em&gt; legislators voting on &lt;em&gt;m&lt;/em&gt; votes), coded &lt;bdi style=&#34;font-family:courier&#34;&gt;1&lt;/bdi&gt; for ‘yes’ and &lt;bdi style=&#34;font-family:courier&#34;&gt;0&lt;/bdi&gt; for ‘no’ and abstentions. Missing data are &lt;bdi style=&#34;font-family:courier&#34;&gt;NA&lt;/bdi&gt;, and are deleted out before running in Stan. We can easily simulate data for this type of thing, but let’s use a real database. This data is from the 53rd legislature of the Brazilian Federal Senate (with thanks to &lt;a href=&#34;http://www.cebrap.org.br/v2/pages/home&#34;&gt;CEBRAP&lt;/a&gt;, who built the original database, this comes from an extended version I created), we’ll download it from my Github repo. You’ll need to install &lt;code&gt;readr&lt;/code&gt; if you don’t have it. (I also have the bad habit of naming my data as “data”… not generally a great idea. It’ll be ok here, though.)&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(readr)
+data &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/RobertMyles/Bayesian-Ideal-Point-IRT-Models/master/Senate_Example.csv&amp;quot;)
+colnames(data)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So let’s take a look at the data. You’ll see the column names are “VoteNumber”, “SenNumber”, “SenatorUpper”, “Vote”, “Party”, “GovCoalition”, “State”, “FP”, “Origin”, “Contentious”, “IndGov”, and “VoteType”. I’ve kept them in this state so that we can tidy things up and manipulate things a little, stuff you’ll probably have to do any time you deal with real data of this sort. We can also have a look later at different plotting options using some of these variables. First, let’s change the votes, which are in the format “S” (&lt;em&gt;Sim&lt;/em&gt;, ‘Yes’), “N” (‘No’), “A” (Abstention), and “O” (Obstruction), to numeric format.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data$Vote[data$Vote==&amp;quot;S&amp;quot;] &amp;lt;- 1
+data$Vote[data$Vote==&amp;quot;N&amp;quot;] &amp;lt;- 0
+data$Vote[data$Vote  %in% c(NA,&amp;quot;O&amp;quot;,&amp;quot;A&amp;quot;)] &amp;lt;- NA
+data$Vote &amp;lt;- as.numeric(data$Vote)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Next, we’ll create the ‘vote matrix’. This is the &lt;em&gt;j&lt;/em&gt; &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; &lt;em&gt;m&lt;/em&gt; matrix that we will use to create the ideal points with Stan. The rows will be the legislators and the columns the votes. We will also need to deal with the issue of &lt;a href=&#34;http://polmeth.wustl.edu/files/polmeth/river03.pdf&#34;&gt;‘constraints’&lt;/a&gt;: we need to identify &lt;em&gt;d(d + 1)&lt;/em&gt; legislators in &lt;em&gt;d&lt;/em&gt; dimensions and constrain their ideal points in some way. For now, we’ll just organise our vote matrix in such a way that the two legislators that will be constrained are placed in rows 1 and 2 of the matrix. For this example, we can use Senators Agripino and Suplicy, who belong to two parties that are generally considered to be on opposite sides of the political ‘space’ that we will place our ideal points upon. Organizing things in this way is not necessary but makes the Stan model code cleaner later on.&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data$FullID &amp;lt;- paste(data$SenatorUpper, data$Party, sep=&amp;quot;:&amp;quot;)
 NameID &amp;lt;- unique(data$FullID)
 J &amp;lt;- length(unique(NameID))
 M &amp;lt;- length(unique(data$VoteNumber))
-grep(&amp;ldquo;JOSE AGRIPINO:PFL&amp;rdquo;, NameID)  #34
-grep(&amp;ldquo;EDUARDO SUPLICY:PT&amp;rdquo;, NameID) #12
-NameID &amp;lt;- NameID[c(34, 12, 1:11, 13:33, 35:J)]&lt;/p&gt;
+grep(&amp;quot;JOSE AGRIPINO:PFL&amp;quot;, NameID)  #34
+grep(&amp;quot;EDUARDO SUPLICY:PT&amp;quot;, NameID) #12
+NameID &amp;lt;- NameID[c(34, 12, 1:11, 13:33, 35:J)]
 
-&lt;p&gt;y &amp;lt;- matrix(NA,J,M)
+y &amp;lt;- matrix(NA,J,M)
 Rows &amp;lt;- match(data$FullID, NameID)
 Cols &amp;lt;- unique(data$VoteNumber)
-Columns &amp;lt;- match(data$VoteNumber, Cols)&lt;/p&gt;
+Columns &amp;lt;- match(data$VoteNumber, Cols)
 
-&lt;p&gt;for(i in 1:dim(data)[1]){
+for(i in 1:dim(data)[1]){
   y[Rows[i],Columns[i]] &amp;lt;- data$Vote[i]
-}&lt;/p&gt;
+}
 
-&lt;p&gt;dimnames(y) &amp;lt;- list(unique(NameID), unique(data$VoteNumber))
-{% endhighlight %}&lt;/p&gt;
-
-&lt;p&gt;I presume you&amp;rsquo;re using RStudio. Clicking on the viewer should show you the vote matrix, which should look like this:&lt;/p&gt;
-
+dimnames(y) &amp;lt;- list(unique(NameID), unique(data$VoteNumber))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I presume you’re using RStudio. Clicking on the viewer should show you the vote matrix, which should look like this:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;http://i.imgur.com/iOh3lfY.png?1&#34;&gt;&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Next we’ll make a dataframe of legislator variables which we’ll use later on, and one of vote characteristics.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ldata &amp;lt;- data.frame(FullID = unique(NameID), 
+                    Party = data$Party[match(unique(NameID), 
+                                             data$FullID)], 
+                    GovCoalition = data$GovCoalition[match(unique(NameID),
+                                                           data$FullID)],
+                    Name = data$SenatorUpper[match(unique(NameID), 
+                                                   data$FullID)], 
+                    State = data$State[match(unique(NameID), 
+                                             data$FullID)], 
+                    row.names = NULL, 
+                    stringsAsFactors = FALSE)
 
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;Next we&amp;rsquo;ll make a dataframe of legislator variables which we&amp;rsquo;ll use later on, and one of vote characteristics.&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-ldata &amp;lt;- data.frame(FullID=unique(NameID),
-                    Party=data$Party[match(unique(NameID), data$FullID)],
-                    GovCoalition=data$GovCoalition[match(unique(NameID), data$FullID)],
-                    Name=data$SenatorUpper[match(unique(NameID), data$FullID)],
-                    State=data$State[match(unique(NameID), data$FullID)],
-                    row.names=NULL, stringsAsFactors=FALSE)&lt;/p&gt;
-
-&lt;p&gt;vdata &amp;lt;- data.frame(VoteNumber=unique(data$VoteNumber),
-        VoteType=data$VoteType[match(unique(data$VoteNumber), data$VoteNumber)],
-        SenNumber=data$SenNumber[match(unique(data$VoteNumber), data$VoteNumber)],
-        Origin=data$Origin[match(unique(data$VoteNumber), data$VoteNumber)],
-        Contentious=data$Contentious[match(unique(data$VoteNumber),
-                    data$VoteNumber)],
-        IndGov=data$IndGov[match(unique(data$VoteNumber), data$VoteNumber)],
-        stringsAsFactors=F)
-{% endhighlight %}&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;Stan is not like &lt;code&gt;JAGS&lt;/code&gt; and &lt;code&gt;BUGS&lt;/code&gt; in that &lt;bdi style=&#34;font-family:courier&#34;&gt;NA&lt;/bdi&gt; is unwieldy to incorporate. The best thing to do is to delete missing data out, as can be seen in Barberá&amp;rsquo;s script linked to earlier, which I&amp;rsquo;ll copy here.&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-N &amp;lt;- length(y)
+vdata &amp;lt;- data.frame(VoteNumber = unique(data$VoteNumber), 
+                    VoteType = data$VoteType[match(unique(data$VoteNumber),
+                                                   data$VoteNumber)],
+                    SenNumber = data$SenNumber[match(unique(data$VoteNumber),
+                                                     data$VoteNumber)],
+                    Origin = data$Origin[match(unique(data$VoteNumber),
+                                               data$VoteNumber)],
+                    Contentious = data$Contentious[match(unique(data$VoteNumber),
+                                                         data$VoteNumber)], 
+                    IndGov = data$IndGov[match(unique(data$VoteNumber),
+                                               data$VoteNumber)],
+                    stringsAsFactors = F)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Stan is not like &lt;code&gt;JAGS&lt;/code&gt; and &lt;code&gt;BUGS&lt;/code&gt; in that &lt;bdi style=&#34;font-family:courier&#34;&gt;NA&lt;/bdi&gt; is unwieldy to incorporate. The best thing to do is to delete missing data out, as can be seen in Barberá’s script linked to earlier, which I’ll copy here.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;N &amp;lt;- length(y)
 j &amp;lt;- rep(1:J, times=M)
-m &amp;lt;- rep(1:M, each=J)&lt;/p&gt;
+m &amp;lt;- rep(1:M, each=J)
 
-&lt;p&gt;miss &amp;lt;- which(is.na(y))
+miss &amp;lt;- which(is.na(y))
 N &amp;lt;- N - length(miss)
 j &amp;lt;- j[-miss]
 m &amp;lt;- m[-miss]
-y &amp;lt;- y[-miss]
-{% endhighlight %}&lt;/p&gt;
+y &amp;lt;- y[-miss]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we’ll set our initial values. There are various ways to do this, ranging from leaving it up to Stan (i.e. not setting any values) to creating lists with specific starting values for each parameter. What we’ll do here is use the starting values as a way to start the parties off in separate places. This has several advantages: we already know that these parties don’t vote together very often (i.e., they are parties of the government and the opposition) and so we can speed up the model by starting the legislators off where we already know they’ll be (i.e. right-wing parties on the right etc.). This also has the benefit of making it less likely that we’ll end up with ‘sign-flips’, where a legislator with a bi-modal posterior distribution has an ideal point from the ‘wrong’ mode.&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; For the discrimination and difficulty paramters, we’ll use a random sample from normal distributions. We’ll also save all this information as &lt;code&gt;stan.data&lt;/code&gt;, which is the list of data we’ll use with Stan.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ldata$ThetaStart &amp;lt;- rnorm(J, 0, 1)
+ldata$ThetaStart[ldata$Party==&amp;quot;PFL&amp;quot; | ldata$Party==&amp;quot;PTB&amp;quot; | ldata$Party==&amp;quot;PSDB&amp;quot; | ldata$Party==&amp;quot;PPB&amp;quot;] &amp;lt;- 2
+ldata$ThetaStart[ldata$Party==&amp;quot;PT&amp;quot; | ldata$Party==&amp;quot;PSOL&amp;quot; | ldata$Party==&amp;quot;PCdoB&amp;quot;] &amp;lt;- -2
+ThetaStart &amp;lt;- ldata$ThetaStart
 
-&lt;p&gt;Next, we&amp;rsquo;ll set our initial values. There are various ways to do this, ranging from leaving it up to Stan (i.e. not setting any values) to creating lists with specific starting values for each parameter. What we&amp;rsquo;ll do here is use the starting values as a way to start the parties off in separate places. This has several advantages: we already know that these parties don&amp;rsquo;t vote together very often (i.e., they are parties of the government and the opposition) and so we can speed up the model by starting the legislators off where we already know they&amp;rsquo;ll be (i.e. right-wing parties on the right etc.). This also has the benefit of making it less likely that we&amp;rsquo;ll end up with &amp;lsquo;sign-flips&amp;rsquo;, where a legislator with a bi-modal posterior distribution has an ideal point from the &amp;lsquo;wrong&amp;rsquo; mode.&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt; For the discrimination and difficulty paramters, we&amp;rsquo;ll use a random sample from normal distributions. We&amp;rsquo;ll also save all this information as &lt;code&gt;stan.data&lt;/code&gt;, which is the list of data we&amp;rsquo;ll use with Stan.&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-ldata$ThetaStart &amp;lt;- rnorm(J, 0, 1)
-ldata$ThetaStart[ldata$Party==&amp;ldquo;PFL&amp;rdquo; | ldata$Party==&amp;ldquo;PTB&amp;rdquo; | ldata$Party==&amp;ldquo;PSDB&amp;rdquo; | ldata$Party==&amp;ldquo;PPB&amp;rdquo;] &amp;lt;- 2
-ldata$ThetaStart[ldata$Party==&amp;ldquo;PT&amp;rdquo; | ldata$Party==&amp;ldquo;PSOL&amp;rdquo; | ldata$Party==&amp;ldquo;PCdoB&amp;rdquo;] &amp;lt;- -2
-ThetaStart &amp;lt;- ldata$ThetaStart&lt;/p&gt;
-
-&lt;p&gt;initF &amp;lt;- function() {
+initF &amp;lt;- function() {
   list(theta=ThetaStart, beta=rnorm(M, 0, 2), alpha=rnorm(M, 0, 2))
-}&lt;/p&gt;
+}
 
-&lt;p&gt;stan.data &amp;lt;- list(J=J, M=M, N=N, j=j, m=m, y=y, ThetaStart=ThetaStart)&lt;/p&gt;
-
-&lt;p&gt;{% endhighlight %}&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;Stan model code differs from those mentioned above in a few aspects. Firstly, variables need to be declared, along with their type. For example, &lt;em&gt;J&lt;/em&gt;, which is our index for the number of senators, is declared in the following code as an integer. The parameters are likewise declared, as real numbers. The model code has three blocks: data, parameters and the model itself (there are other blocks possible, such as&lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;generated data&lt;/bdi&gt;, see the Stan &lt;a href=&#34;http://mc-stan.org/documentation/&#34;&gt;manual&lt;/a&gt;. Stan code is also imperative &amp;ndash; the order of the blocks matters.&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-stan.code &amp;lt;- &amp;ldquo;
+stan.data &amp;lt;- list(J=J, M=M, N=N, j=j, m=m, y=y, ThetaStart=ThetaStart)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;Stan model code differs from those mentioned above in a few aspects. Firstly, variables need to be declared, along with their type. For example, &lt;em&gt;J&lt;/em&gt;, which is our index for the number of senators, is declared in the following code as an integer. The parameters are likewise declared, as real numbers. The model code has three blocks: data, parameters and the model itself (there are other blocks possible, such as&lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;generated data&lt;/bdi&gt;, see the Stan &lt;a href=&#34;http://mc-stan.org/documentation/&#34;&gt;manual&lt;/a&gt;. Stan code is also imperative – the order of the blocks matters.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stan.code &amp;lt;- &amp;quot;
     data {
-    int&lt;lower=1&gt; J; //Senators
-    int&lt;lower=1&gt; M; //Proposals
-    int&lt;lower=1&gt; N; //no. of observations
-    int&lt;lower=1, upper=J&gt; j[N]; //Senator for observation n
-    int&lt;lower=1, upper=M&gt; m[N]; //Proposal for observation n
-    int&lt;lower=0, upper=1&gt; y[N]; //vote of observation n
+    int&amp;lt;lower=1&amp;gt; J; //Senators
+    int&amp;lt;lower=1&amp;gt; M; //Proposals
+    int&amp;lt;lower=1&amp;gt; N; //no. of observations
+    int&amp;lt;lower=1, upper=J&amp;gt; j[N]; //Senator for observation n
+    int&amp;lt;lower=1, upper=M&amp;gt; m[N]; //Proposal for observation n
+    int&amp;lt;lower=0, upper=1&amp;gt; y[N]; //vote of observation n
     }
     parameters {
     real alpha[M];
@@ -168,167 +131,111 @@ stan.code &amp;lt;- &amp;ldquo;
     real theta[J];
     }
     model {
-    alpha ~ normal(0,5);
-    beta ~ normal(0,5);
-    theta ~ normal(0,1);
+    alpha ~ normal(0,5); 
+    beta ~ normal(0,5); 
+    theta ~ normal(0,1); 
     theta[1] ~ normal(1, .01);
-    theta[2] ~ normal(-1, .01);&lt;br /&gt;
+    theta[2] ~ normal(-1, .01);  
     for (n in 1:N)
     y[n] ~ bernoulli_logit(theta[j[n]] * beta[m[n]] - alpha[m[n]]);
-    }&amp;rdquo;
-{% endhighlight %}&lt;/p&gt;
+    }&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt; &lt;/p&gt;
+&lt;p&gt;This IRT model can be run using either the logistic or probit link function, however, since Stan has a built in &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;bernoulli_logit&lt;/bdi&gt;, we’ll use that. You can see from the model block above that we have specified specific prior distributions for &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;theta[1]&lt;/bdi&gt; and &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;theta[2]&lt;/bdi&gt;. These are our constrained legislators – Agripino and Suplicy. We can do this using truncated normal distributions in Stan (i.e. &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;theta[1] ~ normal(1, .01)T[0,]&lt;/bdi&gt;, for example), but in my experience this makes things slower and increases the number of divergent transitions reported by Stan. We then use the &lt;code&gt;stan()&lt;/code&gt; command to run our model in Stan. Here, I’m using 1000 iterations just to show (as it doesn’t take too long); these IRT models generally need more iterations than other models, for good estimates from this data, I run 5000 iterations with 2500 burn-in. A couple of hundred iterations usually suffices in Stan, depending on the model. The number of chains and cores are linked to what I have available on my computer. You can check this with the parallel package using &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;detectCores()&lt;/bdi&gt;. A quick way to check convergence of the chains is with a graph of Rhat, shown below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;stan.fit &amp;lt;- stan(model_code=stan.code, data=stan.data, iter=3000, 
+                 warmup=1500, chains=4, thin=5, init=initF, 
+                 verbose=TRUE, cores=4, seed=1234)
 
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;This IRT model can be run using either the logistic or probit link function, however, since Stan has a built in &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;bernoulli_logit&lt;/bdi&gt;, we&amp;rsquo;ll use that. You can see from the model block above that we have specified specific prior distributions for &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;theta[1]&lt;/bdi&gt; and &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;theta[2]&lt;/bdi&gt;. These are our constrained legislators &amp;ndash; Agripino and Suplicy. We can do this using truncated normal distributions in Stan (i.e. &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;theta[1] ~ normal(1, .01)T[0,]&lt;/bdi&gt;, for example), but in my experience this makes things slower and increases the number of divergent transitions reported by Stan. We then use the &lt;code&gt;stan()&lt;/code&gt; command to run our model in Stan. Here, I&amp;rsquo;m using 1000 iterations just to show (as it doesn&amp;rsquo;t take too long); these IRT models generally need more iterations than other models, for good estimates from this data, I run 5000 iterations with 2500 burn-in. A couple of hundred iterations usually suffices in Stan, depending on the model. The number of chains and cores are linked to what I have available on my computer. You can check this with the parallel package using &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;detectCores()&lt;/bdi&gt;. A quick way to check convergence of the chains is with a graph of Rhat, shown below.&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}&lt;/p&gt;
-
-&lt;p&gt;stan.fit &amp;lt;- stan(model_code=stan.code, data=stan.data, iter=3000, warmup=1500, chains=4, thin=5, init=initF, verbose=TRUE, cores=4, seed=1234)&lt;/p&gt;
-
-&lt;p&gt;stan_rhat(stan.fit, bins=60)&lt;/p&gt;
-
-&lt;p&gt;{% endhighlight %}&lt;/p&gt;
-
+stan_rhat(stan.fit, bins=60)&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;http://i.imgur.com/YNBevMV.png?1&#34;&gt;&lt;/p&gt;
-
 &lt;p&gt;Values of Rhat should be 1.03 or lower. As you can see, even from 1000 iterations, we can be confident these chains are converging.&lt;/p&gt;
-
-&lt;h2 id=&#34;graphing-ideal-points&#34;&gt;Graphing Ideal Points&lt;/h2&gt;
-
-&lt;p&gt;I find the best way to plot ideal points is by using ggplot2. It&amp;rsquo;s automatically loaded as part of rstan. I also prefer to use an mcmc.list object, simply because I&amp;rsquo;m more used to it. But you can use the &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;stan.fit&lt;/bdi&gt; object directly if you prefer.&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-MS &amp;lt;- As.mcmc.list(stan.fit)
-sMS &amp;lt;- summary(MS)
-{% endhighlight %}&lt;/p&gt;
-
-&lt;p&gt;There are various things we can plot from the summary above. Of main interest is usually the ideal points, so we&amp;rsquo;ll start with those first. First, let&amp;rsquo;s extract the ideal points (&amp;ldquo;theta&amp;rdquo;) from the summary, along with the lower and upper ends of the 95% credible interval:&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-Theta &amp;lt;- sMS$statistics[grep(&amp;ldquo;theta&amp;rdquo;, row.names(sMS$statistics)),1]
-ThetaQ &amp;lt;- sMS$quantiles[grep(&amp;ldquo;theta&amp;rdquo;, row.names(sMS$statistics)),c(1,5)]
+&lt;div id=&#34;graphing-ideal-points&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Graphing Ideal Points&lt;/h2&gt;
+&lt;p&gt;I find the best way to plot ideal points is by using ggplot2. It’s automatically loaded as part of rstan. I also prefer to use an mcmc.list object, simply because I’m more used to it. But you can use the &lt;bdi style=&#34;font-family:courier; color:#011a99&#34;&gt;stan.fit&lt;/bdi&gt; object directly if you prefer.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;MS &amp;lt;- As.mcmc.list(stan.fit)
+sMS &amp;lt;- summary(MS)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are various things we can plot from the summary above. Of main interest is usually the ideal points, so we’ll start with those first. First, let’s extract the ideal points (“theta”) from the summary, along with the lower and upper ends of the 95% credible interval:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Theta &amp;lt;- sMS$statistics[grep(&amp;quot;theta&amp;quot;, row.names(sMS$statistics)),1]
+ThetaQ &amp;lt;- sMS$quantiles[grep(&amp;quot;theta&amp;quot;, row.names(sMS$statistics)),c(1,5)]
 Theta &amp;lt;- as.data.frame(cbind(Theta, ThetaQ))
 rm(ThetaQ)
 Theta$FullID &amp;lt;- ldata$FullID
 row.names(Theta) &amp;lt;- NULL
-colnames(Theta)[1:3] &amp;lt;- c(&amp;ldquo;Mean&amp;rdquo;, &amp;ldquo;Lower&amp;rdquo;, &amp;ldquo;Upper&amp;rdquo;)
-Theta &amp;lt;- merge(Theta, ldata, by=&amp;ldquo;FullID&amp;rdquo;)
-Theta &amp;lt;- Theta[order(Theta$Mean),]
-{% endhighlight %}&lt;/p&gt;
+colnames(Theta)[1:3] &amp;lt;- c(&amp;quot;Mean&amp;quot;, &amp;quot;Lower&amp;quot;, &amp;quot;Upper&amp;quot;)
+Theta &amp;lt;- merge(Theta, ldata, by=&amp;quot;FullID&amp;quot;)
+Theta &amp;lt;- Theta[order(Theta$Mean),]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have a dataframe of legislator characteristics alng with their ideal points. Since we’re dealing with a one-dimensional model here, the most straight-forward way to plot is along a scale ranging from the lowest ideal point to the highest. Here, I’ll colour the ideal points and their intervals by membership of the government coalition. I’ve used some other plotting options to make this plot the way I like it, but it’s easy to change things to your taste in ggplot2.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Y &amp;lt;- seq(from=1, to=length(Theta$Mean), by=1)
 
-&lt;p&gt;Now we have a dataframe of legislator characteristics alng with their ideal points. Since we&amp;rsquo;re dealing with a one-dimensional model here, the most straight-forward way to plot is along a scale ranging from the lowest ideal point to the highest. Here, I&amp;rsquo;ll colour the ideal points and their intervals by membership of the government coalition. I&amp;rsquo;ve used some other plotting options to make this plot the way I like it, but it&amp;rsquo;s easy to change things to your taste in ggplot2.&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-Y &amp;lt;- seq(from=1, to=length(Theta$Mean), by=1)&lt;/p&gt;
-
-&lt;p&gt;ggplot(Theta, aes(x=Mean, y=Y)) + geom_point(aes(colour=GovCoalition),
-    shape=19, size=3) + geom_errorbarh(aes(xmin=Lower, xmax=Upper,colour=GovCoalition), height=0) + geom_text(aes(x=Upper, label=FullID, colour=GovCoalition), size=2.5, hjust=-.05)+ scale_colour_manual(values=c(&amp;ldquo;red&amp;rdquo;, &amp;ldquo;blue&amp;rdquo;)) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank(), axis.title=element_blank(), legend.position=&amp;ldquo;none&amp;rdquo;, panel.grid.major.y = element_blank(), panel.grid.major.x=element_line(linetype=1, colour=&amp;ldquo;grey&amp;rdquo;), panel.grid.minor=element_blank(), panel.background=element_rect(fill=&amp;ldquo;white&amp;rdquo;), panel.border = element_rect(colour=&amp;ldquo;black&amp;rdquo;, fill=NA, size=.4)) + scale_x_continuous(limits=c(-2.7, 4))
-{% endhighlight %}&lt;/p&gt;
-
+ggplot(Theta, aes(x=Mean, y=Y)) + 
+  geom_point(aes(colour=GovCoalition),
+             shape=19, size=3) + 
+  geom_errorbarh(aes(xmin = Lower, xmax = Upper,colour = GovCoalition), 
+                 height = 0) + 
+  geom_text(aes(x = Upper, label = FullID, colour = GovCoalition), 
+            size = 2.5, hjust = -.05) + 
+  scale_colour_manual(values = c(&amp;quot;red&amp;quot;, &amp;quot;blue&amp;quot;)) +
+  theme(axis.text.y = element_blank(), 
+        axis.ticks.y = element_blank(), 
+        axis.title = element_blank(), 
+        legend.position = &amp;quot;none&amp;quot;, 
+        panel.grid.major.y = element_blank(),
+        panel.grid.major.x = element_line(linetype = 1, 
+                                          colour = &amp;quot;grey&amp;quot;),
+        panel.grid.minor = element_blank(),  
+        panel.background = element_rect(fill = &amp;quot;white&amp;quot;), 
+        panel.border = element_rect(colour = &amp;quot;black&amp;quot;, fill = NA, 
+                                    size = .4)) +
+  scale_x_continuous(limits = c(-2.7, 4))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;http://i.imgur.com/fE2LY5L.png?1&#34;&gt;&lt;/p&gt;
-
 &lt;p&gt;Of course, that’s not all the information we have in our ldata dataframe. We could plot things by party or by state. Let’s plot something by region (since there are a lot of states):&lt;/p&gt;
-
-&lt;p&gt;{% highlight R linenos=table %}
-St &amp;lt;- Theta[is.na(Theta$State)==FALSE,]  # take out president
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;St &amp;lt;- Theta[is.na(Theta$State)==FALSE,]  # take out president
 St$Region &amp;lt;- NA
-SE &amp;lt;- c(&amp;ldquo;SP&amp;rdquo;, &amp;ldquo;RJ&amp;rdquo;, &amp;ldquo;ES&amp;rdquo;, &amp;ldquo;MG&amp;rdquo;)
-S &amp;lt;- c(&amp;ldquo;RS&amp;rdquo;, &amp;ldquo;PR&amp;rdquo;, &amp;ldquo;SC&amp;rdquo;)
-N &amp;lt;- c(&amp;ldquo;AM&amp;rdquo;, &amp;ldquo;RO&amp;rdquo;, &amp;ldquo;RR&amp;rdquo;, &amp;ldquo;TO&amp;rdquo;, &amp;ldquo;PA&amp;rdquo;, &amp;ldquo;AC&amp;rdquo;, &amp;ldquo;AP&amp;rdquo;)
-CW &amp;lt;- c(&amp;ldquo;DF&amp;rdquo;, &amp;ldquo;GO&amp;rdquo;, &amp;ldquo;MT&amp;rdquo;, &amp;ldquo;MS&amp;rdquo;)
-NE &amp;lt;- c(&amp;ldquo;CE&amp;rdquo;, &amp;ldquo;MA&amp;rdquo;, &amp;ldquo;AL&amp;rdquo;, &amp;ldquo;RN&amp;rdquo;, &amp;ldquo;PB&amp;rdquo;, &amp;ldquo;SE&amp;rdquo;, &amp;ldquo;PI&amp;rdquo;, &amp;ldquo;BA&amp;rdquo;, &amp;ldquo;PE&amp;rdquo;)
-St$Region[St$State %in% SE] &amp;lt;- &amp;ldquo;South-East&amp;rdquo;
-St$Region[St$State %in% S] &amp;lt;- &amp;ldquo;South&amp;rdquo;
-St$Region[St$State %in% NE] &amp;lt;- &amp;ldquo;North-East&amp;rdquo;
-St$Region[St$State %in% CW] &amp;lt;- &amp;ldquo;Centre-West&amp;rdquo;
-St$Region[St$State %in% N] &amp;lt;- &amp;ldquo;North&amp;rdquo;&lt;/p&gt;
+SE &amp;lt;- c(&amp;quot;SP&amp;quot;, &amp;quot;RJ&amp;quot;, &amp;quot;ES&amp;quot;, &amp;quot;MG&amp;quot;)
+S &amp;lt;- c(&amp;quot;RS&amp;quot;, &amp;quot;PR&amp;quot;, &amp;quot;SC&amp;quot;)
+N &amp;lt;- c(&amp;quot;AM&amp;quot;, &amp;quot;RO&amp;quot;, &amp;quot;RR&amp;quot;, &amp;quot;TO&amp;quot;, &amp;quot;PA&amp;quot;, &amp;quot;AC&amp;quot;, &amp;quot;AP&amp;quot;)
+CW &amp;lt;- c(&amp;quot;DF&amp;quot;, &amp;quot;GO&amp;quot;, &amp;quot;MT&amp;quot;, &amp;quot;MS&amp;quot;)
+NE &amp;lt;- c(&amp;quot;CE&amp;quot;, &amp;quot;MA&amp;quot;, &amp;quot;AL&amp;quot;, &amp;quot;RN&amp;quot;, &amp;quot;PB&amp;quot;, &amp;quot;SE&amp;quot;, &amp;quot;PI&amp;quot;, &amp;quot;BA&amp;quot;, &amp;quot;PE&amp;quot;)
+St$Region[St$State %in% SE] &amp;lt;- &amp;quot;South-East&amp;quot;
+St$Region[St$State %in% S] &amp;lt;- &amp;quot;South&amp;quot;
+St$Region[St$State %in% NE] &amp;lt;- &amp;quot;North-East&amp;quot;
+St$Region[St$State %in% CW] &amp;lt;- &amp;quot;Centre-West&amp;quot;
+St$Region[St$State %in% N] &amp;lt;- &amp;quot;North&amp;quot;
 
-&lt;p&gt;nameorder &amp;lt;- St$FullID[order(St$Region, St$Mean)]
-St$FullID &amp;lt;- factor(St$FullID, levels=nameorder)&lt;/p&gt;
+nameorder &amp;lt;- St$FullID[order(St$Region, St$Mean)]
+St$FullID &amp;lt;- factor(St$FullID, levels=nameorder)
 
-&lt;p&gt;ggplot(St, aes(x=Mean, y=FullID)) + geom_point(size=3, aes(colour=Region)) + geom_errorbarh(aes(xmin=Lower, xmax=Upper, colour=Region), height=0) + facet_grid(Region ~ ., scales=&amp;ldquo;free_y&amp;rdquo;) + scale_colour_manual(values=c(&amp;ldquo;orange&amp;rdquo;, &amp;ldquo;black&amp;rdquo;, &amp;ldquo;red&amp;rdquo;, &amp;ldquo;blue&amp;rdquo;, &amp;ldquo;darkgreen&amp;rdquo;)) + theme_bw()
-{% endhighlight %}&lt;/p&gt;
-
+ggplot(St, aes(x=Mean, y=FullID)) + 
+  geom_point(size = 3, aes(colour = Region)) + 
+  geom_errorbarh(aes(xmin = Lower, xmax = Upper, colour = Region), 
+                 height = 0) + 
+  facet_grid(Region ~ ., scales = &amp;quot;free_y&amp;quot;) +
+  scale_colour_manual(values = c(&amp;quot;orange&amp;quot;, &amp;quot;black&amp;quot;, &amp;quot;red&amp;quot;, 
+                                 &amp;quot;blue&amp;quot;, &amp;quot;darkgreen&amp;quot;)) + 
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;http://i.imgur.com/M4sx2az.png?1&#34;&gt;&lt;/p&gt;
-
 &lt;p&gt;We can also analyse the other parameters of the model, and run multidimensional models too. See the &lt;a href=&#34;http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R&#34;&gt;RPub&lt;/a&gt; for the code for these.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
+&lt;p&gt; &lt;/p&gt;
 &lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; There are many discussions on this topic, but &lt;a href=&#34;https://my.vanderbilt.edu/joshclinton/files/2011/10/CJ_LSQ2009.pdf&#34;&gt;Clinton &amp;amp; Jackman (2009)&lt;/a&gt; is a good place to start. An earlier &lt;a href=&#34;https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/ClintonJackmanRivers2004.pdf&#34;&gt;paper&lt;/a&gt; by Clinton, Jackman &amp;amp; Rivers makes the point somewhat more forcefully. &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;&lt;b id=&#34;fn2&#34;&gt;2&lt;/b&gt; For more on this point, see &lt;a href=&#34;https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/Jackman2001.pdf&#34;&gt;Jackman&lt;/a&gt; 2001, &lt;a href=&#34;http://polmeth.wustl.edu/files/polmeth/river03.pdf&#34;&gt;Rivers 2003&lt;/a&gt; paper cited in the main text, or the Appendix of my PhD &lt;a href=&#34;http://robertmyles.github.io//assets/Explaining%20the%20Determinants%20of%20Foreign%20Policy%20Voting%20Behaviour%20in%20the%20Brazilian%20Houses%20of%20Legislature.pdf&#34;&gt;thesis&lt;/a&gt;. &lt;a href=&#34;#a2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/VuCDpaX.png?1&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
 </description>
     </item>
     
     <item>
       <title>Stan or JAGS for Bayesian ideal-point IRT?</title>
-      <link>/1/01/01/stan-or-jags-for-bayesian-ideal-point-irt/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <link>/2016/04/13/stan-or-jags-for-bayesian-ideal-point-irt/</link>
+      <pubDate>Wed, 13 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>/1/01/01/stan-or-jags-for-bayesian-ideal-point-irt/</guid>
-      <description>&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;Anybody who has ever tried to run even a moderately-sized Bayesian IRT model in R (for ideal points as in the political science literature, or otherwise) will know that these models can take a &lt;em&gt;long&lt;/em&gt; time. It&amp;rsquo;s not R&amp;rsquo;s fault: these are usually big models with lots of parameters, and naturally take longer.&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; Not to mention the fact that Bayesian computation is more computationally intense than other methods. Historically (okay, I&amp;rsquo;m talking about the last twenty years, maybe &amp;lsquo;historically&amp;rsquo; is a little strong), the sampling software &lt;a href=&#34;http://www.mrc-bsu.cam.ac.uk/software/bugs/&#34;&gt;BUGS&lt;/a&gt; (&lt;strong&gt;B&lt;/strong&gt;ayesian &lt;strong&gt;I&lt;/strong&gt;nference &lt;strong&gt;U&lt;/strong&gt;sing &lt;strong&gt;G&lt;/strong&gt;ibbs &lt;strong&gt;S&lt;/strong&gt;ampling) and then &lt;a href=&#34;http://mcmc-jags.sourceforge.net/&#34;&gt;JAGS&lt;/a&gt; were used to run Bayesian models (JAGS is still pretty common, and BUGS too, though not as much). Lately, &lt;a href=&#34;http://mc-stan.org/&#34;&gt;Stan&lt;/a&gt; has been gaining ground, certainly as regards more complex modelling.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;While the reasons for choosing Stan are often put down to speed, when running many types of models there is not actually a large difference, with JAGS actually being faster for some models, according to John Kruschke&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;. Given the lack of a big difference between JAGS/BUGS and Stan, which sampling software should we use for IRT models? Well, first of all, a large part of the literature utilises either JAGS or BUGS, indeed, code is publicly available for many of these models, helping to spread the use of these two modelling languages.&lt;sup id=&#34;a3&#34;&gt;&lt;a href=&#34;#fn3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; For beginners, this is a handy way to learn, and it&amp;rsquo;s how I learned. Indeed, the language of JAGS/BUGS (I&amp;rsquo;m just going to use &amp;lsquo;JAGS&amp;rsquo; to refer to both from now on) is a bit more intuitive for many people, and given the availability of others&amp;rsquo; code, beginning with these models can then be reduced to just tinkering with small details of code that is already written.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;Stan, on the other hand, is newer and has a syntax that is in some ways quite different from JAGS. Variables need to be declared, as does their type (something not many R users are familiar with, I certainly wasn&amp;rsquo;t). The model code is imperative, not declarative&lt;sup id=&#34;a4&#34;&gt;&lt;a href=&#34;#fn4&#34;&gt;4&lt;/a&gt;&lt;/sup&gt;, and there are specific &amp;lsquo;blocks&amp;rsquo; to the code. Stan has a different default sampler and is generally argued by its creators to be much faster. Well, in my experience, there is actually no contest. As much as I liked JAGS when I started out, Stan is simply incomparable to JAGS in terms of speed for these models&amp;ndash; Stan is much, much faster. I was analysing nominal vote data for the Brazilian Federal Senate&lt;sup id=&#34;a5&#34;&gt;&lt;a href=&#34;#fn5&#34;&gt;5&lt;/a&gt;&lt;/sup&gt; (these data have plenty of missing values, which are handled easily in JAGS but have to be deleted out in Stan) and, through the use of the &lt;a href=&#34;http://runjags.sourceforge.net/quickjags.html&#34;&gt;runjags&lt;/a&gt; package (and its &lt;code&gt;autorun&lt;/code&gt; option), I discovered that it would take around 28 hours to run my two-dimensional model to reach signs of convergence (or signs of non-convergence, as &lt;a href=&#34;pan.oxfordjournals.org/content/16/2/153.full.pdf&#34;&gt;Gill&lt;/a&gt; puts it). As I was in the middle of writing a PhD thesis with lots of these models to process, that just wasn&amp;rsquo;t an option. (Regardless, any time I let the model run like this, R crashed or became unresponsive, or the estimates were simply of bad quality.) So I started tinkering with the options in &lt;code&gt;runjags&lt;/code&gt;, trying different samplers etc. Then I noticed exactly &lt;em&gt;why&lt;/em&gt; JAGS is so slow for these models.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;In order to run a model, JAGS first compiles a Directed Acyclic Graph (DAG) of all the nodes in the model (software such as &lt;a href=&#34;http://r-nimble.org/&#34;&gt;NIMBLE&lt;/a&gt; will let you print out the graph pretty easily). But since we have a &lt;em&gt;latent&lt;/em&gt; regression with an &lt;em&gt;unobserved&lt;/em&gt; regressor in the equation&lt;sup id=&#34;a6&#34;&gt;&lt;a href=&#34;#fn6&#34;&gt;6&lt;/a&gt;&lt;/sup&gt;
- {% raw %}
-  $$y_{ij} = \beta_j\bf{x_i} - \alpha_j$$
- {% endraw %}&lt;/p&gt;
-
-&lt;p&gt;then JAGS is &lt;a href=&#34;https://sourceforge.net/p/mcmc-jags/discussion/610037/thread/5c9e9026/&#34;&gt;unable&lt;/a&gt; to build such a DAG. Since it can&amp;rsquo;t build a DAG, it can&amp;rsquo;t surmise that there is conjugacy in the model and then exploit that through Gibbs sampling. So JAGS just uses the default Metropolis-Hastings sampler (and given that it is called &lt;strong&gt;J&lt;/strong&gt;ust &lt;strong&gt;A&lt;/strong&gt;nother &lt;strong&gt;Gibbs&lt;/strong&gt; &lt;strong&gt;S&lt;/strong&gt;ampler, it kind of misses the point of using JAGS in the first place). This means that all the gains available through Gibbs sampling are simply not available for latent models of this type with JAGS, and hence the sampling process runs &lt;em&gt;very&lt;/em&gt; slowly. I&amp;rsquo;m not sure the literature was ever aware of this fact, either. Many papers and books extoll the virtues of Gibbs sampling (and spend pages and pages deriving the conditional distributions involved) and then show the reader how to do it in JAGS or BUGS (see Simon Jackman&amp;rsquo;s &lt;a href=&#34;http://www.wiley.com/WileyCDA/WileyTitle/productCd-0470011548.html&#34;&gt;book&lt;/a&gt; for an example)&lt;sup id=&#34;a7&#34;&gt;&lt;a href=&#34;#fn7&#34;&gt;7&lt;/a&gt;&lt;/sup&gt;, but unbeknownst to these authors, their JAGS programs are not using Gibbs sampling.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;So that leaves us with Stan. Use it! :smile:&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;In a future post, I&amp;rsquo;ll show some examples of IRT ideal-point models in Stan. I have some on my &lt;a href=&#34;https://github.com/RobertMyles/Bayesian-Ideal-Point-IRT-Models&#34;&gt;Github&lt;/a&gt;, and Pablo Barberá also has some nice &lt;a href=&#34;https://github.com/pablobarbera/quant3materials/tree/master/bayesian&#34;&gt;examples&lt;/a&gt; (hat tip: I learned from him, amongst others. Thanks, Pablo!).&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Update: &lt;a href=&#34;https://github.com/duarteguilherme/Quinn-Martin-Replication&#34;&gt;Guilherme Jardim Duarte&lt;/a&gt; also has some Bayesian IRT examples on his Github, in particular the rather tricky dynamic model of &lt;a href=&#34;http://mqscores.berkeley.edu/media/pa02.pdf&#34;&gt;Martin &amp;amp; Quinn&lt;/a&gt;,  have a look.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; For more on how these models can have &lt;em&gt;tons&lt;/em&gt; of parameters, see &lt;a href=&#34;https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/ClintonJackmanRivers2004.pdf&#34;&gt;Clinton, Jackman, and Rivers (2004)&lt;/a&gt;: &amp;lsquo;The statistical analysis of roll-call data&amp;rsquo;, &lt;em&gt;American Political Science Review&lt;/em&gt;, Vol. 98, No. 2. &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn2&#34;&gt;2&lt;/b&gt;  &lt;a href=&#34;http://doingbayesiandataanalysis.blogspot.com.br/&#34;&gt;Kruschke&lt;/a&gt; mentions this in his book&amp;hellip;not sure where, exactly. &lt;a href=&#34;#a2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn3&#34;&gt;3&lt;/b&gt; See this paper by &lt;a href=&#34;https://www.jstatsoft.org/article/view/v036c01/v36c01.pdf&#34;&gt;Curtis&lt;/a&gt; (pdf downloads automatically) or the book by &lt;a href=&#34;https://www.crcpress.com/Analyzing-Spatial-Models-of-Choice-and-Judgment-with-R/Armstrong-II-Bakker-Carroll-Hare-Poole-Rosenthal/9781466517158&#34;&gt;Armstrong et. al&lt;/a&gt;. &lt;a href=&#34;#a3&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn4&#34;&gt;4&lt;/b&gt; See &lt;a href=&#34;http://stackoverflow.com/questions/129628/what-is-declarative-programming&#34;&gt;here&lt;/a&gt; for the difference.&lt;a href=&#34;#a4&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn5&#34;&gt;5&lt;/b&gt; You can read about this research &lt;a href=&#34;{{ site.url }}/assets/Explaining the Determinants of Foreign Policy Voting Behaviour in the Brazilian Houses of Legislature.pdf&#34;&gt;here&lt;/a&gt;.&lt;a href=&#34;#a5&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn6&#34;&gt;6&lt;/b&gt; This is the canonical statistical model for Bayesian IRT. The data ({% raw %}\(y_{ij}\){% endraw %}) are the votes, in binary form (1 = &amp;lsquo;Yes&amp;rsquo;; 2 = &amp;lsquo;No&amp;rsquo;); the {% raw %}\(\bf x_i\){% endraw %} are the ideal points of the legislators; and  {% raw %} \(\beta_j\){% endraw %} and {% raw %}\(\alpha_j\){% endraw %} are the &lt;em&gt;discrimination&lt;/em&gt; (slope) and &lt;em&gt;difficulty&lt;/em&gt; (intercept) parameters, respectively. See the article cited in footnote 1.
-  &lt;a href=&#34;#a6&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b id=&#34;fn7&#34;&gt;7&lt;/b&gt; I don&amp;rsquo;t mean to denigrate Jackman&amp;rsquo;s book. It&amp;rsquo;s highly detailed and thorough, and he deserves a lot of credit for spearheading the use of these Bayesian IRT models in political science. I&amp;rsquo;ve cited his work numerous times, I&amp;rsquo;m a fan.&lt;a href=&#34;#a7&#34;&gt;↩&lt;/a&gt;
-&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/v7y6SVt.png?1&#34; /&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Stan or JAGS for Bayesian ideal-point IRT?</title>
-      <link>/1/01/01/stan-or-jags-for-bayesian-ideal-point-irt/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/1/01/01/stan-or-jags-for-bayesian-ideal-point-irt/</guid>
+      <guid>/2016/04/13/stan-or-jags-for-bayesian-ideal-point-irt/</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;

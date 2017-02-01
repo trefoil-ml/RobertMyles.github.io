@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Geo Reference on Lithium Theme</title>
+    <link>/tags/geo-reference/</link>
+    <description>Recent content in Geo Reference on Lithium Theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 13 Aug 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/tags/geo-reference/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Geo-reference an image in R</title>
+      <link>/2016/08/13/geo-reference-an-image-in-r/</link>
+      <pubDate>Sat, 13 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/08/13/geo-reference-an-image-in-r/</guid>
+      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
+
+/BLOGDOWN-BODY-BEFORE --&gt;
+
+&lt;p&gt;R is actually great for working with spatial data (for example, see &lt;a href=&#34;http://spatial.ly/2012/03/mapped-british-shipping-1750-1800/&#34;&gt;here&lt;/a&gt; and &lt;a href=&#34;https://pakillo.github.io/R-GIS-tutorial/#gmap&#34;&gt;here&lt;/a&gt; for fantastic graphs and maps made with R), however, you often need data that is &lt;em&gt;actually spatial&lt;/em&gt; to get started! What do you do if you have an image, a map, let’s say, that is not geo-referenced in any way?&lt;br /&gt;
+The regular answer to this problem is to use software such as &lt;a href=&#34;http://www.qgis.com/&#34;&gt;QGIS&lt;/a&gt; to manually enter GPS coordinates, with the &lt;a href=&#34;http://www.gps-coordinates.net/&#34;&gt;help&lt;/a&gt; of Google Maps or something similar. But R can be used for this too, and it’s quite easy to do.&lt;/p&gt;
+&lt;p&gt;First, we load some necessary packages. Here, I’m working with &lt;code&gt;.tiff&lt;/code&gt; files that I will change into Geo-tiffs. For other formats, you will need some other packages (such as &lt;code&gt;png&lt;/code&gt;, for example).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(raster)
+library(rgdal)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Next, we read in the non-spatial image using the &lt;code&gt;raster&lt;/code&gt; command. By plotting this in RStudio, the image can be cropped in the preview window, if you want to crop it down the area of interest. This is also useful if the image came with extra, non-map parts (logos etc.).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Map &amp;lt;- raster(&amp;quot;1.tiff&amp;quot;)  
+Map
+plot(Map)
+map2 &amp;lt;- crop(Map, drawExtent(show = TRUE, col = &amp;quot;red&amp;quot;)) 
+plot(map2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we can enter in the maximal points of the image, xmin/xmax and ymin/ymax, respectively. These coordinates refer to an area of São Paulo, Brazil. The x-axis is longitude, the y-axis latitude. You can get the coordinates from &lt;a href=&#34;http://www.gps-coordinates.net/&#34;&gt;www.gps-coordinates.net&lt;/a&gt; for the area you need. We also need to tell R what type of map projection we are going to write into the image. Here we’ll use &lt;code&gt;&amp;quot;+proj=longlat +datum=WGS84&amp;quot;&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;xmin(map2) &amp;lt;- -46.67449772357941 
+xmax(map2) &amp;lt;- -46.524503231048584 
+ymin(map2) &amp;lt;- -23.638627166908787
+ymax(map2) &amp;lt;- -23.517227011061372
+crs(map2) &amp;lt;- &amp;quot;+proj=longlat +datum=WGS84&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This part is the main piece of work. But after it’s done, you’ve got yourself a geo-referenced image. Here, we’ll write it to the geo-tiff format I mentioned earlier.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;writeRaster(map1, &amp;quot;Gmap1.tiff&amp;quot;, &amp;quot;GTiff&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Simple! :smiling_imp:&lt;/p&gt;
+
+
+&lt;!-- BLOGDOWN-HEAD
+
+
+
+
+/BLOGDOWN-HEAD --&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
