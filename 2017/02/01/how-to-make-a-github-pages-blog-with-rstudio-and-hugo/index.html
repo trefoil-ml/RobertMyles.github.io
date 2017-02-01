@@ -55,7 +55,7 @@
 
 
 <meta itemprop="dateModified" content="2017-02-01T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="2925">
+<meta itemprop="wordCount" content="2975">
 
 
 
@@ -371,7 +371,7 @@
 <div id="what-i-used-to-do" class="section level3">
 <h3>What I <em>used</em> to do</h3>
 <p>In R Markdown, code (naturally) and equations are easy to format. Back ticks format the text inside as <code>code</code> style text, and full chunks of R code (or <a href="https://yihui.name/knitr/demo/engines/">other languages</a>) can be placed inside three backticks with the accompanying name of the language afterwards inside two curly braces. To do this in April last year, with the theme I had chosen, I needed to write a whole load of Liquid tags like this: <code>{% highlight R linenos=table %}</code> and <code>{% endhighlight %}</code>.</p>
-<p>So that was code formatting, which is quite a frequent need in my blogging. But that wasn’t as bad as <span class="math inline">\(\LaTeX\)</span>. “Meu Deus”, as my Brazilian wife might say. To get the word “LaTeX” like I just wrote above, I had to write <code>{% raw %}\\(\LaTeX\\){% endraw %}</code>. Put that in a paragraph a few times and start to regret it. In R Markdown? <code>$\LaTeX$</code>. I’ll take that, thanks very much.</p>
+<p>So that was code formatting, which is quite a frequent need in my blogging. But that wasn’t as bad as <span class="math inline">\(\LaTeX\)</span>. “Meu Deus”, as my Brazilian wife might say. To get the word “LaTeX” like I just wrote above, I had to write <code>{% raw %}\\(\LaTeX\\){% endraw %}</code>. Put that in a paragraph a few times and start to regret it. In R Markdown? <code>$\LaTeX$</code>.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> I’ll take that, thanks very much.</p>
 <p>Footnotes were also irritating. Instead of the simple <code>^[footnote]</code> in R Markdown, I was using this: <code>&lt;sup id=&quot;a1&quot;&gt;[1](#fn1)&lt;/sup&gt;</code>, with the accompanying <code>&lt;b id=&quot;fn1&quot;&gt;1&lt;/b&gt; footnote (#a1)</code> (actually, I think that last part is missing something). I thought I was doing great. Hahaha!</p>
 </div>
 <div id="enter-r-pt.-1" class="section level3">
@@ -462,6 +462,7 @@ git push origin master</code></pre>
 <hr />
 <ol>
 <li id="fn1"><p>There are three guides that I found on the net, not including the Hugo tutorial, and a big thanks to the authors for taking the time to write those posts and share their experience. In the end I think they confused me more than they helped, but it was a learning process! One is <a href="https://hjdskes.github.io/blog/deploying-hugo-on-personal-gh-pages/index.html">here</a>, by Jente Hidskes, which has some curious items in the bash scripts he provides (why the “Grabbing one file from the $SOURCE branch so that a commit can be made” part, when “touch file” would have been far easier, for example? And anyway, it didn’t work, for me, there is an error with <code>git rm --cached</code> from what I can figure out, and some other lines didn’t work.) Another is <a href="http://code.markedmondson.me/new-blog-down/">here</a>, which is closest to what I did (apart from the Hugo tutorial), except it’s missing a whole host of info on blogdown, Hugo and particularly GitHub. It also takes the project-custom-build approach, which gave me problems. But nice site, Mark. The last one is <a href="https://proquestionasker.github.io/blog/Making_Site/">here</a>, which is lovely and detailed (thanks Amber for taking the time), although it depends on the (I think) faulty bash scripts of Jente. It is also overly complicated, there is no need for the orphan master process. Anyway, they all helped, so thanks folks.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>If you are <em>not</em> using the default blogdown Hugo theme, you will have to enable mathjax, and include <a href="https://github.com/yihui/hugo-lithium-theme/blob/7d436d803df90c873cdaecf24aeeff827696d77c/layouts/partials/footer.html#L21-L30">this</a> piece of html in one of the html files in your layouts/partials files, preferably one that is loaded with every blog post, like footer or header. I put mine in footer.html.<a href="#fnref2">↩</a></p></li>
 </ol>
 </div>
 
