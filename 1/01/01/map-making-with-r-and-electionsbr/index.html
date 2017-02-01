@@ -1,0 +1,694 @@
+
+
+
+    
+
+
+
+
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        
+            <title>Map-making with R and electionsBR - Lithium Theme</title>
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.16" />
+        
+
+
+        
+        
+            
+                <meta name="description" content="A website built through Hugo and blogdown.">
+            
+        
+
+        
+
+  <meta name="twitter:card" content="summary"/>
+
+
+
+<meta name="twitter:title" content="Map-making with R and electionsBR"/>
+<meta name="twitter:description" content="For those interested in Brazilian politics, there&rsquo;s a great new package called electionsBR (those who understand Portuguese can find a post on it here). This package takes data from the Tribunal Superior Eleitoral and makes it available in a tidy format for users of R. Given my recent obsession with map-making, I think it&rsquo;s only natural I&rsquo;d want to make maps of Brazil with this package.1 So, what can we do with it?"/>
+
+
+
+        <meta property="og:title" content="Map-making with R and electionsBR" />
+<meta property="og:description" content="For those interested in Brazilian politics, there&rsquo;s a great new package called electionsBR (those who understand Portuguese can find a post on it here). This package takes data from the Tribunal Superior Eleitoral and makes it available in a tidy format for users of R. Given my recent obsession with map-making, I think it&rsquo;s only natural I&rsquo;d want to make maps of Brazil with this package.1 So, what can we do with it?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/1/01/01/map-making-with-r-and-electionsbr/" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+<meta itemprop="name" content="Map-making with R and electionsBR">
+<meta itemprop="description" content="For those interested in Brazilian politics, there&rsquo;s a great new package called electionsBR (those who understand Portuguese can find a post on it here). This package takes data from the Tribunal Superior Eleitoral and makes it available in a tidy format for users of R. Given my recent obsession with map-making, I think it&rsquo;s only natural I&rsquo;d want to make maps of Brazil with this package.1 So, what can we do with it?">
+
+
+
+<meta itemprop="wordCount" content="1711">
+
+
+
+<meta itemprop="keywords" content="blog,r,bayes,bayesian,bayesian-statistics,brazil,electionsbr,eu,european-statistics-day,geo-referencing,ggplot2,ideal-points,irt,jags,plot,r,r-markdown,regression,rotten-tomatoes,rselenium,rstan,rstudio,rvest,stan,tidyverse,webscraping," />
+
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="../../../../css/google-font.css" />
+            <link rel="stylesheet" href="../../../../css/font-awesome.min.css" />
+            <link rel="stylesheet" href="../../../../css/main.css" />
+            <link rel="stylesheet" href="../../../../css/add-on.css" />
+            <link rel="stylesheet" href="../../../../css/monokai-sublime.css">
+        
+
+        
+
+        
+        
+        
+            
+        
+    </head>
+    <body>
+
+        
+        <div id="wrapper">
+
+    
+<header id="header">
+    
+        <h2><a href="../../../../"></i></a></h2>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="../../../../about/">
+                        About
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/rstudio/blogdown">
+                        GitHub
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://twitter.com/rstudio">
+                        Twitter
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="q" value="site:/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="q" value="site:/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="../../../../about/">
+                            <h3>
+                                
+                                About
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/rstudio/blogdown">
+                            <h3>
+                                
+                                GitHub
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://twitter.com/rstudio">
+                            <h3>
+                                
+                                Twitter
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    <li>
+                        <a href="../../../../2017/02/01/stan/"><p>Stan</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../2016/12/30/a-plain-markdown-post/"><p>A Plain Markdown Post</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../2015/07/23/hello-r-markdown/"><p>Hello R Markdown</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/"><p>Bayesian IRT in R and Stan</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/bayesian-stats----book-recommendations/"><p>Bayesian Stats -- Book Recommendations</p></a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        
+</section>
+
+    
+    <div id="main">
+        <article class="post">
+            
+            <header>
+    <div class="title">
+        
+            <h1><a href="../../../../1/01/01/map-making-with-r-and-electionsbr/">Map-making with R and electionsBR</a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='0001-01-01'>
+            January 1, 0001</time>
+        <span class="author"></span>
+        
+        
+    </div>
+</header>
+
+            <div id="content">
+                <p>For those interested in Brazilian politics, there&rsquo;s a great new package called <code>electionsBR</code> (those who understand Portuguese can find a post on it <a href="http://fmeireles.com/blog/rstats/electionsbr-um-pacote-para-baixar-dados-eleitorais-do-tse">here</a>). This package takes data from the <em>Tribunal Superior Eleitoral</em> and makes it available in a tidy format for users of R. Given my recent obsession with <a href="http://robertmyles.github.io//re-creating-plots-from-the-economist-in-r.html">map-making</a>, I think it&rsquo;s only natural I&rsquo;d want to make maps of Brazil with this package.<sup id="a1"><a href="#fn1">1</a></sup></p>
+
+<p>So, what can we do with it? Well, how about a map of how Brazilians voted in the general election of 2014? To do this, we can use <code>electionsBR</code> to get the election data, and a mixture of <code>tidyverse</code> and some mapping and plotting packages:</p>
+
+<p>{% highlight r %}
+library(tidyverse)
+library(electionsBR)
+library(ggmap)
+library(rgdal)
+library(stringi)
+library(scales)
+library(maptools)
+library(RColorBrewer)
+{% endhighlight %}</p>
+
+<p>The <code>vote_mun_zone_fed()</code> function takes a single argument, <code>year</code>, as an integer. There are quite a lot of data, so it takes a little while to download.</p>
+
+<p>{% highlight r %}
+Mun &lt;- vote_mun_zone_fed(2014)
+{% endhighlight %}</p>
+
+<p>Once we have these data, we can use the <code>tidyverse</code> to clean it up and organize it they way we want. I&rsquo;m going to change the character encoding to ASCII, using the <code>stringi</code> package, and select only the columns I need.</p>
+
+<p>{% highlight r %}
+Mun &lt;- Mun %&gt;%
+  select(SIGLA_UF, DESCRICAO_CARGO, CODIGO_MUNICIPIO, TOTAL_VOTOS,
+         NUMERO_CAND, NOME_MUNICIPIO, NUM_TURNO, SIGLA_PARTIDO) %&gt;%
+  mutate(NOME_MUNICIPIO = stri_trans_general(NOME_MUNICIPIO, &ldquo;Latin-ASCII&rdquo;))
+{% endhighlight %}</p>
+
+<p>One interesting thing we could do with this dataset is map the percentage of the electorate that voted for Dilma. We&rsquo;ll need shapefiles for Brazil, which you can get from <a href="http://www.gadm.org/country">gadm.org</a>.</p>
+
+<p>We&rsquo;ll also need to isolate the vote for Dilma and then calculate the proportion in each municipality that voted for her. There were also two rounds of voting, so we can show each one. The code below does this for the first round, to do the same thing for the second round, we just change the first call to <code>filter</code> to <code>NUM_TURNO == 2</code>.</p>
+
+<p>{% highlight r %}
+Pres1 &lt;- Mun %&gt;%
+  filter(DESCRICAO_CARGO == &ldquo;PRESIDENTE&rdquo;, NUM_TURNO == 1,
+         SIGLA_UF != &ldquo;ZZ&rdquo;) %&gt;%
+  group_by(NUMERO_CAND, CODIGO_MUNICIPIO) %&gt;%
+  mutate(SUM = sum(TOTAL_VOTOS)) %&gt;%
+  distinct(CODIGO_MUNICIPIO, .keep_all=T) %&gt;%
+  ungroup() %&gt;%
+  group_by(CODIGO_MUNICIPIO) %&gt;%
+  mutate(PERC = TOTAL_VOTOS/sum(TOTAL_VOTOS)*100) %&gt;%
+  arrange(SIGLA_UF, NOME_MUNICIPIO) %&gt;%
+  ungroup() %&gt;%
+  filter(NUMERO_CAND == 13)
+{% endhighlight %}</p>
+
+<p>Next, we read in our shape files. We have some work to do to tidy up the names of the municipalities and to correct for coding errors.</p>
+
+<p>{% highlight r %}
+BRmap &lt;- readOGR(dsn = &ldquo;BRA_adm_shp&rdquo;, layer = &ldquo;BRA_adm3&rdquo;, verbose = FALSE)
+BRmap@data$NAME_2 &lt;- BRmap@data$NAME_2 %&gt;%
+  as.character() %&gt;%
+  stri_trans_general(&ldquo;Latin-ASCII&rdquo;) %&gt;%
+  toupper()
+{% endhighlight %}</p>
+
+<p>Let&rsquo;s see what municipalities are missing from our <code>electionsBR</code> municipality data.</p>
+
+<p>{% highlight r %}
+&lsquo;%ni%&rsquo; &lt;- Negate(&lsquo;%in%&rsquo;)</p>
+
+<p>unique(BRmap@data$NAME_2[which(BRmap@data$NAME_2 %ni% Mun$NOME_MUNICIPIO)])</p>
+
+<p>[1] &ldquo;BARRA DA CHOCA&rdquo;                &ldquo;DIAS D&rsquo;VILA&rdquo;<br />
+  [3] &ldquo;LIVRAMENTO DO BRUMADO&rdquo;         &ldquo;MUQUEM DE SAO FRANCISCO&rdquo;<br />
+  [5] &ldquo;OLIVERIA DOS BREJINHOS&rdquo;        &ldquo;PAU BRAZIL&rdquo;<br />
+  [7] &ldquo;QUIJINGUE&rdquo;                     &ldquo;ITAPAJE&rdquo;<br />
+  [9] &ldquo;MISSO VELHA&rdquo;                   &ldquo;SAO JOAO DO BELM&rdquo;<br />
+ [11] &ldquo;SAO LUIZ DO CURU&rdquo;              &ldquo;GUIA BRANCA&rdquo;<br />
+ [13] &ldquo;ILHA TRINDADE&rdquo;                 &ldquo;ILHAS DE MARTIM VAZ&rdquo;<br />
+ [15] &ldquo;AMERICANO DO BRAZIL&rdquo;           &ldquo;BRASABRANTES&rdquo;<br />
+ [17] &ldquo;MATEIRA&rdquo;                       &ldquo;PORTEIRO&rdquo;<br />
+ [19] &ldquo;SANTA RITA DE ARAGUAIA&rdquo;        &ldquo;ALTO ALEGRE DO MARANHO&rdquo;<br />
+ [21] &ldquo;AMAPA DO MARANHO&rdquo;              &ldquo;ANAPUROS&rdquo;<br />
+ [23] &ldquo;BOM JARDIN&rdquo;                    &ldquo;HUMBERTO CAMPOS&rdquo;<br />
+ [25] &ldquo;MATES DO NORTE&rdquo;                &ldquo;VICTORINO FREIRE&rdquo;<br />
+ [27] &ldquo;BATAIPORA&rdquo;                     &ldquo;BARRA DOS BUGRE&rdquo;<br />
+ [29] &ldquo;POXOREO&rdquo;                       &ldquo;SAO FELIX XINGU&rdquo;<br />
+ [31] &ldquo;BANDIERA DO SUL&rdquo;               &ldquo;BRASOPOLIS&rdquo;<br />
+ [33] &ldquo;CACHOEIRA DE PAJES&rdquo;            &ldquo;CAMPOS VERDES DE GOIAS&rdquo;<br />
+ [35] &ldquo;CARAVALHOPOLIS&rdquo;                &ldquo;CASSITERITA&rdquo;<br />
+ [37] &ldquo;CHAVESLANDIA&rdquo;                  &ldquo;FELISBERTO CALDEIRA&rdquo;<br />
+ [39] &ldquo;FRANCISCO DUMON&rdquo;               &ldquo;GOUVEA&rdquo;<br />
+ [41] &ldquo;ITABIRINHA DE MANTENA&rdquo;         &ldquo;ITACARAMBIRA&rdquo;<br />
+ [43] &ldquo;PIEDADE DO PONTE NOVA&rdquo;         &ldquo;PIUI&rdquo;<br />
+ [45] &ldquo;QUELUZITA&rdquo;                     &ldquo;SAO FRANCISCO DE OLIVEIRA&rdquo;<br />
+ [47] &ldquo;SAO SEBASTIO DA VARGEM ALEGRE&rdquo; &ldquo;SAN ANTONIO DO ITAMBE&rdquo;<br />
+ [49] &ldquo;SAN ANTONIO DO RIO ABAI&rdquo;       &ldquo;SANTA RITA DO IBITIPOCA&rdquo;<br />
+ [51] &ldquo;SANTA RITA ITUETO&rdquo;             &ldquo;ALMERIM&rdquo;<br />
+ [53] &ldquo;BRAGANGA&rdquo;                      &ldquo;ME DO RIO&rdquo;<br />
+ [55] &ldquo;BOQUEIRAO DOS COCHOS&rdquo;          &ldquo;DESTERRO DE MALTA&rdquo;<br />
+ [57] &ldquo;MONGEIRO&rdquo;                      &ldquo;PEDRA LAVADRA&rdquo;<br />
+ [59] &ldquo;RIACHO&rdquo;                        &ldquo;SAO MIGUEL TAIPU&rdquo;<br />
+ [61] &ldquo;SERIDO&rdquo;                        &ldquo;ALTAMIRA DO PARAN&rdquo;<br />
+ [63] &ldquo;ARAPU&rdquo;                         &ldquo;ASSIS CHATEAUBRI&rdquo;<br />
+ [65] &ldquo;CAMPO&rdquo;                         &ldquo;CONSELHEIRO MAYRINCK&rdquo;<br />
+ [67] &ldquo;IVATUVA&rdquo;                       &ldquo;JABUTI&rdquo;<br />
+ [69] &ldquo;SAO ANTONIO DE SUDOESTE&rdquo;       &ldquo;SALTO DO LONDRA&rdquo;<br />
+ [71] &ldquo;SANTA CRUZ DE MONTE CASTE&rdquo;     &ldquo;SANTA ISABEL DO OESTE&rdquo;<br />
+ [73] &ldquo;TEXEIRA SOARES&rdquo;                &ldquo;TIBAJI&rdquo;<br />
+ [75] &ldquo;VENCESLAU BRAS&rdquo;                &ldquo;VILA ALTA&rdquo;<br />
+ [77] &ldquo;BARRA DE GUABIRA&rdquo;              &ldquo;CABO&rdquo;<br />
+ [79] &ldquo;CACHOERINHA&rdquo;                   &ldquo;IGARACU&rdquo;<br />
+ [81] &ldquo;LAGOA DO ITAENGA&rdquo;              &ldquo;SAO JOAO DO BELMONTE&rdquo;<br />
+ [83] &ldquo;SAO JOAQUIN DO MONTE&rdquo;          &ldquo;SITIO DOS MOREIRAS&rdquo;<br />
+ [85] &ldquo;TAMBE&rdquo;                         &ldquo;PEDRO LI&rdquo;<br />
+ [87] &ldquo;SAO JOAO PIAUI&rdquo;                &ldquo;SAO MIGUEL TAPUIO&rdquo;<br />
+ [89] &ldquo;CAMPOS&rdquo;                        &ldquo;CAREPEBUS&rdquo;<br />
+ [91] &ldquo;CONCEICAO MACABU&rdquo;              &ldquo;ENGENHEIRO PAULO DE FRONT&rdquo;<br />
+ [93] &ldquo;PARATI&rdquo;                        &ldquo;VALENCIA&rdquo;<br />
+ [95] &ldquo;ACU&rdquo;                           &ldquo;AUGUSTO SEVERO&rdquo;<br />
+ [97] &ldquo;GOVERNADOR DIX-SEPT ROSAD&rdquo;     &ldquo;JANUARIO CICCO&rdquo;<br />
+ [99] &ldquo;JARDIM-PIRANHAS&rdquo;               &ldquo;JUNCO&rdquo;<br />
+[101] &ldquo;LAGOA DE ANTA&rdquo;                 &ldquo;LAGOAS DE VELHOS&rdquo;<br />
+[103] &ldquo;SAO MIGUEL DE TOUROS&rdquo;          &ldquo;BAJE&rdquo;<br />
+[105] &ldquo;BARO&rdquo;                          &ldquo;BOA VISTA DAS MISSES&rdquo;<br />
+[107] &ldquo;CAMAGUA&rdquo;                       &ldquo;CAMPO REAL&rdquo;<br />
+[109] &ldquo;CHIAPETA&rdquo;                      &ldquo;DILERMANO DE AGUIAR&rdquo;<br />
+[111] &ldquo;ERVAL&rdquo;                         &ldquo;INHACOR&rdquo;<br />
+[113] &ldquo;LAGOA MIRIM&rdquo;                   &ldquo;MARCIONILIO DIAS&rdquo;<br />
+[115] &ldquo;MAXIMILIANO DE ALMAEIDA&rdquo;       &ldquo;PALMITINHOS&rdquo;<br />
+[117] &ldquo;SAO MIGUEL DAS MISSES&rdquo;         &ldquo;UREA&rdquo;<br />
+[119] &ldquo;VITORIA DAS MISSES&rdquo;            &ldquo;ALTA FLORESTA D&rsquo;OESTE&rdquo;<br />
+[121] &ldquo;ALVORADA D&rsquo;OESTE&rdquo;              &ldquo;ESPIGAO D&rsquo;OESTE&rdquo;<br />
+[123] &ldquo;NOVA BRASILANDIA D&rsquo;OESTE&rdquo;      &ldquo;SAO FELIPE D&rsquo;OESTE&rdquo;<br />
+[125] &ldquo;SANTA LUZIA D&rsquo;OESTE&rdquo;           &ldquo;ALFREDO MARCONDE&rdquo;<br />
+[127] &ldquo;APARECIDA DOESTE&rdquo;              &ldquo;BRODOSQUI&rdquo;<br />
+[129] &ldquo;DULCINOPOLIS&rdquo;                  &ldquo;EMBU&rdquo;<br />
+[131] &ldquo;ESTRELA DO OESTE&rdquo;              &ldquo;FERNO&rdquo;<br />
+[133] &ldquo;FERRAZ DE VASCON&rdquo;              &ldquo;FLORINIA&rdquo;<br />
+[135] &ldquo;GUARANI DO OESTE&rdquo;              &ldquo;IPAUCU&rdquo;<br />
+[137] &ldquo;JABUTICABAL&rdquo;                   &ldquo;LUISIANIA&rdquo;<br />
+[139] &ldquo;PALMEIRA DO OESTE&rdquo;             &ldquo;PARANAPAREMA&rdquo;<br />
+[141] &ldquo;PIRACUNUNGA&rdquo;                   &ldquo;PONTES GESTRAL&rdquo;<br />
+[143] &ldquo;QUITANA&rdquo;                       &ldquo;SAO LUIZ DO PARAITINGA&rdquo;<br />
+[145] &ldquo;SALTO DO PIRAPORA&rdquo;             &ldquo;SANTA CLARA DO OESTE&rdquo;<br />
+[147] &ldquo;SANTA RITA DO OESTE&rdquo;           &ldquo;GRAO PARA&rdquo;<br />
+[149] &ldquo;LUIZ ALVES&rdquo;                    &ldquo;PAULO LOPEZ&rdquo;<br />
+[151] &ldquo;PICARRAS&rdquo;                      &ldquo;PONTA ALTA&rdquo;<br />
+[153] &ldquo;BUQUIM&rdquo;                        &ldquo;GRACHO CARDOSO&rdquo;<br />
+[155] &ldquo;ITAPORANGA DAJUDA&rdquo;             &ldquo;NOSSA SENHORA APRECIDO&rdquo;<br />
+[157] &ldquo;COUTO MAGALHAES&rdquo;               &ldquo;MOSQUITO&rdquo;
+{% endhighlight %}</p>
+
+<p>Hmmm, that&rsquo;s a little annoying, but some are easy to fix, so in the end, we&rsquo;ll be missing only a few municipalities because of these coding differences. Some others are harder to figure out: I don&rsquo;t know if the errors are in the TSE&rsquo;s data, or in this geo-data. I don&rsquo;t feel like spending a long time recoding stuff though, so let&rsquo;s leave it aside for now.</p>
+
+<p>{% highlight r %}
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;ASSIS BRAZIL&rdquo;] &lt;- &ldquo;ASSIS BRASIL&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;JOINVILE&rdquo;] &lt;- &ldquo;JOINVILLE&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;MACEIO (CAPITAL)&rdquo;] &lt;- &ldquo;MACEIO&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;SAO GABRIEL DE CAHOEIRA&rdquo;] &lt;- &ldquo;SAO GABRIEL DA CACHOEIRA&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;NOVO BRAZIL&rdquo;] &lt;- &ldquo;NOVO BRASIL&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;PERI-MIRIM&rdquo;] &lt;- &ldquo;PERI MIRIM&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;SEM-PEIXE&rdquo;] &lt;- &ldquo;SEM PEIXE&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;BRAZIL NOVO&rdquo;] &lt;- &ldquo;BRASIL NOVO&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;OLHOS-D&rsquo;AGUA&rdquo;] &lt;- &ldquo;OLHOS D&rsquo;AGUA&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;OLHO-D&rsquo;AGUA DO BORGES&rdquo;] &lt;- &ldquo;OLHO D&rsquo;AGUA DO BORGES&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;SERRA DA SAUDAD&rdquo;] &lt;- &ldquo;SERRA DA SAUDADE&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;PEIXE BOI&rdquo;] &lt;- &ldquo;PEIXE-BOI&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;RICAHO DOS CAVALOS&rdquo;] &lt;- &ldquo;RIACHO DOS CAVALOS&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;BRAZILEIRA&rdquo;] &lt;- &ldquo;BRASILEIRA&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;SUL BRAZIL&rdquo;] &lt;- &ldquo;SUL BRASIL&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;FLORINIAPOLIS&rdquo;] &lt;- &ldquo;FLORIANOPOLIS&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;BON JESUS DOS PERDOES&rdquo;] &lt;- &ldquo;BOM JESUS DOS PERDOES&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;OLHO-D&rsquo;AGUA DO BORGES&rdquo;] &lt;- &ldquo;OLHO D&rsquo;AGUA DO BORGES&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;MISSO&rdquo;] &lt;- &ldquo;MISSAO&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;SALIDAO&rdquo;] &lt;- &ldquo;SOLIDAO&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;SAO JOAO DAS DUAS PONTE&rdquo;] &lt;- &ldquo;SAO JOAO DAS DUAS PONTES&rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&ldquo;ORLEAES&rdquo;] &lt;- &ldquo;ORLEANS&rdquo;
+{% endhighlight %}</p>
+
+<p>We can use <code>fortify</code> to get all this into something useful for <code>ggplot()</code> to deal with. Then we can add in all the data we have for Dilma&rsquo;s vote totals and then we&rsquo;re ready to plot something.</p>
+
+<p>{% highlight r %}
+Brasil &lt;- fortify(BRmap, region = &ldquo;ID_2&rdquo;) %&gt;%<br />
+  mutate(id = as.integer(id)) %&gt;%
+  full_join(BRmap@data, by =c(&ldquo;id&rdquo; = &ldquo;ID_2&rdquo;)) %&gt;%
+  select(c(id, long, lat, order, hole, piece, group, NAME_2)) %&gt;%
+  rename(NOME_MUNICIPIO = NAME_2)</p>
+
+<p>head(Brasil)
+  id      long       lat order  hole piece group NOME_MUNICIPIO
+1  1 -67.10586 -9.688110     1 FALSE     1   1.1     ACRELANDIA
+2  1 -67.05984 -9.706651     2 FALSE     1   1.1     ACRELANDIA
+3  1 -66.80647 -9.814520     3 FALSE     1   1.1     ACRELANDIA
+4  1 -66.62003 -9.894039     4 FALSE     1   1.1     ACRELANDIA
+5  1 -66.58875 -9.903196     5 FALSE     1   1.1     ACRELANDIA
+6  1 -66.62333 -9.923209     6 FALSE     1   1.1     ACRELANDIA</p>
+
+<p>Dilma_1 &lt;- left_join(Brasil, Pres1) %&gt;%
+  mutate(PERC = ifelse(is.na(PERC), mean(PERC, na.rm=T), PERC))
+{% endhighlight %}</p>
+
+<p>{% highlight r %}
+ggplot() +
+  geom_polygon(data = Dilma_1, aes(x = long, y = lat,
+                                   group = group, fill = PERC),
+               color = &ldquo;white&rdquo;, size = 0.1) +
+  scale_fill_distiller(palette = &ldquo;RdBu&rdquo;,
+                       breaks = pretty_breaks(n = 8)) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  labs(fill = &ldquo;Dilma (%)&rdquo;) +
+  theme_nothing(legend = TRUE) +
+  xlim(range(Dilma_1$long)) + ylim(range(Dilma_1$lat)) +
+  coord_map()
+{% endhighlight %}</p>
+
+<p><img src="http://i.imgur.com/xYMEQrk.jpg" style="width:800px;height:800px;"></p>
+
+<p>We can see that even in 2014, Dilma&rsquo;s support in the South-east of the country was not overwhelming.</p>
+
+<p>We can also use <code>electionsBR</code> to look at other items of interest, such as the share of the party vote. For example, perhaps you&rsquo;re interested in whether the Communist Party of Brazil has strongholds in the country. All we need to do is subset the <code>Mun</code> dataframe that we downloaded earlier by <code>DESCRICAO_CARGO == &quot;DEPUTADO FEDERAL&quot;</code> and <code>SIGLA_PARTIDO == &quot;PC do B&quot;</code>. Apart from these changes, everything else can be done in the same way. Once we have this dataframe (which I&rsquo;ll call <code>pc</code>), we plot it in the same way:</p>
+
+<p>{% highlight r %}
+ggplot() +
+  geom_polygon(data = pc, aes(x = long, y = lat, group = group,
+                              fill = PERC),
+               color = &ldquo;white&rdquo;, size = 0.1) +
+  scale_fill_distiller(palette = &ldquo;RdBu&rdquo;,
+                       breaks = pretty_breaks(n = 8)) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  labs(fill = &ldquo;PC do B (%)&rdquo;) +
+  theme_nothing(legend = TRUE) +
+  xlim(range(pc$long)) + ylim(range(pc$lat)) +
+  coord_map()
+{% endhighlight %}</p>
+
+<p><img src="http://i.imgur.com/jXKjZgG.jpg" style="width:800px;height:800px;"></p>
+
+<p>Not a very Communist country, by the looks of things.</p>
+
+<p>Well, that&rsquo;s a brief look at <code>electionsBR</code>. Data for other years and elections is available, as well as data at other administrative levels, and not just the President and Federal Deputies. The TSE also holds data on the background of the candidates and their campaign spending, all of which can be utilized with <code>electionsBR</code>. And if you fancy combining all this information with legislative behaviour from inside the Chamber of Deputies, just load the <code>bRasilLegis</code> package and you have a wealth of data on Brazilian Federal Deputies at your fingertips. Indeed, I&rsquo;m proud to be involved in both packages. It&rsquo;s great to help to make the access to these data easier for those interested in Brazilian politics.</p>
+
+<p>P.s. This blog post was written using <a href="http://rmarkdown.rstudio.com/r_notebooks.html"><code>R Notebooks</code></a> and transformed to .md in my jekyll <code>_posts</code> folder using a function from <a href="https://github.com/dgrtwo/dgrtwo.github.com/blob/master/_scripts/knitpages.R">David Robinson</a>. I&rsquo;d have to say that I really like <code>R Notebooks</code> so far, especially the preview. Try it out.</p>
+
+<p>Update: it seems that some folks might be running into problems running the scripts above, with <strong>R</strong> spitting out: <code>Error: isTRUE(gpclibPermitStatus()) is not TRUE</code>. The solution to this is to make sure you have rgdal or rgeos or a similar mapping package installed.</p>
+
+<p><b id="fn1">1</b> Disclosure: I&rsquo;m involved in the development of this package, but I am not one of the original developers, that credit goes to <a href="https://github.com/silvadenisson/electionsBR">Denisson Silva</a>, Fernando Meireles, and Beatriz Costa. Nevertheless, I&rsquo;m promoting it here because I think it&rsquo;s great, not because I&rsquo;m involved. (Although I&rsquo;m involved because I think it&rsquo;s great :smile: ) <a href="#a1">↩</a></p>
+
+            </div>
+        </article>
+    </div>
+    
+<section id="sidebar">
+
+    
+        <section id="intro">
+            
+            
+            
+            <ul class="icons">
+                
+                
+            </ul>
+        </section>
+
+    
+        <section id="recent-posts">
+            <ul class="posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2017/02/01/stan/">Stan</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2017-02-01'>
+                                    February 1, 2017</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2016/12/30/a-plain-markdown-post/">A Plain Markdown Post</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2016-12-30'>
+                                    December 30, 2016</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2015/07/23/hello-r-markdown/">Hello R Markdown</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2015-07-23'>
+                                    July 23, 2015</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/">Bayesian IRT in R and Stan</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/bayesian-stats----book-recommendations/">Bayesian Stats -- Book Recommendations</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+
+                
+                    <li>
+                        <ul class="actions">
+                            <li><a href=
+                            
+                                "/post/"
+                            
+                            class="button">View more posts</a></li>
+                        </ul>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+    
+    
+    
+        <section id="categories">
+            <ul class="posts">
+                <header>
+                    <h3><a href="../../../../categories/">Categories</a></h3>
+                </header>
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/blog/">blog</a>
+                                <span style="float:right;">14</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/r/">r</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+            </ul>
+        </section>
+    
+
+    
+        
+
+    
+        <section id="footer">
+            <ul class="icons">
+                
+                
+            </ul>
+
+            <p class="copyright">&copy; Lithium Theme. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
+        </section>
+
+</section>
+
+            </div>
+        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+        
+
+        
+        
+            
+        
+
+        
+        
+            <script src="../../../../js/jquery.min.js"></script>
+            <script src="../../../../js/skel.min.js"></script>
+            <script src="../../../../js/util.js"></script>
+            <script src="../../../../js/main.js"></script>
+            <script src="../../../../js/backToTop.js"></script>
+            <script src="../../../../js/highlight.pack.js"></script>
+        
+
+        
+
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+            
+    </body>
+</html>
+

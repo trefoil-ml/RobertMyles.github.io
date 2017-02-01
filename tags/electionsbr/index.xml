@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Electionsbr on Lithium Theme</title>
+    <link>/tags/electionsbr/</link>
+    <description>Recent content in Electionsbr on Lithium Theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="/tags/electionsbr/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Map-making with R and electionsBR</title>
+      <link>/1/01/01/map-making-with-r-and-electionsbr/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/01/map-making-with-r-and-electionsbr/</guid>
+      <description>&lt;p&gt;For those interested in Brazilian politics, there&amp;rsquo;s a great new package called &lt;code&gt;electionsBR&lt;/code&gt; (those who understand Portuguese can find a post on it &lt;a href=&#34;http://fmeireles.com/blog/rstats/electionsbr-um-pacote-para-baixar-dados-eleitorais-do-tse&#34;&gt;here&lt;/a&gt;). This package takes data from the &lt;em&gt;Tribunal Superior Eleitoral&lt;/em&gt; and makes it available in a tidy format for users of R. Given my recent obsession with &lt;a href=&#34;http://robertmyles.github.io//re-creating-plots-from-the-economist-in-r.html&#34;&gt;map-making&lt;/a&gt;, I think it&amp;rsquo;s only natural I&amp;rsquo;d want to make maps of Brazil with this package.&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;So, what can we do with it? Well, how about a map of how Brazilians voted in the general election of 2014? To do this, we can use &lt;code&gt;electionsBR&lt;/code&gt; to get the election data, and a mixture of &lt;code&gt;tidyverse&lt;/code&gt; and some mapping and plotting packages:&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+library(tidyverse)
+library(electionsBR)
+library(ggmap)
+library(rgdal)
+library(stringi)
+library(scales)
+library(maptools)
+library(RColorBrewer)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;vote_mun_zone_fed()&lt;/code&gt; function takes a single argument, &lt;code&gt;year&lt;/code&gt;, as an integer. There are quite a lot of data, so it takes a little while to download.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+Mun &amp;lt;- vote_mun_zone_fed(2014)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Once we have these data, we can use the &lt;code&gt;tidyverse&lt;/code&gt; to clean it up and organize it they way we want. I&amp;rsquo;m going to change the character encoding to ASCII, using the &lt;code&gt;stringi&lt;/code&gt; package, and select only the columns I need.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+Mun &amp;lt;- Mun %&amp;gt;%
+  select(SIGLA_UF, DESCRICAO_CARGO, CODIGO_MUNICIPIO, TOTAL_VOTOS,
+         NUMERO_CAND, NOME_MUNICIPIO, NUM_TURNO, SIGLA_PARTIDO) %&amp;gt;%
+  mutate(NOME_MUNICIPIO = stri_trans_general(NOME_MUNICIPIO, &amp;ldquo;Latin-ASCII&amp;rdquo;))
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;One interesting thing we could do with this dataset is map the percentage of the electorate that voted for Dilma. We&amp;rsquo;ll need shapefiles for Brazil, which you can get from &lt;a href=&#34;http://www.gadm.org/country&#34;&gt;gadm.org&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;We&amp;rsquo;ll also need to isolate the vote for Dilma and then calculate the proportion in each municipality that voted for her. There were also two rounds of voting, so we can show each one. The code below does this for the first round, to do the same thing for the second round, we just change the first call to &lt;code&gt;filter&lt;/code&gt; to &lt;code&gt;NUM_TURNO == 2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+Pres1 &amp;lt;- Mun %&amp;gt;%
+  filter(DESCRICAO_CARGO == &amp;ldquo;PRESIDENTE&amp;rdquo;, NUM_TURNO == 1,
+         SIGLA_UF != &amp;ldquo;ZZ&amp;rdquo;) %&amp;gt;%
+  group_by(NUMERO_CAND, CODIGO_MUNICIPIO) %&amp;gt;%
+  mutate(SUM = sum(TOTAL_VOTOS)) %&amp;gt;%
+  distinct(CODIGO_MUNICIPIO, .keep_all=T) %&amp;gt;%
+  ungroup() %&amp;gt;%
+  group_by(CODIGO_MUNICIPIO) %&amp;gt;%
+  mutate(PERC = TOTAL_VOTOS/sum(TOTAL_VOTOS)*100) %&amp;gt;%
+  arrange(SIGLA_UF, NOME_MUNICIPIO) %&amp;gt;%
+  ungroup() %&amp;gt;%
+  filter(NUMERO_CAND == 13)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Next, we read in our shape files. We have some work to do to tidy up the names of the municipalities and to correct for coding errors.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+BRmap &amp;lt;- readOGR(dsn = &amp;ldquo;BRA_adm_shp&amp;rdquo;, layer = &amp;ldquo;BRA_adm3&amp;rdquo;, verbose = FALSE)
+BRmap@data$NAME_2 &amp;lt;- BRmap@data$NAME_2 %&amp;gt;%
+  as.character() %&amp;gt;%
+  stri_trans_general(&amp;ldquo;Latin-ASCII&amp;rdquo;) %&amp;gt;%
+  toupper()
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s see what municipalities are missing from our &lt;code&gt;electionsBR&lt;/code&gt; municipality data.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+&amp;lsquo;%ni%&amp;rsquo; &amp;lt;- Negate(&amp;lsquo;%in%&amp;rsquo;)&lt;/p&gt;
+
+&lt;p&gt;unique(BRmap@data$NAME_2[which(BRmap@data$NAME_2 %ni% Mun$NOME_MUNICIPIO)])&lt;/p&gt;
+
+&lt;p&gt;[1] &amp;ldquo;BARRA DA CHOCA&amp;rdquo;                &amp;ldquo;DIAS D&amp;rsquo;VILA&amp;rdquo;&lt;br /&gt;
+  [3] &amp;ldquo;LIVRAMENTO DO BRUMADO&amp;rdquo;         &amp;ldquo;MUQUEM DE SAO FRANCISCO&amp;rdquo;&lt;br /&gt;
+  [5] &amp;ldquo;OLIVERIA DOS BREJINHOS&amp;rdquo;        &amp;ldquo;PAU BRAZIL&amp;rdquo;&lt;br /&gt;
+  [7] &amp;ldquo;QUIJINGUE&amp;rdquo;                     &amp;ldquo;ITAPAJE&amp;rdquo;&lt;br /&gt;
+  [9] &amp;ldquo;MISSO VELHA&amp;rdquo;                   &amp;ldquo;SAO JOAO DO BELM&amp;rdquo;&lt;br /&gt;
+ [11] &amp;ldquo;SAO LUIZ DO CURU&amp;rdquo;              &amp;ldquo;GUIA BRANCA&amp;rdquo;&lt;br /&gt;
+ [13] &amp;ldquo;ILHA TRINDADE&amp;rdquo;                 &amp;ldquo;ILHAS DE MARTIM VAZ&amp;rdquo;&lt;br /&gt;
+ [15] &amp;ldquo;AMERICANO DO BRAZIL&amp;rdquo;           &amp;ldquo;BRASABRANTES&amp;rdquo;&lt;br /&gt;
+ [17] &amp;ldquo;MATEIRA&amp;rdquo;                       &amp;ldquo;PORTEIRO&amp;rdquo;&lt;br /&gt;
+ [19] &amp;ldquo;SANTA RITA DE ARAGUAIA&amp;rdquo;        &amp;ldquo;ALTO ALEGRE DO MARANHO&amp;rdquo;&lt;br /&gt;
+ [21] &amp;ldquo;AMAPA DO MARANHO&amp;rdquo;              &amp;ldquo;ANAPUROS&amp;rdquo;&lt;br /&gt;
+ [23] &amp;ldquo;BOM JARDIN&amp;rdquo;                    &amp;ldquo;HUMBERTO CAMPOS&amp;rdquo;&lt;br /&gt;
+ [25] &amp;ldquo;MATES DO NORTE&amp;rdquo;                &amp;ldquo;VICTORINO FREIRE&amp;rdquo;&lt;br /&gt;
+ [27] &amp;ldquo;BATAIPORA&amp;rdquo;                     &amp;ldquo;BARRA DOS BUGRE&amp;rdquo;&lt;br /&gt;
+ [29] &amp;ldquo;POXOREO&amp;rdquo;                       &amp;ldquo;SAO FELIX XINGU&amp;rdquo;&lt;br /&gt;
+ [31] &amp;ldquo;BANDIERA DO SUL&amp;rdquo;               &amp;ldquo;BRASOPOLIS&amp;rdquo;&lt;br /&gt;
+ [33] &amp;ldquo;CACHOEIRA DE PAJES&amp;rdquo;            &amp;ldquo;CAMPOS VERDES DE GOIAS&amp;rdquo;&lt;br /&gt;
+ [35] &amp;ldquo;CARAVALHOPOLIS&amp;rdquo;                &amp;ldquo;CASSITERITA&amp;rdquo;&lt;br /&gt;
+ [37] &amp;ldquo;CHAVESLANDIA&amp;rdquo;                  &amp;ldquo;FELISBERTO CALDEIRA&amp;rdquo;&lt;br /&gt;
+ [39] &amp;ldquo;FRANCISCO DUMON&amp;rdquo;               &amp;ldquo;GOUVEA&amp;rdquo;&lt;br /&gt;
+ [41] &amp;ldquo;ITABIRINHA DE MANTENA&amp;rdquo;         &amp;ldquo;ITACARAMBIRA&amp;rdquo;&lt;br /&gt;
+ [43] &amp;ldquo;PIEDADE DO PONTE NOVA&amp;rdquo;         &amp;ldquo;PIUI&amp;rdquo;&lt;br /&gt;
+ [45] &amp;ldquo;QUELUZITA&amp;rdquo;                     &amp;ldquo;SAO FRANCISCO DE OLIVEIRA&amp;rdquo;&lt;br /&gt;
+ [47] &amp;ldquo;SAO SEBASTIO DA VARGEM ALEGRE&amp;rdquo; &amp;ldquo;SAN ANTONIO DO ITAMBE&amp;rdquo;&lt;br /&gt;
+ [49] &amp;ldquo;SAN ANTONIO DO RIO ABAI&amp;rdquo;       &amp;ldquo;SANTA RITA DO IBITIPOCA&amp;rdquo;&lt;br /&gt;
+ [51] &amp;ldquo;SANTA RITA ITUETO&amp;rdquo;             &amp;ldquo;ALMERIM&amp;rdquo;&lt;br /&gt;
+ [53] &amp;ldquo;BRAGANGA&amp;rdquo;                      &amp;ldquo;ME DO RIO&amp;rdquo;&lt;br /&gt;
+ [55] &amp;ldquo;BOQUEIRAO DOS COCHOS&amp;rdquo;          &amp;ldquo;DESTERRO DE MALTA&amp;rdquo;&lt;br /&gt;
+ [57] &amp;ldquo;MONGEIRO&amp;rdquo;                      &amp;ldquo;PEDRA LAVADRA&amp;rdquo;&lt;br /&gt;
+ [59] &amp;ldquo;RIACHO&amp;rdquo;                        &amp;ldquo;SAO MIGUEL TAIPU&amp;rdquo;&lt;br /&gt;
+ [61] &amp;ldquo;SERIDO&amp;rdquo;                        &amp;ldquo;ALTAMIRA DO PARAN&amp;rdquo;&lt;br /&gt;
+ [63] &amp;ldquo;ARAPU&amp;rdquo;                         &amp;ldquo;ASSIS CHATEAUBRI&amp;rdquo;&lt;br /&gt;
+ [65] &amp;ldquo;CAMPO&amp;rdquo;                         &amp;ldquo;CONSELHEIRO MAYRINCK&amp;rdquo;&lt;br /&gt;
+ [67] &amp;ldquo;IVATUVA&amp;rdquo;                       &amp;ldquo;JABUTI&amp;rdquo;&lt;br /&gt;
+ [69] &amp;ldquo;SAO ANTONIO DE SUDOESTE&amp;rdquo;       &amp;ldquo;SALTO DO LONDRA&amp;rdquo;&lt;br /&gt;
+ [71] &amp;ldquo;SANTA CRUZ DE MONTE CASTE&amp;rdquo;     &amp;ldquo;SANTA ISABEL DO OESTE&amp;rdquo;&lt;br /&gt;
+ [73] &amp;ldquo;TEXEIRA SOARES&amp;rdquo;                &amp;ldquo;TIBAJI&amp;rdquo;&lt;br /&gt;
+ [75] &amp;ldquo;VENCESLAU BRAS&amp;rdquo;                &amp;ldquo;VILA ALTA&amp;rdquo;&lt;br /&gt;
+ [77] &amp;ldquo;BARRA DE GUABIRA&amp;rdquo;              &amp;ldquo;CABO&amp;rdquo;&lt;br /&gt;
+ [79] &amp;ldquo;CACHOERINHA&amp;rdquo;                   &amp;ldquo;IGARACU&amp;rdquo;&lt;br /&gt;
+ [81] &amp;ldquo;LAGOA DO ITAENGA&amp;rdquo;              &amp;ldquo;SAO JOAO DO BELMONTE&amp;rdquo;&lt;br /&gt;
+ [83] &amp;ldquo;SAO JOAQUIN DO MONTE&amp;rdquo;          &amp;ldquo;SITIO DOS MOREIRAS&amp;rdquo;&lt;br /&gt;
+ [85] &amp;ldquo;TAMBE&amp;rdquo;                         &amp;ldquo;PEDRO LI&amp;rdquo;&lt;br /&gt;
+ [87] &amp;ldquo;SAO JOAO PIAUI&amp;rdquo;                &amp;ldquo;SAO MIGUEL TAPUIO&amp;rdquo;&lt;br /&gt;
+ [89] &amp;ldquo;CAMPOS&amp;rdquo;                        &amp;ldquo;CAREPEBUS&amp;rdquo;&lt;br /&gt;
+ [91] &amp;ldquo;CONCEICAO MACABU&amp;rdquo;              &amp;ldquo;ENGENHEIRO PAULO DE FRONT&amp;rdquo;&lt;br /&gt;
+ [93] &amp;ldquo;PARATI&amp;rdquo;                        &amp;ldquo;VALENCIA&amp;rdquo;&lt;br /&gt;
+ [95] &amp;ldquo;ACU&amp;rdquo;                           &amp;ldquo;AUGUSTO SEVERO&amp;rdquo;&lt;br /&gt;
+ [97] &amp;ldquo;GOVERNADOR DIX-SEPT ROSAD&amp;rdquo;     &amp;ldquo;JANUARIO CICCO&amp;rdquo;&lt;br /&gt;
+ [99] &amp;ldquo;JARDIM-PIRANHAS&amp;rdquo;               &amp;ldquo;JUNCO&amp;rdquo;&lt;br /&gt;
+[101] &amp;ldquo;LAGOA DE ANTA&amp;rdquo;                 &amp;ldquo;LAGOAS DE VELHOS&amp;rdquo;&lt;br /&gt;
+[103] &amp;ldquo;SAO MIGUEL DE TOUROS&amp;rdquo;          &amp;ldquo;BAJE&amp;rdquo;&lt;br /&gt;
+[105] &amp;ldquo;BARO&amp;rdquo;                          &amp;ldquo;BOA VISTA DAS MISSES&amp;rdquo;&lt;br /&gt;
+[107] &amp;ldquo;CAMAGUA&amp;rdquo;                       &amp;ldquo;CAMPO REAL&amp;rdquo;&lt;br /&gt;
+[109] &amp;ldquo;CHIAPETA&amp;rdquo;                      &amp;ldquo;DILERMANO DE AGUIAR&amp;rdquo;&lt;br /&gt;
+[111] &amp;ldquo;ERVAL&amp;rdquo;                         &amp;ldquo;INHACOR&amp;rdquo;&lt;br /&gt;
+[113] &amp;ldquo;LAGOA MIRIM&amp;rdquo;                   &amp;ldquo;MARCIONILIO DIAS&amp;rdquo;&lt;br /&gt;
+[115] &amp;ldquo;MAXIMILIANO DE ALMAEIDA&amp;rdquo;       &amp;ldquo;PALMITINHOS&amp;rdquo;&lt;br /&gt;
+[117] &amp;ldquo;SAO MIGUEL DAS MISSES&amp;rdquo;         &amp;ldquo;UREA&amp;rdquo;&lt;br /&gt;
+[119] &amp;ldquo;VITORIA DAS MISSES&amp;rdquo;            &amp;ldquo;ALTA FLORESTA D&amp;rsquo;OESTE&amp;rdquo;&lt;br /&gt;
+[121] &amp;ldquo;ALVORADA D&amp;rsquo;OESTE&amp;rdquo;              &amp;ldquo;ESPIGAO D&amp;rsquo;OESTE&amp;rdquo;&lt;br /&gt;
+[123] &amp;ldquo;NOVA BRASILANDIA D&amp;rsquo;OESTE&amp;rdquo;      &amp;ldquo;SAO FELIPE D&amp;rsquo;OESTE&amp;rdquo;&lt;br /&gt;
+[125] &amp;ldquo;SANTA LUZIA D&amp;rsquo;OESTE&amp;rdquo;           &amp;ldquo;ALFREDO MARCONDE&amp;rdquo;&lt;br /&gt;
+[127] &amp;ldquo;APARECIDA DOESTE&amp;rdquo;              &amp;ldquo;BRODOSQUI&amp;rdquo;&lt;br /&gt;
+[129] &amp;ldquo;DULCINOPOLIS&amp;rdquo;                  &amp;ldquo;EMBU&amp;rdquo;&lt;br /&gt;
+[131] &amp;ldquo;ESTRELA DO OESTE&amp;rdquo;              &amp;ldquo;FERNO&amp;rdquo;&lt;br /&gt;
+[133] &amp;ldquo;FERRAZ DE VASCON&amp;rdquo;              &amp;ldquo;FLORINIA&amp;rdquo;&lt;br /&gt;
+[135] &amp;ldquo;GUARANI DO OESTE&amp;rdquo;              &amp;ldquo;IPAUCU&amp;rdquo;&lt;br /&gt;
+[137] &amp;ldquo;JABUTICABAL&amp;rdquo;                   &amp;ldquo;LUISIANIA&amp;rdquo;&lt;br /&gt;
+[139] &amp;ldquo;PALMEIRA DO OESTE&amp;rdquo;             &amp;ldquo;PARANAPAREMA&amp;rdquo;&lt;br /&gt;
+[141] &amp;ldquo;PIRACUNUNGA&amp;rdquo;                   &amp;ldquo;PONTES GESTRAL&amp;rdquo;&lt;br /&gt;
+[143] &amp;ldquo;QUITANA&amp;rdquo;                       &amp;ldquo;SAO LUIZ DO PARAITINGA&amp;rdquo;&lt;br /&gt;
+[145] &amp;ldquo;SALTO DO PIRAPORA&amp;rdquo;             &amp;ldquo;SANTA CLARA DO OESTE&amp;rdquo;&lt;br /&gt;
+[147] &amp;ldquo;SANTA RITA DO OESTE&amp;rdquo;           &amp;ldquo;GRAO PARA&amp;rdquo;&lt;br /&gt;
+[149] &amp;ldquo;LUIZ ALVES&amp;rdquo;                    &amp;ldquo;PAULO LOPEZ&amp;rdquo;&lt;br /&gt;
+[151] &amp;ldquo;PICARRAS&amp;rdquo;                      &amp;ldquo;PONTA ALTA&amp;rdquo;&lt;br /&gt;
+[153] &amp;ldquo;BUQUIM&amp;rdquo;                        &amp;ldquo;GRACHO CARDOSO&amp;rdquo;&lt;br /&gt;
+[155] &amp;ldquo;ITAPORANGA DAJUDA&amp;rdquo;             &amp;ldquo;NOSSA SENHORA APRECIDO&amp;rdquo;&lt;br /&gt;
+[157] &amp;ldquo;COUTO MAGALHAES&amp;rdquo;               &amp;ldquo;MOSQUITO&amp;rdquo;
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Hmmm, that&amp;rsquo;s a little annoying, but some are easy to fix, so in the end, we&amp;rsquo;ll be missing only a few municipalities because of these coding differences. Some others are harder to figure out: I don&amp;rsquo;t know if the errors are in the TSE&amp;rsquo;s data, or in this geo-data. I don&amp;rsquo;t feel like spending a long time recoding stuff though, so let&amp;rsquo;s leave it aside for now.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;ASSIS BRAZIL&amp;rdquo;] &amp;lt;- &amp;ldquo;ASSIS BRASIL&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;JOINVILE&amp;rdquo;] &amp;lt;- &amp;ldquo;JOINVILLE&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;MACEIO (CAPITAL)&amp;rdquo;] &amp;lt;- &amp;ldquo;MACEIO&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;SAO GABRIEL DE CAHOEIRA&amp;rdquo;] &amp;lt;- &amp;ldquo;SAO GABRIEL DA CACHOEIRA&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;NOVO BRAZIL&amp;rdquo;] &amp;lt;- &amp;ldquo;NOVO BRASIL&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;PERI-MIRIM&amp;rdquo;] &amp;lt;- &amp;ldquo;PERI MIRIM&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;SEM-PEIXE&amp;rdquo;] &amp;lt;- &amp;ldquo;SEM PEIXE&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;BRAZIL NOVO&amp;rdquo;] &amp;lt;- &amp;ldquo;BRASIL NOVO&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;OLHOS-D&amp;rsquo;AGUA&amp;rdquo;] &amp;lt;- &amp;ldquo;OLHOS D&amp;rsquo;AGUA&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;OLHO-D&amp;rsquo;AGUA DO BORGES&amp;rdquo;] &amp;lt;- &amp;ldquo;OLHO D&amp;rsquo;AGUA DO BORGES&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;SERRA DA SAUDAD&amp;rdquo;] &amp;lt;- &amp;ldquo;SERRA DA SAUDADE&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;PEIXE BOI&amp;rdquo;] &amp;lt;- &amp;ldquo;PEIXE-BOI&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;RICAHO DOS CAVALOS&amp;rdquo;] &amp;lt;- &amp;ldquo;RIACHO DOS CAVALOS&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;BRAZILEIRA&amp;rdquo;] &amp;lt;- &amp;ldquo;BRASILEIRA&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;SUL BRAZIL&amp;rdquo;] &amp;lt;- &amp;ldquo;SUL BRASIL&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;FLORINIAPOLIS&amp;rdquo;] &amp;lt;- &amp;ldquo;FLORIANOPOLIS&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;BON JESUS DOS PERDOES&amp;rdquo;] &amp;lt;- &amp;ldquo;BOM JESUS DOS PERDOES&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;OLHO-D&amp;rsquo;AGUA DO BORGES&amp;rdquo;] &amp;lt;- &amp;ldquo;OLHO D&amp;rsquo;AGUA DO BORGES&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;MISSO&amp;rdquo;] &amp;lt;- &amp;ldquo;MISSAO&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;SALIDAO&amp;rdquo;] &amp;lt;- &amp;ldquo;SOLIDAO&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;SAO JOAO DAS DUAS PONTE&amp;rdquo;] &amp;lt;- &amp;ldquo;SAO JOAO DAS DUAS PONTES&amp;rdquo;
+BRmap@data$NAME_2[BRmap@data$NAME_2==&amp;ldquo;ORLEAES&amp;rdquo;] &amp;lt;- &amp;ldquo;ORLEANS&amp;rdquo;
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;We can use &lt;code&gt;fortify&lt;/code&gt; to get all this into something useful for &lt;code&gt;ggplot()&lt;/code&gt; to deal with. Then we can add in all the data we have for Dilma&amp;rsquo;s vote totals and then we&amp;rsquo;re ready to plot something.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+Brasil &amp;lt;- fortify(BRmap, region = &amp;ldquo;ID_2&amp;rdquo;) %&amp;gt;%&lt;br /&gt;
+  mutate(id = as.integer(id)) %&amp;gt;%
+  full_join(BRmap@data, by =c(&amp;ldquo;id&amp;rdquo; = &amp;ldquo;ID_2&amp;rdquo;)) %&amp;gt;%
+  select(c(id, long, lat, order, hole, piece, group, NAME_2)) %&amp;gt;%
+  rename(NOME_MUNICIPIO = NAME_2)&lt;/p&gt;
+
+&lt;p&gt;head(Brasil)
+  id      long       lat order  hole piece group NOME_MUNICIPIO
+1  1 -67.10586 -9.688110     1 FALSE     1   1.1     ACRELANDIA
+2  1 -67.05984 -9.706651     2 FALSE     1   1.1     ACRELANDIA
+3  1 -66.80647 -9.814520     3 FALSE     1   1.1     ACRELANDIA
+4  1 -66.62003 -9.894039     4 FALSE     1   1.1     ACRELANDIA
+5  1 -66.58875 -9.903196     5 FALSE     1   1.1     ACRELANDIA
+6  1 -66.62333 -9.923209     6 FALSE     1   1.1     ACRELANDIA&lt;/p&gt;
+
+&lt;p&gt;Dilma_1 &amp;lt;- left_join(Brasil, Pres1) %&amp;gt;%
+  mutate(PERC = ifelse(is.na(PERC), mean(PERC, na.rm=T), PERC))
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+ggplot() +
+  geom_polygon(data = Dilma_1, aes(x = long, y = lat,
+                                   group = group, fill = PERC),
+               color = &amp;ldquo;white&amp;rdquo;, size = 0.1) +
+  scale_fill_distiller(palette = &amp;ldquo;RdBu&amp;rdquo;,
+                       breaks = pretty_breaks(n = 8)) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  labs(fill = &amp;ldquo;Dilma (%)&amp;rdquo;) +
+  theme_nothing(legend = TRUE) +
+  xlim(range(Dilma_1$long)) + ylim(range(Dilma_1$lat)) +
+  coord_map()
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/xYMEQrk.jpg&#34; style=&#34;width:800px;height:800px;&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;We can see that even in 2014, Dilma&amp;rsquo;s support in the South-east of the country was not overwhelming.&lt;/p&gt;
+
+&lt;p&gt;We can also use &lt;code&gt;electionsBR&lt;/code&gt; to look at other items of interest, such as the share of the party vote. For example, perhaps you&amp;rsquo;re interested in whether the Communist Party of Brazil has strongholds in the country. All we need to do is subset the &lt;code&gt;Mun&lt;/code&gt; dataframe that we downloaded earlier by &lt;code&gt;DESCRICAO_CARGO == &amp;quot;DEPUTADO FEDERAL&amp;quot;&lt;/code&gt; and &lt;code&gt;SIGLA_PARTIDO == &amp;quot;PC do B&amp;quot;&lt;/code&gt;. Apart from these changes, everything else can be done in the same way. Once we have this dataframe (which I&amp;rsquo;ll call &lt;code&gt;pc&lt;/code&gt;), we plot it in the same way:&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+ggplot() +
+  geom_polygon(data = pc, aes(x = long, y = lat, group = group,
+                              fill = PERC),
+               color = &amp;ldquo;white&amp;rdquo;, size = 0.1) +
+  scale_fill_distiller(palette = &amp;ldquo;RdBu&amp;rdquo;,
+                       breaks = pretty_breaks(n = 8)) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  labs(fill = &amp;ldquo;PC do B (%)&amp;rdquo;) +
+  theme_nothing(legend = TRUE) +
+  xlim(range(pc$long)) + ylim(range(pc$lat)) +
+  coord_map()
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/jXKjZgG.jpg&#34; style=&#34;width:800px;height:800px;&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;Not a very Communist country, by the looks of things.&lt;/p&gt;
+
+&lt;p&gt;Well, that&amp;rsquo;s a brief look at &lt;code&gt;electionsBR&lt;/code&gt;. Data for other years and elections is available, as well as data at other administrative levels, and not just the President and Federal Deputies. The TSE also holds data on the background of the candidates and their campaign spending, all of which can be utilized with &lt;code&gt;electionsBR&lt;/code&gt;. And if you fancy combining all this information with legislative behaviour from inside the Chamber of Deputies, just load the &lt;code&gt;bRasilLegis&lt;/code&gt; package and you have a wealth of data on Brazilian Federal Deputies at your fingertips. Indeed, I&amp;rsquo;m proud to be involved in both packages. It&amp;rsquo;s great to help to make the access to these data easier for those interested in Brazilian politics.&lt;/p&gt;
+
+&lt;p&gt;P.s. This blog post was written using &lt;a href=&#34;http://rmarkdown.rstudio.com/r_notebooks.html&#34;&gt;&lt;code&gt;R Notebooks&lt;/code&gt;&lt;/a&gt; and transformed to .md in my jekyll &lt;code&gt;_posts&lt;/code&gt; folder using a function from &lt;a href=&#34;https://github.com/dgrtwo/dgrtwo.github.com/blob/master/_scripts/knitpages.R&#34;&gt;David Robinson&lt;/a&gt;. I&amp;rsquo;d have to say that I really like &lt;code&gt;R Notebooks&lt;/code&gt; so far, especially the preview. Try it out.&lt;/p&gt;
+
+&lt;p&gt;Update: it seems that some folks might be running into problems running the scripts above, with &lt;strong&gt;R&lt;/strong&gt; spitting out: &lt;code&gt;Error: isTRUE(gpclibPermitStatus()) is not TRUE&lt;/code&gt;. The solution to this is to make sure you have rgdal or rgeos or a similar mapping package installed.&lt;/p&gt;
+
+&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; Disclosure: I&amp;rsquo;m involved in the development of this package, but I am not one of the original developers, that credit goes to &lt;a href=&#34;https://github.com/silvadenisson/electionsBR&#34;&gt;Denisson Silva&lt;/a&gt;, Fernando Meireles, and Beatriz Costa. Nevertheless, I&amp;rsquo;m promoting it here because I think it&amp;rsquo;s great, not because I&amp;rsquo;m involved. (Although I&amp;rsquo;m involved because I think it&amp;rsquo;s great :smile: ) &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

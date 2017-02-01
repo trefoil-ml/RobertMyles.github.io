@@ -3,7 +3,12 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2016-12-30T21:49:57-07:00</lastmod>
+    <lastmod>2017-02-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2017/02/01/stan/</loc>
+    <lastmod>2017-02-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -22,8 +27,63 @@
   </url>
   
   <url>
-    <loc>/2015/01/01/lorem-ipsum/</loc>
-    <lastmod>2015-01-01T13:09:13-06:00</lastmod>
+    <loc>/1/01/01/bayesian-irt-in-r-and-stan/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/bayesian-stats----book-recommendations/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/easier-web-scraping-in-r/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/geo-reference-an-image-in-r/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/make-a-colour-table-in-r-with-ggplot2/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/map-making-with-r-and-electionsbr/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/ranking-brad-pitts-movies-in-r/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/re-creating-plots-from-the-economist-in-r-and-ggplot2/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/stan-or-jags-for-bayesian-ideal-point-irt/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/stan-or-jags-for-bayesian-ideal-point-irt/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/suicides-in-ireland/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/theme-specific-voting-in-the-european-parliament/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/tips-and-tricks-for-r-markdown-html/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/web-navigation-in-r-with-rselenium/</loc>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/write-your-thesis-or-paper-in-r-markdown/</loc>
   </url>
   
 </urlset>

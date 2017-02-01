@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rstudio on Lithium Theme</title>
+    <link>/tags/rstudio/</link>
+    <description>Recent content in Rstudio on Lithium Theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="/tags/rstudio/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Write your thesis or paper in R Markdown!</title>
+      <link>/1/01/01/write-your-thesis-or-paper-in-r-markdown/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/01/write-your-thesis-or-paper-in-r-markdown/</guid>
+      <description>
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;There are many reasons why you would want to use some variant of Markdown for writing, and indeed, posts are common on the net as to why you should.&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; A simple summary of the reasons are that Markdown is: 1) easy; 2) easy; 3) yup, you guessed it &amp;ndash; it&amp;rsquo;s easy.&lt;/p&gt;
+
+&lt;p&gt;One variant of Markdown is R Markdown, developed by the &lt;a href=&#34;https://www.rstudio.com/&#34;&gt;RStudio&lt;/a&gt; team, and in particular the genius that is &lt;a href=&#34;http://yihui.name/knitr/&#34;&gt;Yihui Xie&lt;/a&gt;, creator of the &lt;code&gt;knitr&lt;/code&gt; R package. R Markdown is pretty much like regular Markdown, except you get a whole load of nice extra features, including the ability to run code chunks, produce .pdfs and presentations, and even .docx (if you really, really want to&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;). Indeed, the ioslides presentation format lets you use the power of html and css to make browser-based presentations.&lt;/p&gt;
+
+&lt;p&gt;But surely academic papers require certain formats, and sometimes mathematical expressions and funny Greek letters? Well, sure. Academic papers, particularly theses, often have set formats that you must adhere to. And since Markdown is quite a simple language, it doesn&amp;rsquo;t have the advanced power of {% raw %}\(\LaTeX\){% endraw %} to position things in specific ways.&lt;/p&gt;
+
+&lt;h3 id=&#34;raw-latex-endraw-in-r-markdown&#34;&gt;{% raw %}\(\LaTeX\){% endraw %} in R Markdown&lt;/h3&gt;
+
+&lt;p&gt;Enter R Markdown! Although you might (depends on the Markdown) have to do something like &lt;code&gt;{% raw %}\\(\LaTeX\\){% endraw %}&lt;/code&gt; to get the word {% raw %}\(\LaTeX\){% endraw %} in your Markdown, with R Markdown it&amp;rsquo;s just &lt;code&gt;$ \LaTeX $&lt;/code&gt;. I used Mathjax characters in my thesis, and all worked fine using this method (&lt;a href=&#34;http://www.onemathematicalcat.org/MathJaxDocumentation/TeXSyntax.htm&#34;&gt;here&amp;rsquo;s&lt;/a&gt; a nice link showing all the possible characters you can create with Mathjax). Nice &amp;lsquo;n&amp;rsquo; easy, lemon squeezy. Inline {% raw %}\(\LaTeX\){% endraw %} expressions get one &lt;code&gt;$&lt;/code&gt;, centred equations get two: &lt;code&gt;$$&lt;/code&gt;, and both need the equivalent to finish the expression. For example, in my first &lt;a href=&#34;http://robertmyles.github.io//post1.html&#34;&gt;post&lt;/a&gt;, I had the equation:&lt;/p&gt;
+
+&lt;p&gt;{% raw %}
+  $$y_{ij} = \beta_j\boldsymbol{x_i} - \alpha_j.$$
+ {% endraw %}&lt;/p&gt;
+
+&lt;p&gt;In R Markdown, this is:&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;$$ y_{ij} = \beta_j\boldsymbol{x_i} - \alpha_j.$$&lt;/code&gt; Simple!&lt;/p&gt;
+
+&lt;p&gt;So that&amp;rsquo;s math and funny characters done. What else can we do in R Markdown?&lt;/p&gt;
+
+&lt;h3 id=&#34;images&#34;&gt;Images&lt;/h3&gt;
+
+&lt;p&gt;Well, all the image-placement power of {% raw %}\(\LaTeX\){% endraw %} is also available. So &lt;code&gt;\begin{figure}&lt;/code&gt; (or subfigure and wrapfigure), &lt;code&gt;\centering&lt;/code&gt;, &lt;code&gt;\includegraphics&lt;/code&gt; and &lt;code&gt;\caption&lt;/code&gt; all work as they should. I found minipage to be particularly helpful. You can use &lt;code&gt;\&lt;/code&gt; with two spaces after it to organise blank space, or &lt;code&gt;\newpage&lt;/code&gt; to force a new page.&lt;/p&gt;
+
+&lt;p&gt;Of course, that supposing that you want to use {% raw %}\(\LaTeX\){% endraw %} for images. R Markdown&amp;rsquo;s own syntax for images is quite simple: &lt;code&gt;![Caption](file.png)&lt;/code&gt;, where &amp;lsquo;Caption&amp;rsquo; is your image caption and &amp;lsquo;file.png&amp;rsquo; your image file (you can use other formats, such as .pdf too). However, positioning may become a problem using this image-placing syntax. It&amp;rsquo;s worth taking the extra time to learn the {% raw %}\(\LaTeX\){% endraw %} if you don&amp;rsquo;t know it.&lt;/p&gt;
+
+&lt;h3 id=&#34;tables&#34;&gt;Tables&lt;/h3&gt;
+
+&lt;p&gt;Tables are a &lt;em&gt;little&lt;/em&gt; annoying sometimes in any Markdown. It depends. If the simple one works for you, then great &amp;ndash; they&amp;rsquo;re quick and easy. If you have to use grid tables, things take longer (for some reason, only grid tables worked for me sometimes). There&amp;rsquo;s a &lt;a href=&#34;http://pandoc.org/README.html#tables&#34;&gt;simple guide&lt;/a&gt; on the pandoc site, since it is pandoc that is actually converting to and fro in all these different formats (pandoc is amazing). But a basic one is &lt;em&gt;really&lt;/em&gt; simple (from the pandoc site):&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/TcbAp2U.png&#34; alt=&#34;Table&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The table numbers will automatically increment, and the caption is set after the &lt;code&gt;:&lt;/code&gt; part. Indeed, &lt;code&gt;table&lt;/code&gt; is not even needed, using &lt;code&gt;:&lt;/code&gt; with give you a caption with &lt;code&gt;Table 1:&lt;/code&gt;, for your first table in the document.&lt;/p&gt;
+
+&lt;h3 id=&#34;code&#34;&gt;Code&lt;/h3&gt;
+
+&lt;p&gt;There may be a need for you to display code segments, particularly in a quantitative paper or thesis. Again, it&amp;rsquo;s very simple. In R Markdown, you do the following:&lt;/p&gt;
+
+&lt;p&gt;{% highlight R linenos=table %}&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(&amp;quot;readr&amp;quot;)
+data &amp;lt;- read_csv(&amp;quot;example.csv&amp;quot;)
+data &amp;lt;- data[1:6, ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Which should produce:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-r&#34;&gt;library(&amp;quot;readr&amp;quot;)
+data &amp;lt;- read_csv(&amp;quot;example.csv&amp;quot;)
+data &amp;lt;- data[1:6, ]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This useful for plotting simple graphs and things like that. The example I&amp;rsquo;ve shown &lt;em&gt;wouldn&amp;rsquo;t&lt;/em&gt; be a particularly good idea, since R will load in &lt;code&gt;example.csv&lt;/code&gt; every time you produce the pdf using the &amp;lsquo;knit&amp;rsquo; button in RStudio. The &lt;code&gt;{r}&lt;/code&gt; prt also has optional arguments, such as &lt;code&gt;eval&lt;/code&gt;, which can be set to &lt;code&gt;TRUE&lt;/code&gt; or &lt;code&gt;FALSE&lt;/code&gt;, and tells R Markdown whether to evaluate the expression or not (useful for examples where you want to show the code but not run it).&lt;/p&gt;
+
+&lt;h3 id=&#34;chapters-and-headings&#34;&gt;Chapters and Headings&lt;/h3&gt;
+
+&lt;p&gt;Chapters and Headings are laughably simple in any Markdown, and R Markdown is no exception. &lt;code&gt;# Header 1&lt;/code&gt; will create the largest-sized header, &lt;code&gt;## Header 2&lt;/code&gt; a smaller one, and so on. To have these numbered, we&amp;rsquo;ll have to use another excellent feature of Markdown, the YAML block that goes on the top of the document.&lt;/p&gt;
+
+&lt;h3 id=&#34;the-yaml-block&#34;&gt;The YAML block&lt;/h3&gt;
+
+&lt;p&gt;The YAML block is what makes your R Markdown document possibly really fancy. It&amp;rsquo;s here that the {% raw %}\(\LaTeX\){% endraw %} packages are loaded, and here that you can specify various options that will have an impact on your document. So what the hell &lt;em&gt;is&lt;/em&gt; a YAML block, anyway? Well, maybe the easiest way to explain that is to show you mine&lt;sup id=&#34;a3&#34;&gt;&lt;a href=&#34;#fn3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; from my PhD &lt;a href=&#34;{{ site.url }}/assets/Explaining the Determinants of Foreign Policy Voting Behaviour in the Brazilian Houses of Legislature.pdf&#34;&gt;thesis&lt;/a&gt;. It starts and ends with &lt;code&gt;---&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;highlight-r-linenos-table&#34;&gt;{% highlight R linenos=table %}&lt;/h2&gt;
+
+&lt;p&gt;title: &amp;ldquo;Explaining the Determinants of Foreign Policy Voting Behaviour in the Brazilian Houses of Legislature, with a Focus on the Senate&amp;rdquo;
+author: &amp;ldquo;Robert Myles McDonnell&amp;rdquo;
+date: &amp;ldquo;&amp;rdquo;
+fontsize: 12pt
+header-includes:
+   - \usepackage{booktabs}
+   - \usepackage{dcolumn}
+   - \usepackage{wrapfig}
+   - \usepackage{subcaption}
+   - \usepackage{caption}
+   - \usepackage[font=small,labelfont=bf]{caption}
+   - \hypersetup{colorlinks=false}
+documentclass: &amp;ldquo;article&amp;rdquo;
+output:
+  pdf_document:
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+    latex_engine: pdflatex
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+    citation_package: &amp;ldquo;natbib&amp;rdquo;
+linestretch: 2
+mainfont: &amp;ldquo;Linux Libertine O&amp;rdquo;
+bibliography: ThesisLibrary.bib
+csl: american-political-science-association.csl&lt;/p&gt;
+
+&lt;h2 id=&#34;biblio-style-apalike&#34;&gt;biblio-style: apalike&lt;/h2&gt;
+
+&lt;p&gt;{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;So, that&amp;rsquo;s quite extended, but maybe you won&amp;rsquo;t need all these things. One important thing to remember with the YAML block is that indentation &lt;em&gt;matters&lt;/em&gt;. When you have something like &lt;code&gt;output:&lt;/code&gt;, then the line &lt;code&gt;pdf document:&lt;/code&gt; is &lt;strong&gt;two&lt;/strong&gt; spaces indented. &lt;code&gt;fig_caption: yes&lt;/code&gt; is &lt;strong&gt;two more&lt;/strong&gt; spaces indented (four in total) and so are the other options to pdf_document. If you get your spacing wrong, it won&amp;rsquo;t work.&lt;/p&gt;
+
+&lt;p&gt;Many of the options are self-explanatory: &lt;code&gt;linestretch&lt;/code&gt; is line-spacing, for example. One important option is &lt;code&gt;toc&lt;/code&gt; and its option &lt;code&gt;toc_depth&lt;/code&gt;. This is the &lt;strong&gt;t&lt;/strong&gt;able &lt;strong&gt;o&lt;/strong&gt;f &lt;strong&gt;c&lt;/strong&gt;ontents. &lt;code&gt;toc_depth&lt;/code&gt; is telling R Markdown how many levels you&amp;rsquo;d like: Chapter 4.1, Chapter 4.1.1 etc. More advanced elements can be changed too. For example, this thesis had a &lt;code&gt;documentclass&lt;/code&gt; of article, but you can write your own document class and therefore produce radically different documents. One example is an R Markdown &lt;a href=&#34;https://github.com/danielkrizian/resume_template&#34;&gt;version&lt;/a&gt; of Friggeri&amp;rsquo;s popular CV template. Other examples are rapidly proliferating on the web. The RStudio team have a new R package &lt;a href=&#34;https://github.com/rstudio/rticles&#34;&gt;rticles&lt;/a&gt; that has document templates for various academic journal styles. Load &amp;lsquo;em up, and you&amp;rsquo;ve already got an easy R Markdown template for the journal in question. And for papers, enable the &lt;code&gt;abstract:&lt;/code&gt; option in the YAML header, write your abstract there, and voilà! You&amp;rsquo;ve got yourself a nice abstract.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;So if writing your thesis (or a paper) in Microsoft Word or something similar sounds like an ordeal, and you&amp;rsquo;re really not such an expert on {% raw %}\(\LaTeX\){% endraw %}, maybe you should consider doing it in R Markdown. It has all the easiness of Markdown, with a couple of nice extras that help you make a quality document. See my thesis if you don&amp;rsquo;t believe me! :wink:&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;Update:&lt;br /&gt;
+A colleague asked me how I produced the first few pages of my thesis, and I realised that I forgot to mention that you can include other documents, for example tex files, that may need to be part of your thesis. Many theses have strict guidelines for the introductory pages, which can be included in your R Markdown file as part of the YAML header section. The option is &lt;code&gt;includes&lt;/code&gt;, and it has the sub-options &lt;code&gt;in_header&lt;/code&gt;, &lt;code&gt;before_body&lt;/code&gt; and &lt;code&gt;after body&lt;/code&gt;. Like before, the spacing is meaningful in the YAML header, so these sub-options will need to be indented two spaces. For introductory pages of a thesis, your tex file will go in &lt;code&gt;before_body&lt;/code&gt;. (I have to admit that this option never worked well for me, I simply merged the .pdf produced from the tex file and the .pdf produced from the R Markdown document with Preview in OS X, but for others, it seems to work fine.) See &lt;a href=&#34;http://rmarkdown.rstudio.com/markdown_document_format.html&#34;&gt;here&lt;/a&gt; for examples. See &lt;a href=&#34;https://github.com/danilofreire/kcl-thesis-template-markdown&#34;&gt;here&lt;/a&gt; for a Markdown template for King&amp;rsquo;s College London&amp;rsquo;s PhD guidelines, by &lt;a href=&#34;http://danilofreire.com/&#34;&gt;Danilo Freire&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; For example, &lt;a href=&#34;http://markdown-guide.readthedocs.org/en/latest/basics.html&#34;&gt;this cheatsheet&lt;/a&gt; &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;b id=&#34;fn2&#34;&gt;2&lt;/b&gt; In my experience, I think you&amp;rsquo;re just going to end up editing these in Word anyway so I don&amp;rsquo;t know that it&amp;rsquo;s worth the bother to do in RStudio. You can if you want, I suppose.&lt;a href=&#34;#a2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;b id=&#34;fn3&#34;&gt;3&lt;/b&gt; I&amp;rsquo;m including extra things here that I used over the process of making the thesis pdf, but it wasn&amp;rsquo;t what I used exactly in the end. I had some problems, that I can&amp;rsquo;t recall right now, with rendering bibliographical items so I switched to the default LaTeX renderer, pdflatex. Using this means you can&amp;rsquo;t use other fonts, like the Linux Libertine font above.&lt;a href=&#34;#a3&#34;&gt;↩&lt;/a&gt;
+&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/vywFhKA.png?1&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

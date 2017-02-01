@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rselenium on Lithium Theme</title>
+    <link>/tags/rselenium/</link>
+    <description>Recent content in Rselenium on Lithium Theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="/tags/rselenium/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Web Navigation in R with RSelenium</title>
+      <link>/1/01/01/web-navigation-in-r-with-rselenium/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/01/web-navigation-in-r-with-rselenium/</guid>
+      <description>&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;It goes almost without saying that the internet itself is the richest database available to us. From a 2014 &lt;a href=&#34;http://aci.info/2014/07/12/the-data-explosion-in-2014-minute-by-minute-infographic/&#34;&gt;blog post&lt;/a&gt;, it was claimed that &lt;em&gt;every minute&lt;/em&gt; :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Facebook users share nearly 2.5 million pieces of content.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Twitter users tweet nearly 300,000 times.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Instagram users post nearly 220,000 new photos.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;YouTube users upload 72 hours of new video content.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Apple users download nearly 50,000 apps.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Email users send over 200 million messages.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Amazon generates over $80,000 in online sales.&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Regardless of the accuracy of these claims, it is obvious to everyone that there is tons of information on the web. For researchers, then, the question is: how can you access all this information? You can of course go to specific, dedicated databases and download what you&amp;rsquo;re looking for, for example from the World Bank &lt;a href=&#34;http://databank.worldbank.org/data/home.aspx&#34;&gt;databank&lt;/a&gt;. However, there are drawbacks to this approach. It can become tiresome when you need to collect lots of data on different items (the World Bank databank is well organised, but not all databases are like that&amp;hellip;to put it politely). Some only let you download small, specific sections of a bigger database, meaning you have to return time and time again to the starting page to enter new information in order to retrieve the data you want. (Another thing is that we&amp;rsquo;re not quite utilising the web &lt;em&gt;itself&lt;/em&gt; as the database either.)&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;To deal with the first problem, you can automate the search process by driving a web browser with R.&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; This is different from &amp;lsquo;web-scraping&amp;rsquo;. Web-scraping takes the webpage as a html document and allows you to read information from it. It&amp;rsquo;s quite a straightforward process, with plenty of R packages around to help you do it. &lt;a href=&#34;https://github.com/hadley/rvest&#34;&gt;rvest&lt;/a&gt; in particular is quite easy, although I&amp;rsquo;ve found the &lt;a href=&#34;https://cran.r-project.org/web/packages/XML/XML.pdf&#34;&gt;XML&lt;/a&gt; package to be more powerful. (Web-scraping deals with the second issue above, in that it does treat the web itself as a database.)&lt;/p&gt;
+
+&lt;p&gt;To drive a web browser in R, there are two packages (that I&amp;rsquo;m aware of) that can be used. One is &lt;a href=&#34;https://github.com/ropensci/RSelenium&#34;&gt;RSelenium&lt;/a&gt; by John Harrison, and &lt;a href=&#34;https://github.com/crubba/Rwebdriver&#34;&gt;Rwebdriver&lt;/a&gt; by Christian Rubba. I prefer &lt;code&gt;RSelenium&lt;/code&gt; and so I&amp;rsquo;ll use this package in the examples below.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;If you don&amp;rsquo;t have it already installed, you&amp;rsquo;ll need to download this package and load it into R.&lt;/p&gt;
+
+&lt;p&gt;{% highlight R linenos=table %}
+install.packages(&amp;ldquo;RSelenium&amp;rdquo;)
+library(&amp;ldquo;RSelenium&amp;rdquo;)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;You will also need to download the Selenium standalone server. You can get it from &lt;a href=&#34;http://www.seleniumhq.org/download/&#34;&gt;here&lt;/a&gt;. Opening this file automatically from &lt;code&gt;RSelenium&lt;/code&gt; can be problematic&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;, and so I&amp;rsquo;ve found the most straightforward way is to manually click on it and open it that way before you start.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;To get started with &lt;code&gt;RSelenium&lt;/code&gt;, you&amp;rsquo;ll need to give your browser somewhere to go. For this example, I&amp;rsquo;m going to go to the funding management section of Brazilian National Health Service, the &lt;em&gt;Fundo Nacional de Saúde&lt;/em&gt;. From here, I&amp;rsquo;m going to get data for every municipality in every state over a period of some years. To do this manually would be a serious headache and would most likely lead to me making errors by forgetting where I am, which state is next, what municipality I just downloaded, and so on. Actually, you can be guaranteed I&amp;rsquo;d make those mistakes.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;{% highlight R linenos=table %}
+URL &amp;lt;- &amp;ldquo;&lt;a href=&#34;http://www.fns.saude.gov.br/indexExterno.jsf&amp;quot;&#34;&gt;http://www.fns.saude.gov.br/indexExterno.jsf&amp;quot;&lt;/a&gt;
+#checkForServer(dir=&amp;rdquo;[DIRECTORY WHERE THE SELENIUM SERVER IS]&amp;ldquo;, update=FALSE)
+#checkForServer(dir=&amp;rdquo;[DIRECTORY WHERE THE SELENIUM SERVER IS]&amp;ldquo;, update=TRUE) # if you want to update
+#startServer(dir=&amp;rdquo;[DIRECTORY WHERE THE SELENIUM SERVER IS]&amp;ldquo;) #none of these three are necessary if you click on the server first and manually open it.&lt;/p&gt;
+
+&lt;p&gt;fprof &amp;lt;- makeFirefoxProfile(list(browser.download.dir = &amp;ldquo;[DOWNLOAD DIRECTORY]&amp;ldquo;,&lt;br /&gt;
+browser.download.folderList = 2L,&lt;br /&gt;
+browser.download.manager.showWhenStarting=FALSE,&lt;br /&gt;
+browser.helperApps.neverAsk.saveToDisk = &amp;ldquo;application/octet-stream&amp;rdquo;))&lt;/p&gt;
+
+&lt;p&gt;remDr &amp;lt;- remoteDriver(extraCapabilities=fprof)
+remDr$open()&lt;br /&gt;
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;So now your browser should be open. Here I&amp;rsquo;ve used a profile for Firefox because I will download files and I don&amp;rsquo;t want to deal with the download window that pops up in Firefox (you need to enter your download folder where it says &amp;lsquo;&lt;code&gt;[DOWNLOAD DIRECTORY]&lt;/code&gt;&amp;rsquo;, by the way. And you can also run &lt;code&gt;RSelenium&lt;/code&gt; on Chrome and &lt;a href=&#34;http://rpubs.com/johndharrison/13885&#34;&gt;other browsers&lt;/a&gt;, and even use a &lt;a href=&#34;https://rpubs.com/johndharrison/RSelenium-headless&#34;&gt;headless browser&lt;/a&gt; which speeds things up.) If you didn&amp;rsquo;t need to deal with download boxes and pop-ups and the like, you only need &lt;code&gt;remDr &amp;lt;- remoteDriver$new()&lt;/code&gt;, which will automatically open up a Firefox browser window. These particular files were recognised by Firefox as being binary files, and so I have disabled the download box for files of the type &amp;ldquo;application/octet-stream&amp;rdquo;. Other file types need a different setting.&lt;/p&gt;
+
+&lt;p&gt;This website has a drop-down box on the left hand side that we&amp;rsquo;re going to use. What we will input into this is, in turn, a list of years, states, and municipalities. After that we will click on &amp;ldquo;Consultar&amp;rdquo; (for those of you who don&amp;rsquo;t speak Portuguese, I&amp;rsquo;m quite sure you can figure out what that means). Clicking this will bring us to a new page, from which we can download the data we&amp;rsquo;re looking for in a .csv file.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;So let&amp;rsquo;s create our inputs:&lt;br /&gt;
+{% highlight R linenos=table %}
+InputYear &amp;lt;- list(&amp;ldquo;2016&amp;rdquo;, &amp;ldquo;2015&amp;rdquo;, &amp;ldquo;2014&amp;rdquo;, &amp;ldquo;2013&amp;rdquo;, &amp;ldquo;2012&amp;rdquo;, &amp;ldquo;2011&amp;rdquo;, &amp;ldquo;2010&amp;rdquo;, &amp;ldquo;2009&amp;rdquo;)&lt;/p&gt;
+
+&lt;p&gt;Input &amp;lt;- list(&amp;ldquo;ACRE&amp;rdquo;, &amp;ldquo;ALAGOAS&amp;rdquo;, &amp;ldquo;AMAPA&amp;rdquo;, &amp;ldquo;AMAZONAS&amp;rdquo;, &amp;ldquo;BAHIA&amp;rdquo;, &amp;ldquo;CEARA&amp;rdquo;, &amp;ldquo;DISTRITO FEDERAL&amp;rdquo;, &amp;ldquo;ESPIRITO SANTO&amp;rdquo;, &amp;ldquo;GOIAS&amp;rdquo;, &amp;ldquo;MARANHAO&amp;rdquo;, &amp;ldquo;MATO GROSSO&amp;rdquo;, &amp;ldquo;MATO GROSSO DO SUL&amp;rdquo;, &amp;ldquo;MINAS GERAIS&amp;rdquo;, &amp;ldquo;PARA&amp;rdquo;, &amp;ldquo;PARAIBA&amp;rdquo;, &amp;ldquo;PARANA&amp;rdquo;, &amp;ldquo;PERNAMBUCO&amp;rdquo;, &amp;ldquo;PIAUI&amp;rdquo;, &amp;ldquo;RIO DO JANEIRO&amp;rdquo;, &amp;ldquo;RIO GRANDE DO NORTE&amp;rdquo;, &amp;ldquo;RIO GRANDE DO SUL&amp;rdquo;, &amp;ldquo;RONDONIA&amp;rdquo;, &amp;ldquo;RORAIMA&amp;rdquo;, &amp;ldquo;SANTA CATARINA&amp;rdquo;, &amp;ldquo;SAO PAULO&amp;rdquo;, &amp;ldquo;SERGIPE&amp;rdquo;, &amp;ldquo;TOCANTINS&amp;rdquo;)&lt;/p&gt;
+
+&lt;p&gt;Input_Mun &amp;lt;- &amp;ldquo;TODOS DA UF&amp;rdquo; #this will select all municipalities&lt;br /&gt;
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;In order to get all this done, I will use a for loop in R which will first loop over the years, and then states, thereby selecting all states in a given year. In the following code, you will see &lt;code&gt;RSelenium&lt;/code&gt; commands that are quite different to regular commands in R. First of all, &lt;code&gt;RSelenium&lt;/code&gt; operates by way of two environments: one is remoteDriver environment, the other a webElement environment. These have specific options available to them (see the help section on each for a list and explanations). Some of the most useful are &lt;code&gt;findElement()&lt;/code&gt; (an option of remoteDriver), &lt;code&gt;sendKeystoElement()&lt;/code&gt; and &lt;code&gt;clickElement()&lt;/code&gt; (both options of webElement, as &lt;code&gt;remDr$findElement&lt;/code&gt; returns an object of webElement class). We will use these to navigate around the page and click on specific elements.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;Speaking of elements on a page, this is actually the most crucial part of the process to get right (and can be the most frustrating). Some have recommended &lt;a href=&#34;http://selectorgadget.com/&#34;&gt;selectorgadget&lt;/a&gt;, but finding elements can be done in Firefox or Chrome without selectorgadget &amp;ndash; you just right-click the element in question and select &amp;ldquo;Inspect&amp;rdquo; or &amp;ldquo;Inspect Element&amp;rdquo;. This will bring up a chaotic-looking panel, full of html, css and javascript code. Luckily, there are easy options in Firefox and Chrome for finding what we need. After you right-click the element that you want (the one you would have clicked if you were navigating the page manually), click &amp;ldquo;Inspect&amp;rdquo; and then this element of the html code will be highlighted. Right-click on this again and you will see the option to copy. In Chrome, you will have the option to copy the xpath or css selector (&amp;ldquo;selector&amp;rdquo;); in Firefox you can copy the css selector (&amp;ldquo;unique selector&amp;rdquo;). I have used other options below to give more examples, such as &amp;lsquo;id&amp;rsquo;. This can be copied directly from the html code, and &amp;lsquo;class&amp;rsquo; and &amp;lsquo;name&amp;rsquo; can be used in a similar fashion. In general, css selectors are the easiest to work with.&lt;/p&gt;
+
+&lt;p&gt;A quick note on some other aspects of the code. &lt;code&gt;Sys.sleep&lt;/code&gt; is used in order to be nice&amp;ndash; you don&amp;rsquo;t want to bombard the website with all of your requests in rapid-fire fashion; after all, they may block you. So this spaces out our commands. This is also useful for when you may have to wait for an element to load on the page before you can click on it. I have used &lt;code&gt;paste()&lt;/code&gt; in order to include the loop counters in the css selector&amp;ndash; just a little trick to make things easier. Some elements have &lt;code&gt;\\&lt;/code&gt; in the code: this is because the original had a single backslash, which is an escape character in R, and so the string is unreadable. Hence the added backslash.  You will also see the use of &lt;code&gt;try()&lt;/code&gt; &amp;ndash; in this case, there is a state that does not load like the others (the Federal District) and so this automated process will not work here. &lt;code&gt;try()&lt;/code&gt; allows R to try anyway, and if it fails, the loop just continues to the next iteration.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;{% highlight R linenos=table %}
+for(i in 1:length(InputYear)){
+  for(j in 1:length(Input)){
+    remDr$navigate(URL)
+    #Year:
+    webElem &amp;lt;- remDr$findElement(using = &amp;ldquo;id&amp;rdquo;, value = &amp;ldquo;formIndex:j_idt48&amp;rdquo;)
+    webElem$clickElement() #click on the drop-down year box
+    Sys.sleep(2)
+    webElem &amp;lt;- remDr$findElement(using = &amp;ldquo;id&amp;rdquo;, value=&amp;ldquo;formIndex:j_idt48_input&amp;rdquo;)
+    Sys.sleep(2)
+    webElem$sendKeysToElement(InputYear[i]) #send the year to the box
+    webElem &amp;lt;- remDr$findElement(using = &amp;ldquo;css&amp;rdquo;, value=&amp;ldquo;li.ui-state-active&amp;rdquo;)
+    webElem$clickElement() #click on the active element (the year we sent)
+    Sys.sleep(2)
+    #State:
+    webElem &amp;lt;- remDr$findElement(using = &amp;ldquo;id&amp;rdquo;, value = &amp;ldquo;formIndex:sgUf&amp;rdquo;)
+    webElem$clickElement()
+    Sys.sleep(2)
+    webElem$sendKeysToElement(Input[j]) #enter the state into the drop-down box
+    CSS &amp;lt;- paste(&amp;ldquo;#formIndex\3a sgUf_panel &amp;gt; div &amp;gt; ul &amp;gt; li:nth-child(&amp;ldquo;, j+2, &amp;ldquo;)&amp;rdquo;, sep=&amp;ldquo;&amp;rdquo;)
+    webElem &amp;lt;- remDr$findElement(using = &amp;ldquo;css&amp;rdquo;, value = CSS)
+    Sys.sleep(1)
+    webElem$clickElement()
+    Sys.sleep(3)
+    #Municipality:
+    webElem &amp;lt;- remDr$findElement(using = &amp;lsquo;id&amp;rsquo;, value = &amp;lsquo;formIndex:cbMunicipio&amp;rsquo;)
+    webElem$clickElement()
+    Sys.sleep(2)
+    webElem &amp;lt;- remDr$findElement(using = &amp;lsquo;css&amp;rsquo;, value=&amp;lsquo;#formIndex\3a cbMunicipio_panel &amp;gt; div &amp;gt; ul &amp;gt; li:nth-child(2)&amp;lsquo;)
+    webElem$sendKeysToElement(list(Input_Mun))
+    webElem$clickElement()
+    Sys.sleep(4)
+    #&amp;ldquo;Consultar&amp;rdquo;:
+    webElem &amp;lt;- remDr$findElement(using = &amp;lsquo;xpath&amp;rsquo;, value = &amp;lsquo;//&lt;em&gt;[@id=&amp;ldquo;formIndex:j_idt60&amp;rdquo;]&amp;lsquo;)
+    Sys.sleep(2)
+    webElem$clickElement()
+    Sys.sleep(6)
+    #Download the .csv:
+    webElem &amp;lt;- try(remDr$findElement(using = &amp;lsquo;xpath&amp;rsquo;, value = &amp;lsquo;//&lt;/em&gt;[@id=&amp;ldquo;formIndex&amp;rdquo;]/div[4]/input&amp;rsquo;), silent=T)
+    try(webElem$clickElement(), silent=T)
+    Sys.sleep(3)
+}}&lt;br /&gt;
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;So after all this, we&amp;rsquo;ll have a bunch of .csv files in out download folder, that you can import into R and mess around with. To load them all in together, you could use the following code:&lt;/p&gt;
+
+&lt;p&gt;{% highlight R linenos=table %}
+library(&amp;ldquo;readr&amp;rdquo;)
+setwd(&amp;rdquo;[THE DOWNLOAD FOLDER YOU USED]&amp;ldquo;)
+fileNames &amp;lt;- list.files(path = getwd(), pattern = &amp;ldquo;*.csv&amp;rdquo;)
+data &amp;lt;- rbindlist(lapply(fileNames, read_csv2,&lt;br /&gt;
+col_names=c(&amp;ldquo;Ano&amp;rdquo;, &amp;ldquo;UF_MUNICIPIO&amp;rdquo;, &amp;ldquo;IBGE&amp;rdquo;, &amp;ldquo;ENTIDADE&amp;rdquo;, &amp;ldquo;CPF_CNPJ&amp;rdquo;,&lt;br /&gt;
+&amp;ldquo;Bloco&amp;rdquo;, &amp;ldquo;Componente&amp;rdquo;, &amp;ldquo;Acao_Servico_Estrategia&amp;rdquo;, &amp;ldquo;Competencia_Parcela&amp;rdquo;,&lt;br /&gt;
+&amp;ldquo;No_OB&amp;rdquo;, &amp;ldquo;Data_OB&amp;rdquo;, &amp;ldquo;Banco_OB&amp;rdquo;, &amp;ldquo;Agencia_OB&amp;rdquo;, &amp;ldquo;Conta_OB&amp;rdquo;, &amp;ldquo;Valor_Total&amp;rdquo;,&lt;br /&gt;
+&amp;ldquo;Desconto&amp;rdquo;, &amp;ldquo;Valor_Liquido&amp;rdquo;, &amp;ldquo;Observacao&amp;rdquo;, &amp;ldquo;Processo&amp;rdquo;, &amp;ldquo;Tipo Repasse&amp;rdquo;,&lt;br /&gt;
+&amp;ldquo;No_Proposta&amp;rdquo;), skip = 1, locale=locale(decimal_mark=&amp;ldquo;,&amp;rdquo;, grouping_mark=&amp;ldquo;.&amp;rdquo;)))&lt;br /&gt;
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;And there you go, all the data you wanted scraped automatically from the web. In this example, we were downloading a file, but you could be navigating around in order to arrive at a certain page and then to scrape the contents of that page. You can do that in a number of ways, by combining &lt;code&gt;RSelenium&lt;/code&gt; and other packages, such as &lt;code&gt;XML&lt;/code&gt; and &lt;code&gt;rvest&lt;/code&gt;. For a solution using only &lt;code&gt;RSelenium&lt;/code&gt;, we can first create an empty dataframe and then fill it with the &lt;code&gt;getElementText()&lt;/code&gt; option of the webElement class. So, for example, I was getting vote proposal content from the Brazilian Senate. I used &lt;code&gt;RSelenium&lt;/code&gt; to navigate to the pages that I wanted, as is shown above, and then I stored the Content and the Index of the vote (which were stored on the page as html text elements) as entries in the Index dataframe, using &lt;code&gt;webElem$getElementText()&lt;/code&gt;. Afterwards, I used various combinations of &lt;code&gt;stringr&lt;/code&gt; package functions and &lt;code&gt;gsub&lt;/code&gt; to clean up the text.&lt;br /&gt;
+{% highlight R linenos=table %}
+Index &amp;lt;- data.frame(Content=NA, Index=NA)&lt;br /&gt;
+Index[i,1] &amp;lt;- webElem$getElementText()&lt;br /&gt;
+   &amp;hellip;&lt;br /&gt;
+Index[i,2] &amp;lt;- webElem$getElementText()&lt;br /&gt;
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;You can also get the html and parse it using &lt;code&gt;XML&lt;/code&gt;:&lt;br /&gt;
+{% highlight R linenos=table %}
+elemtxt &amp;lt;- webElem$getElementAttribute(&amp;ldquo;outerHTML&amp;rdquo;)&lt;br /&gt;
+elemxml &amp;lt;- htmlTreeParse(elemtxt, asText=TRUE, encoding=&amp;ldquo;UTF-8&amp;rdquo;, useInternalNodes=TRUE)&lt;br /&gt;
+Text &amp;lt;- html_text(elemxml, trim=TRUE)&lt;br /&gt;
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;And then you have the text from the webpage stored as data in R. Magic! :metal:&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; It is often argued that R is not the best for this application, with Python often offered as a better alternative. In my experience, I&amp;rsquo;ve found R to be pretty good for this sort of thing, with delays being caused more by the browser/net speed than R. The scripts can be ugly, but using Selenium in Python looks pretty similar anyway. &lt;a href=&#34;http://stackoverflow.com/questions/17540971/how-to-use-selenium-with-python&#34;&gt;This question&lt;/a&gt; on Stack Overflow gives some instructions. &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;b id=&#34;fn2&#34;&gt;2&lt;/b&gt; See &lt;a href=&#34;https://github.com/ropensci/RSelenium/issues/54&#34;&gt;this&lt;/a&gt; discussion. &lt;a href=&#34;#a2&#34;&gt;↩&lt;/a&gt;
+&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/v7y6SVt.png?1&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

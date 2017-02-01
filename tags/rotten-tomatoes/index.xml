@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rotten Tomatoes on Lithium Theme</title>
+    <link>/tags/rotten-tomatoes/</link>
+    <description>Recent content in Rotten Tomatoes on Lithium Theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="/tags/rotten-tomatoes/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ranking Brad Pitt’s Movies in R</title>
+      <link>/1/01/01/ranking-brad-pitts-movies-in-r/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/1/01/01/ranking-brad-pitts-movies-in-r/</guid>
+      <description>
+
+&lt;p&gt;So I saw &lt;a href=&#34;http://movies.prettyfamous.com/stories/24289/ranking-every-brad-pitt-movie-from-worst-to-first&#34;&gt;this&lt;/a&gt; blog post, in which &lt;a href=&#34;http://www.prettyfamous.com/&#34;&gt;Pretty Famous&lt;/a&gt; ranked every one of Brad Pitt&amp;rsquo;s movies (I have no idea how I came across it, I&amp;rsquo;m not particularly a movie buff or a fan of Señor Pitt, but anyway). Then I wondered how easy/hard it would be to do something like that in R. Pretty Famous used a few sources, but here I&amp;rsquo;m going to stick to Rotten Tomatoes, since it&amp;rsquo;s a pretty well-known movie ratings site, maybe the most well-known. Pretty famous, you could say (ugh, apologies).&lt;/p&gt;
+
+&lt;p&gt;For those who don&amp;rsquo;t have much experience scraping information from the web, we first need to find the unique url for Brad Pitt. In other words, his &amp;ldquo;&lt;a href=&#34;https://www.rottentomatoes.com/celebrity/brad_pitt/&#34;&gt;personal page&lt;/a&gt;&amp;rdquo; on Rotten Tomatoes. Once we&amp;rsquo;ve done that, we need to identify what part of the page we want to scrape. In this case, that is the &amp;ldquo;Movies&amp;rdquo; table. You can right-click on this table and click &amp;ldquo;Inspect&amp;rdquo; or &amp;ldquo;Inspect Element&amp;rdquo; on your browser (I&amp;rsquo;m using Chrome on a macbook, but it should be pretty similar on other browsers). Once you find the &lt;em&gt;actual&lt;/em&gt; table, instead of a &lt;code&gt;&amp;lt;div&amp;gt;&lt;/code&gt; element holding it, or just a title, then copy the selector of that element. This can be done on Chrome by right clicking the line in the &amp;lsquo;Elements&amp;rsquo; panel that comes up when you right-click and click &amp;lsquo;Inspect&amp;rsquo;. You will have an option to &amp;lsquo;Copy&amp;rsquo;, then choose &amp;lsquo;Copy selector&amp;rsquo; (you can choose xpath if you want, but css is simpler). In any case, the elements will be highlighted on the page as you click on them.&lt;/p&gt;
+
+&lt;p&gt;In R, we can use the &lt;a href=&#34;https://github.com/hadley/rvest&#34;&gt;rvest&lt;/a&gt; package to read the page, store the nodes of the web document that we want and then extract the table from this node set. The &amp;lsquo;table&amp;rsquo; ends up as a list of two dataframes, Brad Pitt&amp;rsquo;s films and TV appearances. His movies are in the first dataframe and so we extract that one out, as a dataframe called &amp;lsquo;movies&amp;rsquo;. Of course, in some of these movies he had a larger role than others, and can be said to have had a bigger impact on the rating score. But, hey, this is informal analysis.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+library(tidyverse)
+library(rvest)
+library(lubridate)&lt;/p&gt;
+
+&lt;p&gt;url &amp;lt;- &amp;ldquo;&lt;a href=&#34;https://www.rottentomatoes.com/celebrity/brad_pitt/&amp;quot;&#34;&gt;https://www.rottentomatoes.com/celebrity/brad_pitt/&amp;quot;&lt;/a&gt;
+page &amp;lt;- read_html(url)
+tb_x &amp;lt;- html_nodes(page, css = &amp;ldquo;#filmographyTbl&amp;rdquo;)
+tb &amp;lt;- html_table(tb_x)
+movies &amp;lt;- tb[[1]]
+head(movies)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;{% highlight text %}&lt;/p&gt;
+
+&lt;h2 id=&#34;rating-title&#34;&gt;RATING                               TITLE&lt;/h2&gt;
+
+&lt;h2 id=&#34;1-no-score-yet-world-war-z-2&#34;&gt;1 No Score Yet                       World War Z 2&lt;/h2&gt;
+
+&lt;h2 id=&#34;2-87-the-lost-city-of-z&#34;&gt;2          87%                  The Lost City of Z&lt;/h2&gt;
+
+&lt;h2 id=&#34;3-no-score-yet-brad-s-status&#34;&gt;3 No Score Yet                       Brad&amp;rsquo;s Status&lt;/h2&gt;
+
+&lt;h2 id=&#34;4-61-allied&#34;&gt;4          61%                              Allied&lt;/h2&gt;
+
+&lt;h2 id=&#34;5-98-moonlight&#34;&gt;5          98%                           Moonlight&lt;/h2&gt;
+
+&lt;h2 id=&#34;6-92-voyage-of-time-the-imax-experience&#34;&gt;6          92% Voyage of Time: The IMAX Experience&lt;/h2&gt;
+
+&lt;h2 id=&#34;credit&#34;&gt;CREDIT&lt;/h2&gt;
+
+&lt;h2 id=&#34;1-gerry-lane-n-n-n-producer&#34;&gt;1 Gerry Lane\n                                                \n                                \n                                        Producer&lt;/h2&gt;
+
+&lt;h2 id=&#34;2-executive-producer&#34;&gt;2                                                                                                                               Executive Producer&lt;/h2&gt;
+
+&lt;h2 id=&#34;3-actor&#34;&gt;3                                                                                                                                            Actor&lt;/h2&gt;
+
+&lt;h2 id=&#34;4-max-vatan&#34;&gt;4                                                                                                                                        Max Vatan&lt;/h2&gt;
+
+&lt;h2 id=&#34;5-executive-producer&#34;&gt;5                                                                                                                               Executive Producer&lt;/h2&gt;
+
+&lt;h2 id=&#34;6-producer&#34;&gt;6                                                                                                                                         Producer&lt;/h2&gt;
+
+&lt;h2 id=&#34;year&#34;&gt;YEAR&lt;/h2&gt;
+
+&lt;h2 id=&#34;1-2017&#34;&gt;1 2017&lt;/h2&gt;
+
+&lt;h2 id=&#34;2-2017&#34;&gt;2 2017&lt;/h2&gt;
+
+&lt;h2 id=&#34;3-2017&#34;&gt;3 2017&lt;/h2&gt;
+
+&lt;h2 id=&#34;4-2016&#34;&gt;4 2016&lt;/h2&gt;
+
+&lt;h2 id=&#34;5-2016&#34;&gt;5 2016&lt;/h2&gt;
+
+&lt;h2 id=&#34;6-2016&#34;&gt;6 2016&lt;/h2&gt;
+
+&lt;p&gt;{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Now we&amp;rsquo;ve got Mr. Pitt&amp;rsquo;s movies in a dataframe, with their rating, title, producer credits and year.  Since anything with &amp;ldquo;No Score Yet&amp;rdquo; is not of particular use to us, let&amp;rsquo;s remove it. We also could do with changing &amp;ldquo;87%&amp;rdquo; to an actual number, i.e. 0.87, and we&amp;rsquo;ll take out the movies in which he had no acting role, and try to clean up all those spaces and new lines.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+&amp;lsquo;%ni%&amp;rsquo; &amp;lt;- Negate(&amp;lsquo;%in%&amp;rsquo;)
+movies &amp;lt;- movies %&amp;gt;%
+  mutate(CREDIT = gsub(&amp;rdquo;\r\n&amp;rdquo;, &amp;ldquo;&amp;rdquo;, CREDIT)) %&amp;gt;%
+  filter(RATING != &amp;ldquo;No Score Yet&amp;rdquo;,
+         CREDIT %ni% c(&amp;ldquo;Producer&amp;rdquo;, &amp;ldquo;Executive Producer&amp;rdquo;),
+         TITLE %ni% c(&amp;ldquo;Selma&amp;rdquo;, &amp;ldquo;The Time Traveler&amp;rsquo;s Wife&amp;rdquo;)) %&amp;gt;%
+  mutate(RATING = gsub(&amp;ldquo;%&amp;rdquo;, &amp;ldquo;&amp;rdquo;, RATING),
+         RATING = as.numeric(RATING),
+         RATING = RATING/100)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;So how do the ratings for his Pittness stack up? Let&amp;rsquo;s have a look-see, Rotten Tomatoes style:&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+library(grid)
+library(png)&lt;/p&gt;
+
+&lt;p&gt;tomato &amp;lt;- readPNG(&amp;ldquo;/Users/robert/RobertMyles.github.io/images/tomato.png&amp;rdquo;)
+g &amp;lt;- rasterGrob(tomato, interpolate=TRUE)&lt;/p&gt;
+
+&lt;p&gt;ggplot(movies, aes(x = RATING)) +
+  geom_histogram(bins = 20, fill = &amp;ldquo;#EE4000&amp;rdquo;, colour = &amp;ldquo;yellow&amp;rdquo;) +
+  theme_classic() +
+  theme(panel.background = element_rect(fill = &amp;ldquo;#3A9425&amp;rdquo;)) +
+  annotation_custom(g, xmin=0, xmax=0.25, ymin=4, ymax=6)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;../../images/unnamed-chunk-3-1.png&#34; alt=&#34;plot of chunk unnamed-chunk-3&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;(You can get the tomato image from &lt;a href=&#34;http://static.tvtropes.org/pmwiki/pub/images/rotten_tomatoes_8290.jpg&#34;&gt;here&lt;/a&gt;. Convert it to png and strip out (most of) the white background using &lt;a href=&#34;https://www.imagemagick.org/script/index.php&#34;&gt;ImageMagick&lt;/a&gt; &amp;ndash; the command on a mac is &lt;code&gt;convert rotten_tomatoes.jpg -transparent white tomato.png&lt;/code&gt;.)&lt;/p&gt;
+
+&lt;p&gt;Not so bad! Got some not-so-greats, but quite a lot of highly rated movies. I&amp;rsquo;m surprised, actually. In fact the mean and median values are:&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+mean(movies$RATING)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;{% highlight text %}&lt;/p&gt;
+
+&lt;h2 id=&#34;1-0-6508511&#34;&gt;[1] 0.6508511&lt;/h2&gt;
+
+&lt;p&gt;{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+median(movies$RATING)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;{% highlight text %}&lt;/p&gt;
+
+&lt;h2 id=&#34;1-0-7&#34;&gt;[1] 0.7&lt;/h2&gt;
+
+&lt;p&gt;{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;I wonder if his movies have gotten better? I was always under the impression that Brad Pitt was an actor who, like Leonardo DiCaprio, actually learned to act over time, instead of already being a talented actor when he started. Fair credit to them, though, they could have just rested on their laurels after they first became famous.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s have a look at how the ratings have change over time and see if Brad has gotten better or worse, judging by the film that came before.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+movies &amp;lt;- movies %&amp;gt;%
+  arrange(YEAR) %&amp;gt;%
+  mutate(difference = c(0, diff(RATING, lag = 1)),
+         date_counter = 1:nrow(.))&lt;/p&gt;
+
+&lt;p&gt;ggplot(movies, aes(x = date_counter, y = difference)) +
+  geom_line(colour = &amp;ldquo;yellow&amp;rdquo;) +
+  theme_classic() +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank(),
+        panel.background = element_rect(fill = &amp;ldquo;#3A9425&amp;rdquo;),
+        axis.line = element_line(colour = &amp;ldquo;#EE4000&amp;rdquo;)) +
+  annotate(&amp;ldquo;label&amp;rdquo;, label = &amp;ldquo;1989&amp;rdquo;, x = 2, y = -0.7, colour = &amp;ldquo;#EE4000&amp;rdquo;) +
+  annotate(&amp;ldquo;label&amp;rdquo;, label = &amp;ldquo;2016&amp;rdquo;, x = 47, y = -0.7, colour = &amp;ldquo;#EE4000&amp;rdquo;) +
+  geom_hline(yintercept = 0, linetype = 2, colour = &amp;ldquo;#EE4000&amp;rdquo;) +
+  annotation_custom(g, xmin=0, xmax=7, ymin=0.5, ymax=0.95)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;../../images/unnamed-chunk-5-1.png&#34; alt=&#34;plot of chunk unnamed-chunk-5&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Hmm, he&amp;rsquo;s had a fairly erratic career in terms of movie ratings. Looking at the relationship between ratings and time, there&amp;rsquo;s a bit of an improvement, and certainly less train-wrecks, but the improvement is not massive. Maybe he didn&amp;rsquo;t start off so bad, after all.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+ggplot(movies, aes(x = YEAR, y = RATING)) +
+  geom_point(colour = &amp;ldquo;yellow&amp;rdquo;) +
+  geom_smooth(method = &amp;ldquo;lm&amp;rdquo;, colour = &amp;ldquo;#EE4000&amp;rdquo;) +
+  theme(panel.background = element_rect(fill = &amp;ldquo;#3A9425&amp;rdquo;),
+        axis.line = element_line(colour = &amp;ldquo;#EE4000&amp;rdquo;)) +
+  annotation_custom(g, xmin=2013, xmax=2016, ymin=0.01, ymax=0.25)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;../../images/unnamed-chunk-6-1.png&#34; alt=&#34;plot of chunk unnamed-chunk-6&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So what was Mr. Pitt&amp;rsquo;s worst film?&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+movies %&amp;gt;% arrange(RATING) %&amp;gt;% head(n = 1)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;{% highlight text %}&lt;/p&gt;
+
+&lt;h2 id=&#34;rating-title-credit-year-difference-date-counter&#34;&gt;RATING      TITLE            CREDIT YEAR difference date_counter&lt;/h2&gt;
+
+&lt;h2 id=&#34;1-0-04-cool-world-det-frank-harris-1992-0-79-5&#34;&gt;1   0.04 Cool World Det. Frank Harris 1992      -0.79            5&lt;/h2&gt;
+
+&lt;p&gt;{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;Wow! 0.04!! I have never seen &amp;lsquo;Cool World&amp;rsquo;, but it can&amp;rsquo;t be that bad&amp;hellip;can it?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://i.imgur.com/2oUrH2J.jpg&#34; alt=&#34;&#34; /&gt;
+&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;Hmm, maybe it can&amp;hellip;&lt;/p&gt;
+
+&lt;p&gt;And his best?&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+movies %&amp;gt;% arrange(desc(RATING)) %&amp;gt;% select(RATING, TITLE) %&amp;gt;% head(n = 1)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;{% highlight text %}&lt;/p&gt;
+
+&lt;h2 id=&#34;rating-title-1&#34;&gt;RATING            TITLE&lt;/h2&gt;
+
+&lt;h2 id=&#34;1-0-96-12-years-a-slave&#34;&gt;1   0.96 12 Years a Slave&lt;/h2&gt;
+
+&lt;p&gt;{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;12 Years a Slave. Well, that was a fine movie, and I thought Fassbender was fantastic, as usual. Which makes me think about how Brad Pitt compares to other actors of his generation. Fassbender might be a comparative late starter, but let&amp;rsquo;s see how he and some others (George Clooney, Leonardo DiCaprio, Daniel Day-Lewis, Jamie Foxx and Tom Cruise) compare to Brad Pitt in terms of ratings (earnings might be another interesting comparison). We can use the work we did earlier as an outline for a function to do the same as we did for Bradley for all these male actors, adding a column with a name of the actor.&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+library(reshape)&lt;/p&gt;
+
+&lt;p&gt;actors &amp;lt;- c(&amp;ldquo;george_clooney&amp;rdquo;, &amp;ldquo;leonardo_di_caprio&amp;rdquo;, &amp;ldquo;daniel_daylewis&amp;rdquo;,
+            &amp;ldquo;jamie_foxx&amp;rdquo;, &amp;ldquo;tom_cruise&amp;rdquo;, &amp;ldquo;michael_fassbender&amp;rdquo;)&lt;/p&gt;
+
+&lt;p&gt;base_url &amp;lt;- &amp;ldquo;&lt;a href=&#34;https://www.rottentomatoes.com/celebrity/&amp;quot;&#34;&gt;https://www.rottentomatoes.com/celebrity/&amp;quot;&lt;/a&gt;
+movie_list &amp;lt;- list()&lt;/p&gt;
+
+&lt;p&gt;for(actor in actors){
+  url &amp;lt;- paste0(base_url, actor, &amp;ldquo;/&amp;rdquo;)
+  page &amp;lt;- read_html(url)
+  tb_x &amp;lt;- html_nodes(page, css = &amp;ldquo;#filmographyTbl&amp;rdquo;)
+  tb &amp;lt;- html_table(tb_x)
+  movie &amp;lt;- tb[[1]]
+  movie_list[[actor]] &amp;lt;- movie
+  movie_list[[actor]]$ACTOR &amp;lt;- actor
+  names(movie_list[actor]) &amp;lt;- actor
+}&lt;/p&gt;
+
+&lt;p&gt;all_actors &amp;lt;- merge_all(movie_list)&lt;/p&gt;
+
+&lt;p&gt;all_actors &amp;lt;- all&lt;em&gt;actors %&amp;gt;%
+  mutate(CREDIT = gsub(&amp;rdquo;\r\n&amp;rdquo;, &amp;ldquo;&amp;rdquo;, CREDIT)) %&amp;gt;%
+  filter(RATING != &amp;ldquo;No Score Yet&amp;rdquo;,
+         CREDIT %ni% c(&amp;ldquo;Producer&amp;rdquo;, &amp;ldquo;Executive Producer&amp;rdquo;,
+                       &amp;ldquo;Director Producer&amp;rdquo;)) %&amp;gt;%
+  mutate(RATING = gsub(&amp;ldquo;%&amp;rdquo;, &amp;ldquo;&amp;rdquo;, RATING),
+         RATING = as.numeric(RATING),
+         RATING = RATING/100,
+         ACTOR = gsub(&amp;rdquo;&lt;/em&gt;&amp;rdquo;, &amp;ldquo; &amp;ldquo;, ACTOR))&lt;/p&gt;
+
+&lt;p&gt;movies &amp;lt;- movies %&amp;gt;%
+  mutate(ACTOR = &amp;ldquo;brad pitt&amp;rdquo;)&lt;/p&gt;
+
+&lt;p&gt;all_actors &amp;lt;- full_join(all_actors, movies) %&amp;gt;%
+  select(-c(difference, date_counter))
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;So, now that we&amp;rsquo;ve done all that, let&amp;rsquo;s have a look at how these chaps compare!&lt;/p&gt;
+
+&lt;p&gt;{% highlight r %}
+ggplot(all_actors, aes(y = RATING, x = ACTOR)) +
+  geom_boxplot(fill = &amp;ldquo;#EE4000&amp;rdquo;, colour = &amp;ldquo;yellow&amp;rdquo;) +
+  theme(panel.background = element_rect(fill = &amp;ldquo;#3A9425&amp;rdquo;),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(colour = &amp;ldquo;#EE4000&amp;rdquo;),
+        axis.text.x = element_text(angle = 15, hjust = 1,
+                                   colour = &amp;ldquo;#EE4000&amp;rdquo;),
+        axis.text.y = element_text(colour = &amp;ldquo;#EE4000&amp;rdquo;),
+        axis.ticks = element_line(colour = &amp;ldquo;#EE4000&amp;rdquo;),
+        axis.title = element_text(colour = &amp;ldquo;#EE4000&amp;rdquo;)) +
+  annotation_custom(g, xmin=1.5, xmax=2.5, ymin=0.01, ymax=0.25)
+{% endhighlight %}&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;../../images/unnamed-chunk-10-1.png&#34; alt=&#34;plot of chunk unnamed-chunk-10&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Not surprisingly, the three-time Best Actor Oscar winner Daniel Day-Lewis has a notably different profile. He doesn&amp;rsquo;t make many bad movies, that&amp;rsquo;s for sure (there&amp;rsquo;s nothing under the tomato image). Poor Jamie Foxx, on the other hand, has made quite a few more stinkers. Perhaps opportunities were harder to come by for the only black actor in the group, perhaps not.&lt;/p&gt;
+
+&lt;p&gt;So after all that, what do we think of Meister Pitt? He compares very favourably to some of his peers, with maybe only Fassbender and Day-Lewis on a different level. Still, though, not bad, Mr. Pitt. Even after Mr. and Mrs. Smith :wink:&lt;/p&gt;
+
+&lt;p&gt;&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/yBsAkLa.png?1&#34; /&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

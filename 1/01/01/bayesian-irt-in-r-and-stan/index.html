@@ -1,0 +1,700 @@
+
+
+
+    
+
+
+
+
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        
+            <title>Bayesian IRT in R and Stan - Lithium Theme</title>
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.16" />
+        
+
+
+        
+        
+            
+                <meta name="description" content="A website built through Hugo and blogdown.">
+            
+        
+
+        
+
+  <meta name="twitter:card" content="summary"/>
+
+
+
+<meta name="twitter:title" content="Bayesian IRT in R and Stan"/>
+<meta name="twitter:description" content="The code below on Stan is also available as an RPub webpage, if you&rsquo;d rather work through the examples than read all of the post. &nbsp; One of the first areas where Bayesian modelling gained an entry point into the social sciences (and in particular political science) was in the area of legislator ideal points, with the use of the Item-Response Theory (IRT) models from the educational testing literature in psychology."/>
+
+
+
+        <meta property="og:title" content="Bayesian IRT in R and Stan" />
+<meta property="og:description" content="The code below on Stan is also available as an RPub webpage, if you&rsquo;d rather work through the examples than read all of the post. &nbsp; One of the first areas where Bayesian modelling gained an entry point into the social sciences (and in particular political science) was in the area of legislator ideal points, with the use of the Item-Response Theory (IRT) models from the educational testing literature in psychology." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/1/01/01/bayesian-irt-in-r-and-stan/" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+<meta itemprop="name" content="Bayesian IRT in R and Stan">
+<meta itemprop="description" content="The code below on Stan is also available as an RPub webpage, if you&rsquo;d rather work through the examples than read all of the post. &nbsp; One of the first areas where Bayesian modelling gained an entry point into the social sciences (and in particular political science) was in the area of legislator ideal points, with the use of the Item-Response Theory (IRT) models from the educational testing literature in psychology.">
+
+
+
+<meta itemprop="wordCount" content="2734">
+
+
+
+<meta itemprop="keywords" content="blog,r,bayes,bayesian,bayesian-statistics,brazil,electionsbr,eu,european-statistics-day,geo-referencing,ggplot2,ideal-points,irt,jags,plot,r,r-markdown,regression,rotten-tomatoes,rselenium,rstan,rstudio,rvest,stan,tidyverse,webscraping," />
+
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="../../../../css/google-font.css" />
+            <link rel="stylesheet" href="../../../../css/font-awesome.min.css" />
+            <link rel="stylesheet" href="../../../../css/main.css" />
+            <link rel="stylesheet" href="../../../../css/add-on.css" />
+            <link rel="stylesheet" href="../../../../css/monokai-sublime.css">
+        
+
+        
+
+        
+        
+        
+            
+        
+    </head>
+    <body>
+
+        
+        <div id="wrapper">
+
+    
+<header id="header">
+    
+        <h2><a href="../../../../"></i></a></h2>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="../../../../about/">
+                        About
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/rstudio/blogdown">
+                        GitHub
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://twitter.com/rstudio">
+                        Twitter
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="q" value="site:/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="q" value="site:/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="../../../../about/">
+                            <h3>
+                                
+                                About
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/rstudio/blogdown">
+                            <h3>
+                                
+                                GitHub
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://twitter.com/rstudio">
+                            <h3>
+                                
+                                Twitter
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    <li>
+                        <a href="../../../../2017/02/01/stan/"><p>Stan</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../2016/12/30/a-plain-markdown-post/"><p>A Plain Markdown Post</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../2015/07/23/hello-r-markdown/"><p>Hello R Markdown</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/"><p>Bayesian IRT in R and Stan</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/bayesian-stats----book-recommendations/"><p>Bayesian Stats -- Book Recommendations</p></a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        
+</section>
+
+    
+    <div id="main">
+        <article class="post">
+            
+            <header>
+    <div class="title">
+        
+            <h1><a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/">Bayesian IRT in R and Stan</a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='0001-01-01'>
+            January 1, 0001</time>
+        <span class="author"></span>
+        
+        
+    </div>
+</header>
+
+            <div id="content">
+                
+
+<p><img src="http://i.imgur.com/v7y6SVt.png?3" align="middle" style="width:300px; height:250px;"></p>
+
+<p><em>The code below on Stan is also available as an <a href="http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R"><code>RPub webpage</code></a>, if you&rsquo;d rather work through the examples than read all of the post.</em></p>
+
+<p>&nbsp;</p>
+
+<p>One of the first areas where Bayesian modelling gained an entry point into the social sciences (and in particular political science) was in the area of legislator ideal points, with the use of the Item-Response Theory (IRT) models from the educational testing literature in psychology. This topic proved to be the perfect subject for the comparison of Bayesian and frequentist methods, since ideal point creation usually depends on nominal voting data, which may contain a lot of missing data (legislators who miss votes or abstain) and a huge number of parameters (hundreds of roll-calls by hundreds of legislators). The benefits of Bayesian methods over frequentist techniques for ideal point analysis is discussed at length elsewhere<sup id="a1"><a href="#fn1">1</a></sup>, but here I&rsquo;ll talk about a side-effect of using Bayesian methods for creating ideal points from roll-call data, that is, the long time it can take to run these models on a desktop computer. (In the following discussion, I refer to &lsquo;legislators&rsquo;, but these IRT models apply to all types of response to a question, whether the &lsquo;question&rsquo; is a vote by a politician or a judge or questions on a test or survey.)</p>
+
+<p>To create ideal points in <code>R</code>, you have three or four main options if you want to use ol&rsquo; <a href="http://robertmyles.github.io//Books-on-Bayes-Stats.html">Bayes</a>. First, there is the ready-made <bdi style="font-family:courier; color:#011a99">ideal()</bdi> command of the package <a href="https://cran.r-project.org/web/packages/pscl/index.html">pscl</a> by Simon Jackman &amp; co. <code>pscl</code> includes some very handy little functions for those interested in generating ideal points from legislative voting data &ndash; summary statistics and plots are all easy to make, and come ready-made, such as party loyalty statistics, for example. However, <bdi style="font-family:courier; color:#011a99">ideal()</bdi> suffers somewhat from being so &lsquo;ready&rsquo;: it is a bit unsuited for more complex or indivualistic models compared to some of the options mentioned later. I&rsquo;ve also repeatedly run into problems with <bdi style="font-family:courier; color:#011a99">ideal()</bdi> when trying to use some of the <code>pscl</code> package options (<bdi style="font-family:courier; color:#011a99">dropList()</bdi>, for example), or when estimating multidimensional models. In terms of <a href="https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo">MCMC</a>, only one chain at a time may be run. In fact, it is what it says on the tin: it&rsquo;s a Bayesian version of W-NOMINATE, which means it has the advantages of that program (easy to use) and the disadvantages (when it doesn&rsquo;t work you&rsquo;re not sure why&hellip;a bit &lsquo;black-box&rsquo;).</p>
+
+<p>The <code>MCMCpack</code> package also allows for the creation of ideal points, although its output is slightly less friendly to the beginner (an <bdi style="font-family:courier; color:#011a99">mcmclist</bdi> object). Its <bdi style="font-family:courier; color:#011a99">MCMCirt1d()</bdi> command is pretty similar to <bdi style="font-family:courier; color:#011a99">ideal()</bdi> but allows for setting &lsquo;soft&rsquo; constraints rather than the spike prior that pscl uses to pin down the position of (at least) two legislators. This is better for two reasons, in my opinion. First, it avoids a hard constraint on legislators for legislatures in which we do not have strong <em>a priori</em> evidence to suppose that, for example, Legislator X is an extremist to the right, or Legislator Y to the left (the use of extremist legislators on either end of the supposed scale &lsquo;anchors&rsquo; it). With <code>MCMCpack</code>, the ideal points of the constrained legislators are drawn from a truncated normal distribution (truncated at zero) and so Legislator X (our extremist to the right) simply cannot have an ideal point on the left side of the scale and the opposite for our left-side extremist legislator (the use of these soft constraints obviates the need for them actually <em>being</em> extremists too). I&rsquo;ve also found <code>MCMCpack</code> to be faster, although I haven&rsquo;t tested that formally. In either case, both functions are quite similar. <code>MCMCpack</code> also has functions for dynamic models, robust &amp; multidimensional models, and Ordinal IRT. They&rsquo;ve all worked well for me with the exception of <bdi style="font-family:courier; color:#011a99">MCMCirtkd()</bdi>, the multidimensional model function, which never seems to get started.</p>
+
+<p>The next option is to use the <code>BUGS</code> modelling language, either with <code>BUGS</code> itself or its cousin <code>JAGS</code>, both of which have been heavily used in the literature but can be <strong>extremely</strong> slow, for reasons outlined in <a href="http://robertmyles.github.io//Stan-JAGS.html">this blog post</a>. I don&rsquo;t recommend their use for ideal points.</p>
+
+<p>Next, we have <a href="http://mc-stan.org/">Stan</a>, which doesn&rsquo;t have the simpler syntax of <code>JAGS</code> &amp; <code>BUGS</code>, but is simply incomparably better in terms of speed. However, since it&rsquo;s newer, you won&rsquo;t find the amount of resources available for <code>BUGS</code>, for example (like <a href="https://www.jstatsoft.org/article/view/v036c01">here</a>). There are a few resources: a simple one-dimensional model can be seen on Pablo Barberá&rsquo;s <a href="https://github.com/pablobarbera/quant3materials/blob/master/bayesian/lab14_IRT_issues.R">github</a>; a friend of mine, Guilherme Duarte, has an example of a dynamic model on his github <a href="https://github.com/duarteguilherme/Quinn-Martin-Replication">too</a>.</p>
+
+<p>There are some other resources available, but relate to slightly different IRT models, more common in the educational-testing literature, and less so in ideal point studies: the &lsquo;Rasch&rsquo; <a href="http://www.stat.columbia.edu/~gelman/research/unpublished/stan_v_stata.pdf">model</a>; the <a href="https://rpubs.com/rfarouni/64284">2PL model</a> (in which a &lsquo;yes&rsquo; answer has a specific associated movement in the dimensional space and the discrimination parameter only takes on postive values; in the ideal-point model of <a href="https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/Jackman2001.pdf">Jackman</a> it can possess negative and positive values).</p>
+
+<p>Since there are so few Stan resources for ideal point IRT models, I thought I&rsquo;d post a few models here. The code is also available as an <a href="http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R">RPub webpage</a>, as mentioned earlier. The statistical model we&rsquo;ll employ is:
+{% raw %}
+  $$y_{ij} = \beta_j\bf{x_i} - \alpha<em>j,$$
+ {% endraw %}
+where ({% raw %}\(y</em>{ij}\){% endraw %}) are the votes, in binary form (1 = &lsquo;Yes&rsquo;; 2 = &lsquo;No&rsquo;); the {% raw %}\(\bf x_i\){% endraw %} are the ideal points of the legislators; and  {% raw %} \(\beta_j\){% endraw %} and {% raw %}\(\alpha_j\){% endraw %} are the discrimination and difficulty parameters of the model.</p>
+
+<p>Starting from scratch in <code>R</code> in a new session (you&rsquo;ll need a C++ compiler if you don&rsquo;t have one, see <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">here</a>):</p>
+
+<p>{% highlight R linenos=table %}
+install.packages(&ldquo;RStan&rdquo;)
+library(&ldquo;RStan&rdquo;)
+{% endhighlight %}</p>
+
+<p>Ideal points are created from a <em>j</em> {% raw %}\(\times\){% endraw %} <em>m</em> matrix of voting data (<em>j</em> legislators voting on <em>m</em> votes), coded <bdi style="font-family:courier">1</bdi> for &lsquo;yes&rsquo; and <bdi style="font-family:courier">0</bdi> for &lsquo;no&rsquo; and abstentions. Missing data are <bdi style="font-family:courier">NA</bdi>, and are deleted out before running in Stan. We can easily simulate data for this type of thing, but let&rsquo;s use a real database. This data is from the 53rd legislature of the Brazilian Federal Senate (with thanks to <a href="http://www.cebrap.org.br/v2/pages/home">CEBRAP</a>, who built the original database, this comes from an extended version I created), we&rsquo;ll download it from my Github repo. You&rsquo;ll need to install <code>readr</code> if you don&rsquo;t have it. (I also have the bad habit of naming my data as &ldquo;data&rdquo;&hellip; not generally a great idea. It&rsquo;ll be ok here, though.)</p>
+
+<p>{% highlight R linenos=table %}
+library(readr)
+data &lt;- read_csv(&ldquo;<a href="https://raw.githubusercontent.com/RobertMyles/Bayesian-Ideal-Point-IRT-Models/master/Senate_Example.csv&quot;">https://raw.githubusercontent.com/RobertMyles/Bayesian-Ideal-Point-IRT-Models/master/Senate_Example.csv&quot;</a>)
+colnames(data)
+{% endhighlight %}</p>
+
+<p>So let&rsquo;s take a look at the data. You&rsquo;ll see the column names are &ldquo;VoteNumber&rdquo;, &ldquo;SenNumber&rdquo;, &ldquo;SenatorUpper&rdquo;, &ldquo;Vote&rdquo;, &ldquo;Party&rdquo;, &ldquo;GovCoalition&rdquo;, &ldquo;State&rdquo;, &ldquo;FP&rdquo;, &ldquo;Origin&rdquo;, &ldquo;Contentious&rdquo;, &ldquo;IndGov&rdquo;, and &ldquo;VoteType&rdquo;. I&rsquo;ve kept them in this state so that we can tidy things up and manipulate things a little, stuff you&rsquo;ll probably have to do any time you deal with real data of this sort. We can also have a look later at different plotting options using some of these variables. First, let&rsquo;s change the votes, which are in the format &ldquo;S&rdquo; (<em>Sim</em>, &lsquo;Yes&rsquo;), &ldquo;N&rdquo; (&lsquo;No&rsquo;), &ldquo;A&rdquo; (Abstention), and &ldquo;O&rdquo; (Obstruction), to numeric format.</p>
+
+<p>{% highlight R linenos=table %}
+data$Vote[data$Vote==&ldquo;S&rdquo;] &lt;- 1
+data$Vote[data$Vote==&ldquo;N&rdquo;] &lt;- 0
+data$Vote[data$Vote  %in% c(NA,&ldquo;O&rdquo;,&ldquo;A&rdquo;)] &lt;- NA
+data$Vote &lt;- as.numeric(data$Vote)
+{% endhighlight %}</p>
+
+<p>&nbsp;</p>
+
+<p>Next, we&rsquo;ll create the &lsquo;vote matrix&rsquo;. This is the <em>j</em> {% raw %}\(\times\){% endraw %} <em>m</em> matrix that we will use to create the ideal points with Stan. The rows will be the legislators and the columns the votes. We will also need to deal with the issue of <a href="http://polmeth.wustl.edu/files/polmeth/river03.pdf">&lsquo;constraints&rsquo;</a>: we need to identify <em>d(d + 1)</em> legislators in <em>d</em> dimensions and constrain their ideal points in some way. For now, we&rsquo;ll just organise our vote matrix in such a way that the two legislators that will be constrained are placed in rows 1 and 2 of the matrix. For this example, we can use Senators Agripino and Suplicy, who belong to two parties that are generally considered to be on opposite sides of the political &lsquo;space&rsquo; that we will place our ideal points upon. Organizing things in this way is not necessary but makes the Stan model code cleaner later on.</p>
+
+<p>&nbsp;
+{% highlight R linenos=table %}
+data$FullID &lt;- paste(data$SenatorUpper, data$Party, sep=&rdquo;:&ldquo;)
+NameID &lt;- unique(data$FullID)
+J &lt;- length(unique(NameID))
+M &lt;- length(unique(data$VoteNumber))
+grep(&ldquo;JOSE AGRIPINO:PFL&rdquo;, NameID)  #34
+grep(&ldquo;EDUARDO SUPLICY:PT&rdquo;, NameID) #12
+NameID &lt;- NameID[c(34, 12, 1:11, 13:33, 35:J)]</p>
+
+<p>y &lt;- matrix(NA,J,M)
+Rows &lt;- match(data$FullID, NameID)
+Cols &lt;- unique(data$VoteNumber)
+Columns &lt;- match(data$VoteNumber, Cols)</p>
+
+<p>for(i in 1:dim(data)[1]){
+  y[Rows[i],Columns[i]] &lt;- data$Vote[i]
+}</p>
+
+<p>dimnames(y) &lt;- list(unique(NameID), unique(data$VoteNumber))
+{% endhighlight %}</p>
+
+<p>I presume you&rsquo;re using RStudio. Clicking on the viewer should show you the vote matrix, which should look like this:</p>
+
+<p><img src="http://i.imgur.com/iOh3lfY.png?1"></p>
+
+<p>&nbsp;</p>
+
+<p>Next we&rsquo;ll make a dataframe of legislator variables which we&rsquo;ll use later on, and one of vote characteristics.</p>
+
+<p>{% highlight R linenos=table %}
+ldata &lt;- data.frame(FullID=unique(NameID),
+                    Party=data$Party[match(unique(NameID), data$FullID)],
+                    GovCoalition=data$GovCoalition[match(unique(NameID), data$FullID)],
+                    Name=data$SenatorUpper[match(unique(NameID), data$FullID)],
+                    State=data$State[match(unique(NameID), data$FullID)],
+                    row.names=NULL, stringsAsFactors=FALSE)</p>
+
+<p>vdata &lt;- data.frame(VoteNumber=unique(data$VoteNumber),
+        VoteType=data$VoteType[match(unique(data$VoteNumber), data$VoteNumber)],
+        SenNumber=data$SenNumber[match(unique(data$VoteNumber), data$VoteNumber)],
+        Origin=data$Origin[match(unique(data$VoteNumber), data$VoteNumber)],
+        Contentious=data$Contentious[match(unique(data$VoteNumber),
+                    data$VoteNumber)],
+        IndGov=data$IndGov[match(unique(data$VoteNumber), data$VoteNumber)],
+        stringsAsFactors=F)
+{% endhighlight %}</p>
+
+<p>&nbsp;</p>
+
+<p>Stan is not like <code>JAGS</code> and <code>BUGS</code> in that <bdi style="font-family:courier">NA</bdi> is unwieldy to incorporate. The best thing to do is to delete missing data out, as can be seen in Barberá&rsquo;s script linked to earlier, which I&rsquo;ll copy here.</p>
+
+<p>{% highlight R linenos=table %}
+N &lt;- length(y)
+j &lt;- rep(1:J, times=M)
+m &lt;- rep(1:M, each=J)</p>
+
+<p>miss &lt;- which(is.na(y))
+N &lt;- N - length(miss)
+j &lt;- j[-miss]
+m &lt;- m[-miss]
+y &lt;- y[-miss]
+{% endhighlight %}</p>
+
+<p>Next, we&rsquo;ll set our initial values. There are various ways to do this, ranging from leaving it up to Stan (i.e. not setting any values) to creating lists with specific starting values for each parameter. What we&rsquo;ll do here is use the starting values as a way to start the parties off in separate places. This has several advantages: we already know that these parties don&rsquo;t vote together very often (i.e., they are parties of the government and the opposition) and so we can speed up the model by starting the legislators off where we already know they&rsquo;ll be (i.e. right-wing parties on the right etc.). This also has the benefit of making it less likely that we&rsquo;ll end up with &lsquo;sign-flips&rsquo;, where a legislator with a bi-modal posterior distribution has an ideal point from the &lsquo;wrong&rsquo; mode.<sup id="a2"><a href="#fn2">2</a></sup> For the discrimination and difficulty paramters, we&rsquo;ll use a random sample from normal distributions. We&rsquo;ll also save all this information as <code>stan.data</code>, which is the list of data we&rsquo;ll use with Stan.</p>
+
+<p>{% highlight R linenos=table %}
+ldata$ThetaStart &lt;- rnorm(J, 0, 1)
+ldata$ThetaStart[ldata$Party==&ldquo;PFL&rdquo; | ldata$Party==&ldquo;PTB&rdquo; | ldata$Party==&ldquo;PSDB&rdquo; | ldata$Party==&ldquo;PPB&rdquo;] &lt;- 2
+ldata$ThetaStart[ldata$Party==&ldquo;PT&rdquo; | ldata$Party==&ldquo;PSOL&rdquo; | ldata$Party==&ldquo;PCdoB&rdquo;] &lt;- -2
+ThetaStart &lt;- ldata$ThetaStart</p>
+
+<p>initF &lt;- function() {
+  list(theta=ThetaStart, beta=rnorm(M, 0, 2), alpha=rnorm(M, 0, 2))
+}</p>
+
+<p>stan.data &lt;- list(J=J, M=M, N=N, j=j, m=m, y=y, ThetaStart=ThetaStart)</p>
+
+<p>{% endhighlight %}</p>
+
+<p>&nbsp;</p>
+
+<p>Stan model code differs from those mentioned above in a few aspects. Firstly, variables need to be declared, along with their type. For example, <em>J</em>, which is our index for the number of senators, is declared in the following code as an integer. The parameters are likewise declared, as real numbers. The model code has three blocks: data, parameters and the model itself (there are other blocks possible, such as<bdi style="font-family:courier; color:#011a99">generated data</bdi>, see the Stan <a href="http://mc-stan.org/documentation/">manual</a>. Stan code is also imperative &ndash; the order of the blocks matters.</p>
+
+<p>{% highlight R linenos=table %}
+stan.code &lt;- &ldquo;
+    data {
+    int<lower=1> J; //Senators
+    int<lower=1> M; //Proposals
+    int<lower=1> N; //no. of observations
+    int<lower=1, upper=J> j[N]; //Senator for observation n
+    int<lower=1, upper=M> m[N]; //Proposal for observation n
+    int<lower=0, upper=1> y[N]; //vote of observation n
+    }
+    parameters {
+    real alpha[M];
+    real beta[M];
+    real theta[J];
+    }
+    model {
+    alpha ~ normal(0,5);
+    beta ~ normal(0,5);
+    theta ~ normal(0,1);
+    theta[1] ~ normal(1, .01);
+    theta[2] ~ normal(-1, .01);<br />
+    for (n in 1:N)
+    y[n] ~ bernoulli_logit(theta[j[n]] * beta[m[n]] - alpha[m[n]]);
+    }&rdquo;
+{% endhighlight %}</p>
+
+<p>&nbsp;</p>
+
+<p>This IRT model can be run using either the logistic or probit link function, however, since Stan has a built in <bdi style="font-family:courier; color:#011a99">bernoulli_logit</bdi>, we&rsquo;ll use that. You can see from the model block above that we have specified specific prior distributions for <bdi style="font-family:courier; color:#011a99">theta[1]</bdi> and <bdi style="font-family:courier; color:#011a99">theta[2]</bdi>. These are our constrained legislators &ndash; Agripino and Suplicy. We can do this using truncated normal distributions in Stan (i.e. <bdi style="font-family:courier; color:#011a99">theta[1] ~ normal(1, .01)T[0,]</bdi>, for example), but in my experience this makes things slower and increases the number of divergent transitions reported by Stan. We then use the <code>stan()</code> command to run our model in Stan. Here, I&rsquo;m using 1000 iterations just to show (as it doesn&rsquo;t take too long); these IRT models generally need more iterations than other models, for good estimates from this data, I run 5000 iterations with 2500 burn-in. A couple of hundred iterations usually suffices in Stan, depending on the model. The number of chains and cores are linked to what I have available on my computer. You can check this with the parallel package using <bdi style="font-family:courier; color:#011a99">detectCores()</bdi>. A quick way to check convergence of the chains is with a graph of Rhat, shown below.</p>
+
+<p>{% highlight R linenos=table %}</p>
+
+<p>stan.fit &lt;- stan(model_code=stan.code, data=stan.data, iter=3000, warmup=1500, chains=4, thin=5, init=initF, verbose=TRUE, cores=4, seed=1234)</p>
+
+<p>stan_rhat(stan.fit, bins=60)</p>
+
+<p>{% endhighlight %}</p>
+
+<p><img src="http://i.imgur.com/YNBevMV.png?1"></p>
+
+<p>Values of Rhat should be 1.03 or lower. As you can see, even from 1000 iterations, we can be confident these chains are converging.</p>
+
+<h2 id="graphing-ideal-points">Graphing Ideal Points</h2>
+
+<p>I find the best way to plot ideal points is by using ggplot2. It&rsquo;s automatically loaded as part of rstan. I also prefer to use an mcmc.list object, simply because I&rsquo;m more used to it. But you can use the <bdi style="font-family:courier; color:#011a99">stan.fit</bdi> object directly if you prefer.</p>
+
+<p>{% highlight R linenos=table %}
+MS &lt;- As.mcmc.list(stan.fit)
+sMS &lt;- summary(MS)
+{% endhighlight %}</p>
+
+<p>There are various things we can plot from the summary above. Of main interest is usually the ideal points, so we&rsquo;ll start with those first. First, let&rsquo;s extract the ideal points (&ldquo;theta&rdquo;) from the summary, along with the lower and upper ends of the 95% credible interval:</p>
+
+<p>{% highlight R linenos=table %}
+Theta &lt;- sMS$statistics[grep(&ldquo;theta&rdquo;, row.names(sMS$statistics)),1]
+ThetaQ &lt;- sMS$quantiles[grep(&ldquo;theta&rdquo;, row.names(sMS$statistics)),c(1,5)]
+Theta &lt;- as.data.frame(cbind(Theta, ThetaQ))
+rm(ThetaQ)
+Theta$FullID &lt;- ldata$FullID
+row.names(Theta) &lt;- NULL
+colnames(Theta)[1:3] &lt;- c(&ldquo;Mean&rdquo;, &ldquo;Lower&rdquo;, &ldquo;Upper&rdquo;)
+Theta &lt;- merge(Theta, ldata, by=&ldquo;FullID&rdquo;)
+Theta &lt;- Theta[order(Theta$Mean),]
+{% endhighlight %}</p>
+
+<p>Now we have a dataframe of legislator characteristics alng with their ideal points. Since we&rsquo;re dealing with a one-dimensional model here, the most straight-forward way to plot is along a scale ranging from the lowest ideal point to the highest. Here, I&rsquo;ll colour the ideal points and their intervals by membership of the government coalition. I&rsquo;ve used some other plotting options to make this plot the way I like it, but it&rsquo;s easy to change things to your taste in ggplot2.</p>
+
+<p>{% highlight R linenos=table %}
+Y &lt;- seq(from=1, to=length(Theta$Mean), by=1)</p>
+
+<p>ggplot(Theta, aes(x=Mean, y=Y)) + geom_point(aes(colour=GovCoalition),
+    shape=19, size=3) + geom_errorbarh(aes(xmin=Lower, xmax=Upper,colour=GovCoalition), height=0) + geom_text(aes(x=Upper, label=FullID, colour=GovCoalition), size=2.5, hjust=-.05)+ scale_colour_manual(values=c(&ldquo;red&rdquo;, &ldquo;blue&rdquo;)) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank(), axis.title=element_blank(), legend.position=&ldquo;none&rdquo;, panel.grid.major.y = element_blank(), panel.grid.major.x=element_line(linetype=1, colour=&ldquo;grey&rdquo;), panel.grid.minor=element_blank(), panel.background=element_rect(fill=&ldquo;white&rdquo;), panel.border = element_rect(colour=&ldquo;black&rdquo;, fill=NA, size=.4)) + scale_x_continuous(limits=c(-2.7, 4))
+{% endhighlight %}</p>
+
+<p><img src="http://i.imgur.com/fE2LY5L.png?1"></p>
+
+<p>Of course, that’s not all the information we have in our ldata dataframe. We could plot things by party or by state. Let’s plot something by region (since there are a lot of states):</p>
+
+<p>{% highlight R linenos=table %}
+St &lt;- Theta[is.na(Theta$State)==FALSE,]  # take out president
+St$Region &lt;- NA
+SE &lt;- c(&ldquo;SP&rdquo;, &ldquo;RJ&rdquo;, &ldquo;ES&rdquo;, &ldquo;MG&rdquo;)
+S &lt;- c(&ldquo;RS&rdquo;, &ldquo;PR&rdquo;, &ldquo;SC&rdquo;)
+N &lt;- c(&ldquo;AM&rdquo;, &ldquo;RO&rdquo;, &ldquo;RR&rdquo;, &ldquo;TO&rdquo;, &ldquo;PA&rdquo;, &ldquo;AC&rdquo;, &ldquo;AP&rdquo;)
+CW &lt;- c(&ldquo;DF&rdquo;, &ldquo;GO&rdquo;, &ldquo;MT&rdquo;, &ldquo;MS&rdquo;)
+NE &lt;- c(&ldquo;CE&rdquo;, &ldquo;MA&rdquo;, &ldquo;AL&rdquo;, &ldquo;RN&rdquo;, &ldquo;PB&rdquo;, &ldquo;SE&rdquo;, &ldquo;PI&rdquo;, &ldquo;BA&rdquo;, &ldquo;PE&rdquo;)
+St$Region[St$State %in% SE] &lt;- &ldquo;South-East&rdquo;
+St$Region[St$State %in% S] &lt;- &ldquo;South&rdquo;
+St$Region[St$State %in% NE] &lt;- &ldquo;North-East&rdquo;
+St$Region[St$State %in% CW] &lt;- &ldquo;Centre-West&rdquo;
+St$Region[St$State %in% N] &lt;- &ldquo;North&rdquo;</p>
+
+<p>nameorder &lt;- St$FullID[order(St$Region, St$Mean)]
+St$FullID &lt;- factor(St$FullID, levels=nameorder)</p>
+
+<p>ggplot(St, aes(x=Mean, y=FullID)) + geom_point(size=3, aes(colour=Region)) + geom_errorbarh(aes(xmin=Lower, xmax=Upper, colour=Region), height=0) + facet_grid(Region ~ ., scales=&ldquo;free_y&rdquo;) + scale_colour_manual(values=c(&ldquo;orange&rdquo;, &ldquo;black&rdquo;, &ldquo;red&rdquo;, &ldquo;blue&rdquo;, &ldquo;darkgreen&rdquo;)) + theme_bw()
+{% endhighlight %}</p>
+
+<p><img src="http://i.imgur.com/M4sx2az.png?1"></p>
+
+<p>We can also analyse the other parameters of the model, and run multidimensional models too. See the <a href="http://rpubs.com/RobertMylesMc/Bayesian-IRT-ideal-points-with-Stan-in-R">RPub</a> for the code for these.</p>
+
+<p>&nbsp;</p>
+
+<p><b id="fn1">1</b> There are many discussions on this topic, but <a href="https://my.vanderbilt.edu/joshclinton/files/2011/10/CJ_LSQ2009.pdf">Clinton &amp; Jackman (2009)</a> is a good place to start. An earlier <a href="https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/ClintonJackmanRivers2004.pdf">paper</a> by Clinton, Jackman &amp; Rivers makes the point somewhat more forcefully. <a href="#a1">↩</a></p>
+
+<p><b id="fn2">2</b> For more on this point, see <a href="https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/Jackman2001.pdf">Jackman</a> 2001, <a href="http://polmeth.wustl.edu/files/polmeth/river03.pdf">Rivers 2003</a> paper cited in the main text, or the Appendix of my PhD <a href="http://robertmyles.github.io//assets/Explaining%20the%20Determinants%20of%20Foreign%20Policy%20Voting%20Behaviour%20in%20the%20Brazilian%20Houses%20of%20Legislature.pdf">thesis</a>. <a href="#a2">↩</a></p>
+
+<p><link rel="image_src" href="http://i.imgur.com/VuCDpaX.png?1" /></p>
+
+            </div>
+        </article>
+    </div>
+    
+<section id="sidebar">
+
+    
+        <section id="intro">
+            
+            
+            
+            <ul class="icons">
+                
+                
+            </ul>
+        </section>
+
+    
+        <section id="recent-posts">
+            <ul class="posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2017/02/01/stan/">Stan</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2017-02-01'>
+                                    February 1, 2017</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2016/12/30/a-plain-markdown-post/">A Plain Markdown Post</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2016-12-30'>
+                                    December 30, 2016</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2015/07/23/hello-r-markdown/">Hello R Markdown</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2015-07-23'>
+                                    July 23, 2015</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/">Bayesian IRT in R and Stan</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/bayesian-stats----book-recommendations/">Bayesian Stats -- Book Recommendations</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+
+                
+                    <li>
+                        <ul class="actions">
+                            <li><a href=
+                            
+                                "/post/"
+                            
+                            class="button">View more posts</a></li>
+                        </ul>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+    
+    
+    
+        <section id="categories">
+            <ul class="posts">
+                <header>
+                    <h3><a href="../../../../categories/">Categories</a></h3>
+                </header>
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/blog/">blog</a>
+                                <span style="float:right;">14</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/r/">r</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+            </ul>
+        </section>
+    
+
+    
+        
+
+    
+        <section id="footer">
+            <ul class="icons">
+                
+                
+            </ul>
+
+            <p class="copyright">&copy; Lithium Theme. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
+        </section>
+
+</section>
+
+            </div>
+        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+        
+
+        
+        
+            
+        
+
+        
+        
+            <script src="../../../../js/jquery.min.js"></script>
+            <script src="../../../../js/skel.min.js"></script>
+            <script src="../../../../js/util.js"></script>
+            <script src="../../../../js/main.js"></script>
+            <script src="../../../../js/backToTop.js"></script>
+            <script src="../../../../js/highlight.pack.js"></script>
+        
+
+        
+
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+            
+    </body>
+</html>
+

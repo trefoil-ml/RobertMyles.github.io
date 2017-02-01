@@ -1,0 +1,617 @@
+
+
+
+    
+
+
+
+
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        
+            <title>Tips and Tricks for R Markdown html - Lithium Theme</title>
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.16" />
+        
+
+
+        
+        
+            
+                <meta name="description" content="A website built through Hugo and blogdown.">
+            
+        
+
+        
+
+  <meta name="twitter:card" content="summary"/>
+
+
+
+<meta name="twitter:title" content="Tips and Tricks for R Markdown html"/>
+<meta name="twitter:description" content="Here are a couple of little tips and tricks that I&rsquo;ve picked up for use with RMarkdown html documents (including presentations and notebooks). This post is aimed at the R user who doesn&rsquo;t know much, if anything, about html and css. Background images Sometimes it&rsquo;s useful (or just nice) to have a background image of some sort in a presentation or notebook. This could be the logo of your university or company, for example."/>
+
+
+
+        <meta property="og:title" content="Tips and Tricks for R Markdown html" />
+<meta property="og:description" content="Here are a couple of little tips and tricks that I&rsquo;ve picked up for use with RMarkdown html documents (including presentations and notebooks). This post is aimed at the R user who doesn&rsquo;t know much, if anything, about html and css. Background images Sometimes it&rsquo;s useful (or just nice) to have a background image of some sort in a presentation or notebook. This could be the logo of your university or company, for example." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/1/01/01/tips-and-tricks-for-r-markdown-html/" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+<meta itemprop="name" content="Tips and Tricks for R Markdown html">
+<meta itemprop="description" content="Here are a couple of little tips and tricks that I&rsquo;ve picked up for use with RMarkdown html documents (including presentations and notebooks). This post is aimed at the R user who doesn&rsquo;t know much, if anything, about html and css. Background images Sometimes it&rsquo;s useful (or just nice) to have a background image of some sort in a presentation or notebook. This could be the logo of your university or company, for example.">
+
+
+
+<meta itemprop="wordCount" content="870">
+
+
+
+<meta itemprop="keywords" content="blog,r,bayes,bayesian,bayesian-statistics,brazil,electionsbr,eu,european-statistics-day,geo-referencing,ggplot2,ideal-points,irt,jags,plot,r,r-markdown,regression,rotten-tomatoes,rselenium,rstan,rstudio,rvest,stan,tidyverse,webscraping," />
+
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="../../../../css/google-font.css" />
+            <link rel="stylesheet" href="../../../../css/font-awesome.min.css" />
+            <link rel="stylesheet" href="../../../../css/main.css" />
+            <link rel="stylesheet" href="../../../../css/add-on.css" />
+            <link rel="stylesheet" href="../../../../css/monokai-sublime.css">
+        
+
+        
+
+        
+        
+        
+            
+        
+    </head>
+    <body>
+
+        
+        <div id="wrapper">
+
+    
+<header id="header">
+    
+        <h2><a href="../../../../"></i></a></h2>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="../../../../about/">
+                        About
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/rstudio/blogdown">
+                        GitHub
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://twitter.com/rstudio">
+                        Twitter
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="q" value="site:/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="q" value="site:/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="../../../../about/">
+                            <h3>
+                                
+                                About
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/rstudio/blogdown">
+                            <h3>
+                                
+                                GitHub
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://twitter.com/rstudio">
+                            <h3>
+                                
+                                Twitter
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    <li>
+                        <a href="../../../../2017/02/01/stan/"><p>Stan</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../2016/12/30/a-plain-markdown-post/"><p>A Plain Markdown Post</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../2015/07/23/hello-r-markdown/"><p>Hello R Markdown</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/"><p>Bayesian IRT in R and Stan</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/bayesian-stats----book-recommendations/"><p>Bayesian Stats -- Book Recommendations</p></a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        
+</section>
+
+    
+    <div id="main">
+        <article class="post">
+            
+            <header>
+    <div class="title">
+        
+            <h1><a href="../../../../1/01/01/tips-and-tricks-for-r-markdown-html/">Tips and Tricks for R Markdown html</a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='0001-01-01'>
+            January 1, 0001</time>
+        <span class="author"></span>
+        
+        
+    </div>
+</header>
+
+            <div id="content">
+                
+
+<p>Here are a couple of little tips and tricks that I&rsquo;ve picked up for use with RMarkdown html documents (including presentations and notebooks). This post is aimed at the R user who doesn&rsquo;t know much, if anything, about html and css.</p>
+
+<h2 id="background-images">Background images</h2>
+
+<p>Sometimes it&rsquo;s useful (or just nice) to have a background image of some sort in a presentation or notebook. This could be the logo of your university or company, for example. To do this for a R Markdown document, you will need to do three things:</p>
+
+<ul>
+<li>create a separate .css file,<br /></li>
+<li>have/create an image, made suitably transparent,<br /></li>
+<li>change the YAML in the R Markdown document.<br /></li>
+</ul>
+
+<p>You can create a css file in any text editor. In this example I&rsquo;m calling it &lsquo;custom.css&rsquo;. Include these lines (my image is called <code>results.jpg</code>):</p>
+
+<pre><code class="language-css">body{
+   background-image: url('results.jpg');
+   min-height: 500px;
+    /* Set background image to fixed (don't scroll along with the page) */
+    background-attachment: fixed;
+    background-position: right top;
+    /* Set the background image to no repeat */
+    background-repeat: no-repeat;
+    /* Scale the background image to be as large as possible */
+    background-size: cover;
+}
+</code></pre>
+
+<p>The image itself will need to be quite transparent. You can do that with imagemagick. On a mac terminal, the command is:</p>
+
+<pre><code class="language-bash">convert IMAGE -fill white -colorize 50% NEW_IMAGE
+</code></pre>
+
+<p>After this, we just need to change our YAML at the top of the R Markdown document like so:</p>
+
+<pre><code class="language-r">---
+title: &quot;R Notebooks&quot;
+output:
+  html_notebook:
+    css: custom.css
+---
+</code></pre>
+
+<p>You&rsquo;ll have something interesting like this:</p>
+
+<p><img src = 'http://i.imgur.com/slwkLCg.png'></p>
+
+<p>This image could of course be anything, like a company logo, for example. You could also leave a large portion of it white to place the image in the corner or side of the screen.</p>
+
+<h2 id="two-columns">Two columns</h2>
+
+<p>Another useful thing that we can do with css is create two columns, particularly useful in a presentation. In order to do that, add the following lines to the css file you&rsquo;re using:</p>
+
+<pre><code class="language-css">#left {
+  left:-8.33%;
+  text-align: left;
+  float: left;
+  width:50%;
+  z-index:-10;
+}
+
+#right {
+  left:31.25%;
+  top: 75px;
+  float: right;
+  text-align: right;
+  z-index:-10;
+  width:50%;
+}
+</code></pre>
+
+<p>When you want to use these columns in your R Markdown document, use them like so, with a bit of html:</p>
+
+<pre><code class="language-html">&lt;div id=&quot;left&quot;&gt;
+  #content
+&lt;/div&gt;
+&lt;div id=&quot;right&quot;&gt;
+  #content
+&lt;/div&gt;
+
+</code></pre>
+
+<p>For example, this code:</p>
+
+<pre><code class="language-r">&lt;div id=&quot;left&quot;&gt;
+$$y_i \backsim Normal(\mu_i, \sigma)$$
+$$\mu_i = \alpha + \beta x_i$$
+$$\sigma \backsim Uniform(0, 1)$$
+$$\beta \backsim Normal(0, 10)$$
+$$\alpha \backsim Normal(0, 10)$$
+&lt;/div&gt;
+
+&lt;div id=&quot;right&quot;&gt;
+- `Likelihood`
+- `Linear model`
+- `sigma prior`
+- `beta prior`
+- `alpha prior`
+&lt;/div&gt;
+</code></pre>
+
+<p>produces this:</p>
+
+<p><img src='http://i.imgur.com/Kpvf8mX.png'></p>
+
+<p>Likewise, an external css file can be used to change defaults. I think the default R code snippet text size is a little small in the R Notebooks, as is all the text in an R Notebook if you&rsquo;re using them for presentations. You can easily change the defaults by putting:</p>
+
+<pre><code class="language-css">body{ /* Normal  */
+   font-size: 16px;
+}
+code.r{ /* Code block */
+  font-size: 14px;
+}
+</code></pre>
+
+<p>in the css file, which will make the normal text and the R code text bigger. If you want to make all the text slightly bigger in the entire document without an external css file, you can just put <font> tags at the start and end of the R Markdown document:</p>
+
+<pre><code class="language-html">&lt;font size=6&gt;
+# content
+&lt;/font&gt;
+</code></pre>
+
+<p>Similarly, bits of html can come in handy when you want to change little elements of the document. <code>&lt;br&gt;</code> will give you a vertical space, and using <code>&lt;bdi&gt;</code> tags can be useful for changing the style of particular words, especially useful for words that are presented as &lsquo;code&rsquo; in back ticks. For example:</p>
+
+<pre><code class="language-html">&lt;bdi style=&quot;color:#36648B&quot;&gt;`variable_1`&lt;/bdi&gt;.
+
+&lt;bdi style=&quot;font-size:70%;&quot;&gt;(**`?dplyr::select`**)&lt;/bdi&gt;
+
+</code></pre>
+
+<p>will make &lsquo;variable_1&rsquo; appear in code-style text and be blue (<bdi style="color:#36648B"><code>variable_1</code></bdi>), whereas &lsquo;?dplyr::select&rsquo; will be bold and 70% of the size that it would otherwise be. (<bdi style="font-size:70%;">(<strong><code>?dplyr::select</code></strong>)</bdi>)</p>
+
+<h2 id="revealjs-logos">revealjs logos</h2>
+
+<p>The image of the two columns above was part of a revealjs presentation done in R Markdown. revealjs gives you really slick options for presentations, but can be a lot of extra work in terms of customizing the output. Logos, for example, which are so common (and necessary) in presentations, are not included by default and can be tricky and annoying to include.</p>
+
+<p>We can get what we want with a little html and some YAML options. In the example below, I used an external html file called <code>Logo_prefix.html</code>, which is referenced in the <code>includes:</code> section of the YAML header. The html file contains the following, which uses an image called <code>logo.png</code>. The size can be adjusted using the <code>style=&quot;&quot;</code> part below.</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+ &lt;div class=&quot;bottombar&quot;&gt;
+    &lt;h1 class=&quot;title&quot;&gt;&lt;/h1&gt;&lt;image class=&quot;logo&quot; src=&quot;logo.png&quot; style=&quot;width:180px; height:85px;&quot;&gt;
+&lt;/div&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>And the RMarkdown YAML I used (for a course in statistics in R in Portuguese; the <code>r Sys.Date()</code> is a nice trick to put the current date on the presentation):</p>
+
+<pre><code class="language-r">---
+title: &quot;Introdução a estatística no `R`, Dia 2&quot;
+author: &quot;Robert McDonnell&quot;
+date: &quot;`r Sys.Date()`&quot;
+output:
+  revealjs::revealjs_presentation:
+    theme: sky
+    highlight: pygments
+    css: custom.css
+    includes:
+      before_body: Logo_prefix.html
+---
+</code></pre>
+
+<p>This includes a small logo in the upper right corner of every slide. To get this to work properly, you will need to dig into the css of the particular revealjs theme that you are using (here I&rsquo;m using sky), I can&rsquo;t even remember exactly how I did that&hellip; like I said, customizing revealjs can be annoying.</p>
+
+            </div>
+        </article>
+    </div>
+    
+<section id="sidebar">
+
+    
+        <section id="intro">
+            
+            
+            
+            <ul class="icons">
+                
+                
+            </ul>
+        </section>
+
+    
+        <section id="recent-posts">
+            <ul class="posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2017/02/01/stan/">Stan</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2017-02-01'>
+                                    February 1, 2017</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2016/12/30/a-plain-markdown-post/">A Plain Markdown Post</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2016-12-30'>
+                                    December 30, 2016</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2015/07/23/hello-r-markdown/">Hello R Markdown</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2015-07-23'>
+                                    July 23, 2015</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/">Bayesian IRT in R and Stan</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/bayesian-stats----book-recommendations/">Bayesian Stats -- Book Recommendations</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+
+                
+                    <li>
+                        <ul class="actions">
+                            <li><a href=
+                            
+                                "/post/"
+                            
+                            class="button">View more posts</a></li>
+                        </ul>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+    
+    
+    
+        <section id="categories">
+            <ul class="posts">
+                <header>
+                    <h3><a href="../../../../categories/">Categories</a></h3>
+                </header>
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/blog/">blog</a>
+                                <span style="float:right;">14</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/r/">r</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+            </ul>
+        </section>
+    
+
+    
+        
+
+    
+        <section id="footer">
+            <ul class="icons">
+                
+                
+            </ul>
+
+            <p class="copyright">&copy; Lithium Theme. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
+        </section>
+
+</section>
+
+            </div>
+        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+        
+
+        
+        
+            
+        
+
+        
+        
+            <script src="../../../../js/jquery.min.js"></script>
+            <script src="../../../../js/skel.min.js"></script>
+            <script src="../../../../js/util.js"></script>
+            <script src="../../../../js/main.js"></script>
+            <script src="../../../../js/backToTop.js"></script>
+            <script src="../../../../js/highlight.pack.js"></script>
+        
+
+        
+
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+            
+    </body>
+</html>
+

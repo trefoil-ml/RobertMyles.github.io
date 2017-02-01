@@ -1,0 +1,715 @@
+
+
+
+    
+
+
+
+
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        
+            <title>Ranking Brad Pitt’s Movies in R - Lithium Theme</title>
+        
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="generator" content="Hugo 0.16" />
+        
+
+
+        
+        
+            
+                <meta name="description" content="A website built through Hugo and blogdown.">
+            
+        
+
+        
+
+  <meta name="twitter:card" content="summary"/>
+
+
+
+<meta name="twitter:title" content="Ranking Brad Pitt’s Movies in R"/>
+<meta name="twitter:description" content="So I saw this blog post, in which Pretty Famous ranked every one of Brad Pitt&rsquo;s movies (I have no idea how I came across it, I&rsquo;m not particularly a movie buff or a fan of Señor Pitt, but anyway). Then I wondered how easy/hard it would be to do something like that in R. Pretty Famous used a few sources, but here I&rsquo;m going to stick to Rotten Tomatoes, since it&rsquo;s a pretty well-known movie ratings site, maybe the most well-known."/>
+
+
+
+        <meta property="og:title" content="Ranking Brad Pitt’s Movies in R" />
+<meta property="og:description" content="So I saw this blog post, in which Pretty Famous ranked every one of Brad Pitt&rsquo;s movies (I have no idea how I came across it, I&rsquo;m not particularly a movie buff or a fan of Señor Pitt, but anyway). Then I wondered how easy/hard it would be to do something like that in R. Pretty Famous used a few sources, but here I&rsquo;m going to stick to Rotten Tomatoes, since it&rsquo;s a pretty well-known movie ratings site, maybe the most well-known." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/1/01/01/ranking-brad-pitts-movies-in-r/" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+<meta itemprop="name" content="Ranking Brad Pitt’s Movies in R">
+<meta itemprop="description" content="So I saw this blog post, in which Pretty Famous ranked every one of Brad Pitt&rsquo;s movies (I have no idea how I came across it, I&rsquo;m not particularly a movie buff or a fan of Señor Pitt, but anyway). Then I wondered how easy/hard it would be to do something like that in R. Pretty Famous used a few sources, but here I&rsquo;m going to stick to Rotten Tomatoes, since it&rsquo;s a pretty well-known movie ratings site, maybe the most well-known.">
+
+
+
+<meta itemprop="wordCount" content="1525">
+
+
+
+<meta itemprop="keywords" content="blog,r,bayes,bayesian,bayesian-statistics,brazil,electionsbr,eu,european-statistics-day,geo-referencing,ggplot2,ideal-points,irt,jags,plot,r,r-markdown,regression,rotten-tomatoes,rselenium,rstan,rstudio,rvest,stan,tidyverse,webscraping," />
+
+        
+
+        
+
+        
+        
+            
+        
+
+        
+        
+            <link rel="stylesheet" href="../../../../css/google-font.css" />
+            <link rel="stylesheet" href="../../../../css/font-awesome.min.css" />
+            <link rel="stylesheet" href="../../../../css/main.css" />
+            <link rel="stylesheet" href="../../../../css/add-on.css" />
+            <link rel="stylesheet" href="../../../../css/monokai-sublime.css">
+        
+
+        
+
+        
+        
+        
+            
+        
+    </head>
+    <body>
+
+        
+        <div id="wrapper">
+
+    
+<header id="header">
+    
+        <h2><a href="../../../../"></i></a></h2>
+    
+
+    <nav class="links">
+        <ul>
+            
+                <li>
+                    <a href="../../../../about/">
+                        About
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://github.com/rstudio/blogdown">
+                        GitHub
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="https://twitter.com/rstudio">
+                        Twitter
+                    </a>
+                </li>
+            
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="//google.com/search">
+                    <input type="text" name="q" placeholder="Search" />
+                    <input type="hidden" name="q" value="site:/">
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<section id="menu">
+
+    
+        <section>
+            <form class="search" method="get" action="//google.com/search">
+                <input type="text" name="q" placeholder="Search" />
+                <input type="hidden" name="q" value="site:/">
+            </form>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                
+                    <li>
+                        <a href="../../../../about/">
+                            <h3>
+                                
+                                About
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/rstudio/blogdown">
+                            <h3>
+                                
+                                GitHub
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://twitter.com/rstudio">
+                            <h3>
+                                
+                                Twitter
+                            </h3>
+                        </a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        <section>
+            <ul class="links">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    <li>
+                        <a href="../../../../2017/02/01/stan/"><p>Stan</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../2016/12/30/a-plain-markdown-post/"><p>A Plain Markdown Post</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../2015/07/23/hello-r-markdown/"><p>Hello R Markdown</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/"><p>Bayesian IRT in R and Stan</p></a>
+                    </li>
+                
+                    <li>
+                        <a href="../../../../1/01/01/bayesian-stats----book-recommendations/"><p>Bayesian Stats -- Book Recommendations</p></a>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+        
+</section>
+
+    
+    <div id="main">
+        <article class="post">
+            
+            <header>
+    <div class="title">
+        
+            <h1><a href="../../../../1/01/01/ranking-brad-pitts-movies-in-r/">Ranking Brad Pitt’s Movies in R</a></h1>
+            
+        
+        
+    </div>
+    <div class="meta">
+        
+            
+        
+
+        <time class="published"
+            datetime='0001-01-01'>
+            January 1, 0001</time>
+        <span class="author"></span>
+        
+        
+    </div>
+</header>
+
+            <div id="content">
+                
+
+<p>So I saw <a href="http://movies.prettyfamous.com/stories/24289/ranking-every-brad-pitt-movie-from-worst-to-first">this</a> blog post, in which <a href="http://www.prettyfamous.com/">Pretty Famous</a> ranked every one of Brad Pitt&rsquo;s movies (I have no idea how I came across it, I&rsquo;m not particularly a movie buff or a fan of Señor Pitt, but anyway). Then I wondered how easy/hard it would be to do something like that in R. Pretty Famous used a few sources, but here I&rsquo;m going to stick to Rotten Tomatoes, since it&rsquo;s a pretty well-known movie ratings site, maybe the most well-known. Pretty famous, you could say (ugh, apologies).</p>
+
+<p>For those who don&rsquo;t have much experience scraping information from the web, we first need to find the unique url for Brad Pitt. In other words, his &ldquo;<a href="https://www.rottentomatoes.com/celebrity/brad_pitt/">personal page</a>&rdquo; on Rotten Tomatoes. Once we&rsquo;ve done that, we need to identify what part of the page we want to scrape. In this case, that is the &ldquo;Movies&rdquo; table. You can right-click on this table and click &ldquo;Inspect&rdquo; or &ldquo;Inspect Element&rdquo; on your browser (I&rsquo;m using Chrome on a macbook, but it should be pretty similar on other browsers). Once you find the <em>actual</em> table, instead of a <code>&lt;div&gt;</code> element holding it, or just a title, then copy the selector of that element. This can be done on Chrome by right clicking the line in the &lsquo;Elements&rsquo; panel that comes up when you right-click and click &lsquo;Inspect&rsquo;. You will have an option to &lsquo;Copy&rsquo;, then choose &lsquo;Copy selector&rsquo; (you can choose xpath if you want, but css is simpler). In any case, the elements will be highlighted on the page as you click on them.</p>
+
+<p>In R, we can use the <a href="https://github.com/hadley/rvest">rvest</a> package to read the page, store the nodes of the web document that we want and then extract the table from this node set. The &lsquo;table&rsquo; ends up as a list of two dataframes, Brad Pitt&rsquo;s films and TV appearances. His movies are in the first dataframe and so we extract that one out, as a dataframe called &lsquo;movies&rsquo;. Of course, in some of these movies he had a larger role than others, and can be said to have had a bigger impact on the rating score. But, hey, this is informal analysis.</p>
+
+<p>{% highlight r %}
+library(tidyverse)
+library(rvest)
+library(lubridate)</p>
+
+<p>url &lt;- &ldquo;<a href="https://www.rottentomatoes.com/celebrity/brad_pitt/&quot;">https://www.rottentomatoes.com/celebrity/brad_pitt/&quot;</a>
+page &lt;- read_html(url)
+tb_x &lt;- html_nodes(page, css = &ldquo;#filmographyTbl&rdquo;)
+tb &lt;- html_table(tb_x)
+movies &lt;- tb[[1]]
+head(movies)
+{% endhighlight %}</p>
+
+<p>{% highlight text %}</p>
+
+<h2 id="rating-title">RATING                               TITLE</h2>
+
+<h2 id="1-no-score-yet-world-war-z-2">1 No Score Yet                       World War Z 2</h2>
+
+<h2 id="2-87-the-lost-city-of-z">2          87%                  The Lost City of Z</h2>
+
+<h2 id="3-no-score-yet-brad-s-status">3 No Score Yet                       Brad&rsquo;s Status</h2>
+
+<h2 id="4-61-allied">4          61%                              Allied</h2>
+
+<h2 id="5-98-moonlight">5          98%                           Moonlight</h2>
+
+<h2 id="6-92-voyage-of-time-the-imax-experience">6          92% Voyage of Time: The IMAX Experience</h2>
+
+<h2 id="credit">CREDIT</h2>
+
+<h2 id="1-gerry-lane-n-n-n-producer">1 Gerry Lane\n                                                \n                                \n                                        Producer</h2>
+
+<h2 id="2-executive-producer">2                                                                                                                               Executive Producer</h2>
+
+<h2 id="3-actor">3                                                                                                                                            Actor</h2>
+
+<h2 id="4-max-vatan">4                                                                                                                                        Max Vatan</h2>
+
+<h2 id="5-executive-producer">5                                                                                                                               Executive Producer</h2>
+
+<h2 id="6-producer">6                                                                                                                                         Producer</h2>
+
+<h2 id="year">YEAR</h2>
+
+<h2 id="1-2017">1 2017</h2>
+
+<h2 id="2-2017">2 2017</h2>
+
+<h2 id="3-2017">3 2017</h2>
+
+<h2 id="4-2016">4 2016</h2>
+
+<h2 id="5-2016">5 2016</h2>
+
+<h2 id="6-2016">6 2016</h2>
+
+<p>{% endhighlight %}</p>
+
+<p>Now we&rsquo;ve got Mr. Pitt&rsquo;s movies in a dataframe, with their rating, title, producer credits and year.  Since anything with &ldquo;No Score Yet&rdquo; is not of particular use to us, let&rsquo;s remove it. We also could do with changing &ldquo;87%&rdquo; to an actual number, i.e. 0.87, and we&rsquo;ll take out the movies in which he had no acting role, and try to clean up all those spaces and new lines.</p>
+
+<p>{% highlight r %}
+&lsquo;%ni%&rsquo; &lt;- Negate(&lsquo;%in%&rsquo;)
+movies &lt;- movies %&gt;%
+  mutate(CREDIT = gsub(&rdquo;\r\n&rdquo;, &ldquo;&rdquo;, CREDIT)) %&gt;%
+  filter(RATING != &ldquo;No Score Yet&rdquo;,
+         CREDIT %ni% c(&ldquo;Producer&rdquo;, &ldquo;Executive Producer&rdquo;),
+         TITLE %ni% c(&ldquo;Selma&rdquo;, &ldquo;The Time Traveler&rsquo;s Wife&rdquo;)) %&gt;%
+  mutate(RATING = gsub(&ldquo;%&rdquo;, &ldquo;&rdquo;, RATING),
+         RATING = as.numeric(RATING),
+         RATING = RATING/100)
+{% endhighlight %}</p>
+
+<p>So how do the ratings for his Pittness stack up? Let&rsquo;s have a look-see, Rotten Tomatoes style:</p>
+
+<p>{% highlight r %}
+library(grid)
+library(png)</p>
+
+<p>tomato &lt;- readPNG(&ldquo;/Users/robert/RobertMyles.github.io/images/tomato.png&rdquo;)
+g &lt;- rasterGrob(tomato, interpolate=TRUE)</p>
+
+<p>ggplot(movies, aes(x = RATING)) +
+  geom_histogram(bins = 20, fill = &ldquo;#EE4000&rdquo;, colour = &ldquo;yellow&rdquo;) +
+  theme_classic() +
+  theme(panel.background = element_rect(fill = &ldquo;#3A9425&rdquo;)) +
+  annotation_custom(g, xmin=0, xmax=0.25, ymin=4, ymax=6)
+{% endhighlight %}</p>
+
+<p><img src="../../../../images/unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3" /></p>
+
+<p>(You can get the tomato image from <a href="http://static.tvtropes.org/pmwiki/pub/images/rotten_tomatoes_8290.jpg">here</a>. Convert it to png and strip out (most of) the white background using <a href="https://www.imagemagick.org/script/index.php">ImageMagick</a> &ndash; the command on a mac is <code>convert rotten_tomatoes.jpg -transparent white tomato.png</code>.)</p>
+
+<p>Not so bad! Got some not-so-greats, but quite a lot of highly rated movies. I&rsquo;m surprised, actually. In fact the mean and median values are:</p>
+
+<p>{% highlight r %}
+mean(movies$RATING)
+{% endhighlight %}</p>
+
+<p>{% highlight text %}</p>
+
+<h2 id="1-0-6508511">[1] 0.6508511</h2>
+
+<p>{% endhighlight %}</p>
+
+<p>{% highlight r %}
+median(movies$RATING)
+{% endhighlight %}</p>
+
+<p>{% highlight text %}</p>
+
+<h2 id="1-0-7">[1] 0.7</h2>
+
+<p>{% endhighlight %}</p>
+
+<p>I wonder if his movies have gotten better? I was always under the impression that Brad Pitt was an actor who, like Leonardo DiCaprio, actually learned to act over time, instead of already being a talented actor when he started. Fair credit to them, though, they could have just rested on their laurels after they first became famous.</p>
+
+<p>Let&rsquo;s have a look at how the ratings have change over time and see if Brad has gotten better or worse, judging by the film that came before.</p>
+
+<p>{% highlight r %}
+movies &lt;- movies %&gt;%
+  arrange(YEAR) %&gt;%
+  mutate(difference = c(0, diff(RATING, lag = 1)),
+         date_counter = 1:nrow(.))</p>
+
+<p>ggplot(movies, aes(x = date_counter, y = difference)) +
+  geom_line(colour = &ldquo;yellow&rdquo;) +
+  theme_classic() +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank(),
+        panel.background = element_rect(fill = &ldquo;#3A9425&rdquo;),
+        axis.line = element_line(colour = &ldquo;#EE4000&rdquo;)) +
+  annotate(&ldquo;label&rdquo;, label = &ldquo;1989&rdquo;, x = 2, y = -0.7, colour = &ldquo;#EE4000&rdquo;) +
+  annotate(&ldquo;label&rdquo;, label = &ldquo;2016&rdquo;, x = 47, y = -0.7, colour = &ldquo;#EE4000&rdquo;) +
+  geom_hline(yintercept = 0, linetype = 2, colour = &ldquo;#EE4000&rdquo;) +
+  annotation_custom(g, xmin=0, xmax=7, ymin=0.5, ymax=0.95)
+{% endhighlight %}</p>
+
+<p><img src="../../../../images/unnamed-chunk-5-1.png" alt="plot of chunk unnamed-chunk-5" /></p>
+
+<p>Hmm, he&rsquo;s had a fairly erratic career in terms of movie ratings. Looking at the relationship between ratings and time, there&rsquo;s a bit of an improvement, and certainly less train-wrecks, but the improvement is not massive. Maybe he didn&rsquo;t start off so bad, after all.</p>
+
+<p>{% highlight r %}
+ggplot(movies, aes(x = YEAR, y = RATING)) +
+  geom_point(colour = &ldquo;yellow&rdquo;) +
+  geom_smooth(method = &ldquo;lm&rdquo;, colour = &ldquo;#EE4000&rdquo;) +
+  theme(panel.background = element_rect(fill = &ldquo;#3A9425&rdquo;),
+        axis.line = element_line(colour = &ldquo;#EE4000&rdquo;)) +
+  annotation_custom(g, xmin=2013, xmax=2016, ymin=0.01, ymax=0.25)
+{% endhighlight %}</p>
+
+<p><img src="../../../../images/unnamed-chunk-6-1.png" alt="plot of chunk unnamed-chunk-6" /></p>
+
+<p>So what was Mr. Pitt&rsquo;s worst film?</p>
+
+<p>{% highlight r %}
+movies %&gt;% arrange(RATING) %&gt;% head(n = 1)
+{% endhighlight %}</p>
+
+<p>{% highlight text %}</p>
+
+<h2 id="rating-title-credit-year-difference-date-counter">RATING      TITLE            CREDIT YEAR difference date_counter</h2>
+
+<h2 id="1-0-04-cool-world-det-frank-harris-1992-0-79-5">1   0.04 Cool World Det. Frank Harris 1992      -0.79            5</h2>
+
+<p>{% endhighlight %}</p>
+
+<p>Wow! 0.04!! I have never seen &lsquo;Cool World&rsquo;, but it can&rsquo;t be that bad&hellip;can it?</p>
+
+<p><img src="http://i.imgur.com/2oUrH2J.jpg" alt="" />
+<br></p>
+
+<p>Hmm, maybe it can&hellip;</p>
+
+<p>And his best?</p>
+
+<p>{% highlight r %}
+movies %&gt;% arrange(desc(RATING)) %&gt;% select(RATING, TITLE) %&gt;% head(n = 1)
+{% endhighlight %}</p>
+
+<p>{% highlight text %}</p>
+
+<h2 id="rating-title-1">RATING            TITLE</h2>
+
+<h2 id="1-0-96-12-years-a-slave">1   0.96 12 Years a Slave</h2>
+
+<p>{% endhighlight %}</p>
+
+<p>12 Years a Slave. Well, that was a fine movie, and I thought Fassbender was fantastic, as usual. Which makes me think about how Brad Pitt compares to other actors of his generation. Fassbender might be a comparative late starter, but let&rsquo;s see how he and some others (George Clooney, Leonardo DiCaprio, Daniel Day-Lewis, Jamie Foxx and Tom Cruise) compare to Brad Pitt in terms of ratings (earnings might be another interesting comparison). We can use the work we did earlier as an outline for a function to do the same as we did for Bradley for all these male actors, adding a column with a name of the actor.</p>
+
+<p>{% highlight r %}
+library(reshape)</p>
+
+<p>actors &lt;- c(&ldquo;george_clooney&rdquo;, &ldquo;leonardo_di_caprio&rdquo;, &ldquo;daniel_daylewis&rdquo;,
+            &ldquo;jamie_foxx&rdquo;, &ldquo;tom_cruise&rdquo;, &ldquo;michael_fassbender&rdquo;)</p>
+
+<p>base_url &lt;- &ldquo;<a href="https://www.rottentomatoes.com/celebrity/&quot;">https://www.rottentomatoes.com/celebrity/&quot;</a>
+movie_list &lt;- list()</p>
+
+<p>for(actor in actors){
+  url &lt;- paste0(base_url, actor, &ldquo;/&rdquo;)
+  page &lt;- read_html(url)
+  tb_x &lt;- html_nodes(page, css = &ldquo;#filmographyTbl&rdquo;)
+  tb &lt;- html_table(tb_x)
+  movie &lt;- tb[[1]]
+  movie_list[[actor]] &lt;- movie
+  movie_list[[actor]]$ACTOR &lt;- actor
+  names(movie_list[actor]) &lt;- actor
+}</p>
+
+<p>all_actors &lt;- merge_all(movie_list)</p>
+
+<p>all_actors &lt;- all<em>actors %&gt;%
+  mutate(CREDIT = gsub(&rdquo;\r\n&rdquo;, &ldquo;&rdquo;, CREDIT)) %&gt;%
+  filter(RATING != &ldquo;No Score Yet&rdquo;,
+         CREDIT %ni% c(&ldquo;Producer&rdquo;, &ldquo;Executive Producer&rdquo;,
+                       &ldquo;Director Producer&rdquo;)) %&gt;%
+  mutate(RATING = gsub(&ldquo;%&rdquo;, &ldquo;&rdquo;, RATING),
+         RATING = as.numeric(RATING),
+         RATING = RATING/100,
+         ACTOR = gsub(&rdquo;</em>&rdquo;, &ldquo; &ldquo;, ACTOR))</p>
+
+<p>movies &lt;- movies %&gt;%
+  mutate(ACTOR = &ldquo;brad pitt&rdquo;)</p>
+
+<p>all_actors &lt;- full_join(all_actors, movies) %&gt;%
+  select(-c(difference, date_counter))
+{% endhighlight %}</p>
+
+<p>So, now that we&rsquo;ve done all that, let&rsquo;s have a look at how these chaps compare!</p>
+
+<p>{% highlight r %}
+ggplot(all_actors, aes(y = RATING, x = ACTOR)) +
+  geom_boxplot(fill = &ldquo;#EE4000&rdquo;, colour = &ldquo;yellow&rdquo;) +
+  theme(panel.background = element_rect(fill = &ldquo;#3A9425&rdquo;),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(colour = &ldquo;#EE4000&rdquo;),
+        axis.text.x = element_text(angle = 15, hjust = 1,
+                                   colour = &ldquo;#EE4000&rdquo;),
+        axis.text.y = element_text(colour = &ldquo;#EE4000&rdquo;),
+        axis.ticks = element_line(colour = &ldquo;#EE4000&rdquo;),
+        axis.title = element_text(colour = &ldquo;#EE4000&rdquo;)) +
+  annotation_custom(g, xmin=1.5, xmax=2.5, ymin=0.01, ymax=0.25)
+{% endhighlight %}</p>
+
+<p><img src="../../../../images/unnamed-chunk-10-1.png" alt="plot of chunk unnamed-chunk-10" /></p>
+
+<p>Not surprisingly, the three-time Best Actor Oscar winner Daniel Day-Lewis has a notably different profile. He doesn&rsquo;t make many bad movies, that&rsquo;s for sure (there&rsquo;s nothing under the tomato image). Poor Jamie Foxx, on the other hand, has made quite a few more stinkers. Perhaps opportunities were harder to come by for the only black actor in the group, perhaps not.</p>
+
+<p>So after all that, what do we think of Meister Pitt? He compares very favourably to some of his peers, with maybe only Fassbender and Day-Lewis on a different level. Still, though, not bad, Mr. Pitt. Even after Mr. and Mrs. Smith :wink:</p>
+
+<p><link rel="image_src" href="http://i.imgur.com/yBsAkLa.png?1" /></p>
+
+            </div>
+        </article>
+    </div>
+    
+<section id="sidebar">
+
+    
+        <section id="intro">
+            
+            
+            
+            <ul class="icons">
+                
+                
+            </ul>
+        </section>
+
+    
+        <section id="recent-posts">
+            <ul class="posts">
+                <header>
+                    <h3>Recent Posts</h3>
+                </header>
+                
+                    
+                
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2017/02/01/stan/">Stan</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2017-02-01'>
+                                    February 1, 2017</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2016/12/30/a-plain-markdown-post/">A Plain Markdown Post</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2016-12-30'>
+                                    December 30, 2016</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../2015/07/23/hello-r-markdown/">Hello R Markdown</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '2015-07-23'>
+                                    July 23, 2015</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/bayesian-irt-in-r-and-stan/">Bayesian IRT in R and Stan</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <h3><a href="../../../../1/01/01/bayesian-stats----book-recommendations/">Bayesian Stats -- Book Recommendations</a></h3>
+                                
+                                    
+                                
+                                <time class="published" datetime=
+                                    '0001-01-01'>
+                                    January 1, 0001</time>
+                            </header>
+                        </article>
+                    </li>
+                
+
+                
+                    <li>
+                        <ul class="actions">
+                            <li><a href=
+                            
+                                "/post/"
+                            
+                            class="button">View more posts</a></li>
+                        </ul>
+                    </li>
+                
+            </ul>
+        </section>
+
+    
+    
+    
+    
+        <section id="categories">
+            <ul class="posts">
+                <header>
+                    <h3><a href="../../../../categories/">Categories</a></h3>
+                </header>
+
+                
+                    
+                
+
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/blog/">blog</a>
+                                <span style="float:right;">14</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="../../../../categories/r/">r</a>
+                                <span style="float:right;">2</span>
+                            </header>
+                        </article>
+                    </li>
+                
+            </ul>
+        </section>
+    
+
+    
+        
+
+    
+        <section id="footer">
+            <ul class="icons">
+                
+                
+            </ul>
+
+            <p class="copyright">&copy; Lithium Theme. Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a>. Ported by <a href="//github.com/jpescador" target="_blank">Julio Pescador</a>. Powered by <a href="//gohugo.io" target="_blank">Hugo</a></p>
+        </section>
+
+</section>
+
+            </div>
+        <a id="back-to-top" href="#" class="fa fa-arrow-up fa-border fa-2x"></a>
+        
+
+        
+        
+            
+        
+
+        
+        
+            <script src="../../../../js/jquery.min.js"></script>
+            <script src="../../../../js/skel.min.js"></script>
+            <script src="../../../../js/util.js"></script>
+            <script src="../../../../js/main.js"></script>
+            <script src="../../../../js/backToTop.js"></script>
+            <script src="../../../../js/highlight.pack.js"></script>
+        
+
+        
+
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+            
+    </body>
+</html>
+
