@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Rmarkdown on Lithium Theme</title>
+    <title>Rmarkdown on if(topic != junk) {write} else {:wine_glass:}</title>
     <link>/tags/rmarkdown/</link>
-    <description>Recent content in Rmarkdown on Lithium Theme</description>
+    <description>Recent content in Rmarkdown on if(topic != junk) {write} else {:wine_glass:}</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 15 Apr 2016 00:00:00 +0000</lastBuildDate>

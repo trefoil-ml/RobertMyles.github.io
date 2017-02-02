@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Lithium Theme</title>
+    <title>if(topic != junk) {write} else {:wine_glass:}</title>
     <link>/</link>
-    <description>Recent content on Lithium Theme</description>
+    <description>Recent content on if(topic != junk) {write} else {:wine_glass:}</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 01 Feb 2017 00:00:00 +0000</lastBuildDate>
@@ -1736,7 +1736,9 @@ ggplot(St, aes(x=Mean, y=FullID)) +
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
       
       <guid>/about/</guid>
-      <description>&lt;p&gt;This is a &amp;ldquo;hello world&amp;rdquo; example website for the &lt;a href=&#34;https://github.com/rstudio/blogdown&#34;&gt;&lt;strong&gt;blogdown&lt;/strong&gt;&lt;/a&gt; package. The theme was forked from &lt;a href=&#34;https://github.com/jrutheiser/hugo-lithium-theme&#34;&gt;@jrutheiser/hugo-lithium-theme&lt;/a&gt; and modified by &lt;a href=&#34;https://github.com/yihui/hugo-lithium-theme&#34;&gt;Yihui Xie&lt;/a&gt;.&lt;/p&gt;
+      <description>&lt;p&gt;My name is Robert McDonnell and I live in Brazil, in the hustle and bustle of São Paulo. I have studied Fine Art (in &lt;a href=&#34;http://www.ncad.ie/&#34;&gt;NCAD&lt;/a&gt; in Dublin, Ireland), International Relations &amp;amp; Political Science (in &lt;a href=&#34;http://www.dcu.ie/&#34;&gt;DCU&lt;/a&gt;), and I have just finished my PhD in International Relations in the University of São Paulo. My academic work has so far focused on Bayesian item-response models of legislative voting. Currently, I produce some research for the &lt;a href=&#34;http://portal.fgv.br/en&#34;&gt;Getúlio Vargas Foundation&lt;/a&gt;, I&amp;rsquo;m (trying to) develop some R packages, and I give classes and courses on R and data analysis for &lt;a href=&#34;http://www.ibpad.com.br/&#34;&gt;IBPAD&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You can find my work on &lt;a href=&#34;https://github.com/RobertMyles&#34;&gt;Github&lt;/a&gt;, or you can see my &lt;a href=&#34;https://br.linkedin.com/in/robert-mcdonnell-7475b320&#34;&gt;LinkedIn&lt;/a&gt;.&lt;/p&gt;
 </description>
     </item>
     
