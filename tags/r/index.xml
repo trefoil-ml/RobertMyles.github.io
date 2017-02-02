@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>R on if(topic != junk) {write} else {:wine_glass:}</title>
+    <title>R on if(topic != junk) {write} else {wine}</title>
     <link>/tags/r/</link>
-    <description>Recent content in R on if(topic != junk) {write} else {:wine_glass:}</description>
+    <description>Recent content in R on if(topic != junk) {write} else {wine}</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 01 Feb 2017 00:00:00 +0000</lastBuildDate>
