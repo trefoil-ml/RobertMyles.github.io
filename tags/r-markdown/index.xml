@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>R Markdown on if(topic != junk) {write} else {wine}</title>
+    <title>R Markdown on Robert Myles McDonnell</title>
     <link>/tags/r-markdown/</link>
-    <description>Recent content in R Markdown on if(topic != junk) {write} else {wine}</description>
+    <description>Recent content in R Markdown on Robert Myles McDonnell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 02 Jan 2017 00:00:00 +0000</lastBuildDate>
