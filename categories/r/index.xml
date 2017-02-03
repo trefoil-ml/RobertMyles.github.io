@@ -195,7 +195,7 @@ ggplot(movies, aes(x = RATING)) +
   theme_classic() +
   theme(panel.background = element_rect(fill = &amp;quot;#3A9425&amp;quot;)) +
   annotation_custom(g, xmin = 0, xmax = 0.25, ymin = 4, ymax = 6)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;(You can get the tomato image from &lt;a href=&#34;http://static.tvtropes.org/pmwiki/pub/images/rotten_tomatoes_8290.jpg&#34;&gt;here&lt;/a&gt;. Convert it to png and strip out (most of) the white background using &lt;a href=&#34;https://www.imagemagick.org/script/index.php&#34;&gt;ImageMagick&lt;/a&gt; – the command on a mac is &lt;code&gt;convert rotten_tomatoes.jpg -transparent white tomato.png&lt;/code&gt;.)&lt;/p&gt;
 &lt;p&gt;Not so bad! Got some not-so-greats, but quite a lot of highly rated movies. I’m surprised, actually. In fact the mean and median values are:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mean(movies$RATING)&lt;/code&gt;&lt;/pre&gt;
@@ -221,7 +221,7 @@ ggplot(movies, aes(x = date_counter, y = difference)) +
   annotate(&amp;quot;label&amp;quot;, label = &amp;quot;2016&amp;quot;, x = 47, y = -0.7, colour = &amp;quot;#EE4000&amp;quot;) +
   geom_hline(yintercept = 0, linetype = 2, colour = &amp;quot;#EE4000&amp;quot;) +
   annotation_custom(g, xmin=0, xmax=7, ymin=0.5, ymax=0.95)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Hmm, he’s had a fairly erratic career in terms of movie ratings. Looking at the relationship between ratings and time, there’s a bit of an improvement, and certainly less train-wrecks, but the improvement is not massive. Maybe he didn’t start off so bad, after all.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(movies, aes(x = YEAR, y = RATING)) +
   geom_point(colour = &amp;quot;yellow&amp;quot;) +
@@ -229,7 +229,7 @@ ggplot(movies, aes(x = date_counter, y = difference)) +
   theme(panel.background = element_rect(fill = &amp;quot;#3A9425&amp;quot;),
         axis.line = element_line(colour = &amp;quot;#EE4000&amp;quot;)) +
   annotation_custom(g, xmin=2013, xmax=2016, ymin=0.01, ymax=0.25)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So what was Mr. Pitt’s worst film?&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;movies %&amp;gt;% arrange(RATING) %&amp;gt;% head(n = 1)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##   RATING      TITLE            CREDIT YEAR difference date_counter
@@ -291,7 +291,7 @@ all_actors &amp;lt;- full_join(all_actors, movies) %&amp;gt;%
         axis.ticks = element_line(colour = &amp;quot;#EE4000&amp;quot;),
         axis.title = element_text(colour = &amp;quot;#EE4000&amp;quot;)) +
   annotation_custom(g, xmin=1.5, xmax=2.5, ymin=0.01, ymax=0.25)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Not surprisingly, the three-time Best Actor Oscar winner Daniel Day-Lewis has a notably different profile. He doesn’t make many bad movies, that’s for sure (there’s nothing under the tomato image). Poor Jamie Foxx, on the other hand, has made quite a few more stinkers. Perhaps opportunities were harder to come by for the only black actor in the group, perhaps not.&lt;/p&gt;
 &lt;p&gt;So after all that, what do we think of Meister Pitt? He compares very favourably to some of his peers, with maybe only Fassbender and Day-Lewis on a different level. Still, though, not bad, Mr. Pitt. Even after Mr. and Mrs. Smith :wink:&lt;/p&gt;
 &lt;p&gt;&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/yBsAkLa.png?1&#34; /&gt;&lt;/p&gt;
@@ -2019,183 +2019,6 @@ A colleague asked me how I produced the first few pages of my thesis, and I real
 &lt;p&gt;&lt;b id=&#34;fn5&#34;&gt;5&lt;/b&gt; You can read about this research &lt;a href=&#34;%7B%7B%20site.url%20%7D%7D/assets/Explaining%20the%20Determinants%20of%20Foreign%20Policy%20Voting%20Behaviour%20in%20the%20Brazilian%20Houses%20of%20Legislature.pdf&#34;&gt;here&lt;/a&gt;.&lt;a href=&#34;#a5&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;b id=&#34;fn6&#34;&gt;6&lt;/b&gt; This is the canonical statistical model for Bayesian IRT. The data ({% raw %}\(y_{ij}\){% endraw %}) are the votes, in binary form (1 = ‘Yes’; 2 = ‘No’); the {% raw %}\({% endraw %} are the ideal points of the legislators; and {% raw %} \(_j\){% endraw %} and {% raw %}\(_j\){% endraw %} are the &lt;em&gt;discrimination&lt;/em&gt; (slope) and &lt;em&gt;difficulty&lt;/em&gt; (intercept) parameters, respectively. See the article cited in footnote 1. &lt;a href=&#34;#a6&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;b id=&#34;fn7&#34;&gt;7&lt;/b&gt; I don’t mean to denigrate Jackman’s book. It’s highly detailed and thorough, and he deserves a lot of credit for spearheading the use of these Bayesian IRT models in political science. I’ve cited his work numerous times, I’m a fan.&lt;a href=&#34;#a7&#34;&gt;↩&lt;/a&gt; &lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/v7y6SVt.png?1&#34; /&gt;&lt;/p&gt;
-
-
-&lt;!-- BLOGDOWN-HEAD
-
-
-
-
-/BLOGDOWN-HEAD --&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Peace, Bread and Data!</title>
-      <link>/1/01/01/peace-bread-and-data/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/1/01/01/peace-bread-and-data/</guid>
-      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
-
-/BLOGDOWN-BODY-BEFORE --&gt;
-
-&lt;p&gt;I really like this image by &lt;a href=&#34;https://www.threadless.com/product/383/the_communist_party&#34;&gt;Tom Burns&lt;/a&gt;.&lt;a href=&#34;#fn1&#34; class=&#34;footnoteRef&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; The &lt;a href=&#34;http://deirdremccloskey.org/academics/index.php&#34;&gt;liberal&lt;/a&gt; in me appreciates making cheap fun of people who were horribly mistaken (Lenin; Marx, although I don’t mean to slight his contributions to social science), scum like Stalin, and Fidel Castro, who might have started out with a laudable takedown of a corrupt dictator, but who then became…a corrupt dictator, of course. The artist in me just loves the awesome colours. And it’s pretty funny :laughing:&lt;a href=&#34;#fn2&#34; class=&#34;footnoteRef&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;So? Well, since I like making plots in R, and I really like these colours, and I have an interest in the political economic side of it all… let’s make some graphs!&lt;/p&gt;
-&lt;p&gt;The colour scheme in this image is the following:&lt;/p&gt;
-&lt;table&gt;
-&lt;colgroup&gt;
-&lt;col width=&#34;9%&#34; /&gt;
-&lt;col width=&#34;18%&#34; /&gt;
-&lt;col width=&#34;16%&#34; /&gt;
-&lt;col width=&#34;18%&#34; /&gt;
-&lt;col width=&#34;22%&#34; /&gt;
-&lt;col width=&#34;15%&#34; /&gt;
-&lt;/colgroup&gt;
-&lt;thead&gt;
-&lt;tr class=&#34;header&#34;&gt;
-&lt;th&gt;&lt;/th&gt;
-&lt;th&gt;background&lt;/th&gt;
-&lt;th&gt;cup&lt;/th&gt;
-&lt;th&gt;dark red&lt;/th&gt;
-&lt;th&gt;very dark red&lt;/th&gt;
-&lt;th&gt;yellow&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr class=&#34;odd&#34;&gt;
-&lt;td&gt;&lt;p&gt;hex&lt;/p&gt;&lt;/td&gt;
-&lt;td&gt;&lt;p&gt;#cf1f2e&lt;/p&gt;&lt;/td&gt;
-&lt;td&gt;&lt;p&gt;#d32434&lt;/p&gt;&lt;/td&gt;
-&lt;td&gt;&lt;p&gt;#a20414&lt;/p&gt;&lt;/td&gt;
-&lt;td&gt;&lt;p&gt;#991014&lt;/p&gt;&lt;/td&gt;
-&lt;td&gt;&lt;p&gt;#ffda85&lt;/p&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;We can use these hex values directly in the &lt;code&gt;ggplot()&lt;/code&gt; function.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.infoplease.com/ipa/A0933874.html&#34;&gt;This&lt;/a&gt; page has a list of former and currently communist countries (no way China is a communist country now, but anyway), and the World Bank &lt;a href=&#34;http://data.worldbank.org/data-catalog&#34;&gt;data catalog&lt;/a&gt; has a whole load of indicators we can use; the ones I use are available from &lt;a href=&#34;https://github.com/RobertMyles/Various_R-Scripts/tree/master/data/Communist_data&#34;&gt;this&lt;/a&gt; GitHub repo.&lt;a href=&#34;#fn3&#34; class=&#34;footnoteRef&#34; id=&#34;fnref3&#34;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(stringr)
-library(lubridate)
-
-# this file has a &amp;quot;region&amp;quot; variable that I want:  
-gini &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/RobertMyles/Various_R-Scripts/master/data/Communist_data/allginis_2013.csv&amp;quot;) %&amp;gt;% 
-  select(1, 3)
-
-# but this is the main data file:  
-wb &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/RobertMyles/Various_R-Scripts/master/data/Communist_data/wb_data.csv&amp;quot;) %&amp;gt;% 
-  select(country = 1, 3, 5:14) %&amp;gt;% 
-  filter(!is.na(country))
-
-colnames(wb)[3:12] &amp;lt;- unlist(str_extract_all(colnames(wb)[3:12], &amp;quot;^[0-9\\s]{4}&amp;quot;))
-
-wb &amp;lt;- left_join(wb, gini) %&amp;gt;% 
-  distinct(.keep_all = T)
-rm(gini)
-
-# let&amp;#39;s arrange it into &amp;#39;long&amp;#39; format, suitable for showing variation
-# over years. I&amp;#39;ll also add an indicator variable for communist status:  
-wb &amp;lt;- wb %&amp;gt;%  
-  select(-`2016`) %&amp;gt;% 
-  gather(year, Value, `2007`:`2015`) %&amp;gt;%
-  mutate(Value = as.numeric(Value)) %&amp;gt;% 
-  spread(`Series Name`, value = Value) %&amp;gt;% 
-  mutate(year = parse_date_time(year, &amp;quot;Y&amp;quot;),
-         communist = ifelse(
-           country %in% current, &amp;quot;Communist&amp;quot;, 
-           ifelse(
-             country %in% former, &amp;quot;Communist&amp;quot;, &amp;quot;Evil Kapitalist&amp;quot;))) %&amp;gt;%
-  select(-14) #NA column&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now we’ve got lots of interesting data to use. Let’s have a look at life expectancy.&lt;a href=&#34;#fn4&#34; class=&#34;footnoteRef&#34; id=&#34;fnref4&#34;&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(wb_l, aes(x = year, y = l_means)) +
-  # annotation straight away to put it behind everything:
-  annotation_custom(si, xmin = as.numeric(as.POSIXct(&amp;#39;2006-01-01&amp;#39;, 
-                                         origin = &amp;#39;1970-01-01&amp;#39;)),  
-                    xmax = as.numeric(as.POSIXct(&amp;#39;2010-01-01&amp;#39;, 
-                                         origin = &amp;#39;1970-01-01&amp;#39;)), 
-                    ymin = 53, ymax = 64) +
-  geom_line(aes(group = status, colour = communist), size = 0.8) +
-  geom_point(aes(colour = communist, shape = region), size = 4) +
-  theme_classic() +
-  theme(text = element_text(family = &amp;quot;Kremlin&amp;quot;),
-        panel.background = element_rect(fill = &amp;quot;#cf1f2e&amp;quot;),
-        axis.title = element_text(colour = &amp;quot;#991014&amp;quot;),
-        axis.text = element_text(colour = &amp;quot;#991014&amp;quot;)) +
-  scale_colour_manual(values = c(&amp;quot;#ffda85&amp;quot;, &amp;quot;black&amp;quot;)) +
-  guides(colour = guide_legend(title = &amp;quot;System&amp;quot;)) +
-  ylab(&amp;quot;Life Expectancy&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/communism_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Ah, that font…&lt;a href=&#34;#fn5&#34; class=&#34;footnoteRef&#34; id=&#34;fnref5&#34;&gt;&lt;sup&gt;5&lt;/sup&gt;&lt;/a&gt;&lt;br /&gt;
-Well, everybody’s life expectancy is going up, that’s good, but there’s a massive difference between communist and non-communist countries in Africa and Asia. Former communist countries do slightly better in Eastern Europe, although it’s pretty much even. That’s quite a notable trend over such a short time period, it’s a pity the data doesn’t go back further. This might also be nice as a boxplot:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/communism_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Communist countries were/are well-known for having rather large armies. In the data I’ve taken from the World Bank, we have two variables for exploring this theme, &lt;code&gt;Armed forces personnel (% of total labor force)&lt;/code&gt; and &lt;code&gt;Military expenditure (% of GDP)&lt;/code&gt;. Let’s see how they rank:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;wb %&amp;gt;% mutate(year = as.character(year)) %&amp;gt;% 
-  filter(year == &amp;quot;2012-01-01&amp;quot;, country != &amp;quot;Arab World&amp;quot;,
-         country != &amp;quot;Middle East &amp;amp; North Africa&amp;quot;) %&amp;gt;% 
-  select(country, `Military expenditure (% of GDP)`) %&amp;gt;% 
-  arrange(desc(`Military expenditure (% of GDP)`)) %&amp;gt;% head(n = 10)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## # A tibble: 10 × 2
-##                 country `Military expenditure (% of GDP)`
-##                   &amp;lt;chr&amp;gt;                             &amp;lt;dbl&amp;gt;
-## 1                  Oman                         16.083359
-## 2           South Sudan                          9.530753
-## 3          Saudi Arabia                          7.697721
-## 4                Israel                          5.721890
-## 5  United Arab Emirates                          5.094394
-## 6                Jordan                          4.760655
-## 7            Azerbaijan                          4.723215
-## 8           Yemen, Rep.                          4.573884
-## 9               Algeria                          4.461327
-## 10        United States                          4.238745&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Well, look at that. With the exception of the USA, and the less-of-an-exception of Algeria and South Sudan, these are all neighbours. Must be fun over there in the Middle East.&lt;br /&gt;
-So what about our &lt;bdi style=&#34;font-size: 0.8em; font-family:kremlin;&#34;&gt;komrades&lt;/bdi&gt;?&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;## # A tibble: 10 × 2
-##        country `Military expenditure (% of GDP)`
-##          &amp;lt;chr&amp;gt;                             &amp;lt;dbl&amp;gt;
-## 1   Azerbaijan                          4.723215
-## 2  Yemen, Rep.                          4.573884
-## 3         Cuba                          3.937705
-## 4       Angola                          3.593358
-## 5      Armenia                          3.583767
-## 6      Georgia                          3.104606
-## 7      Ukraine                          2.353437
-## 8      Vietnam                          2.156886
-## 9       Serbia                          2.095175
-## 10     Estonia                          1.895746&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;I’m not sure &lt;em&gt;any&lt;/em&gt; of these can be really be classed as communist, perhaps stubborn ol’ Cuba. Perhaps the number of armed forces personnel will live up the stereotype.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/communism_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;There we go! The Democratic People’s Republic of Korea hasn’t let us down in our hunt to confirm what we already want to find. Some surprises in here: Montenegro, Singapore. I’m guessing mandatory military service for makes of a certain age exists in these countries. Or maybe Montenegro &lt;strong&gt;really&lt;/strong&gt; doesn’t like Greece.&lt;/p&gt;
-&lt;p&gt;And how about GDP? Maybe it’s a bit unfair to compare these, since communism was supposedly against all that filthy wealth generation. But let’s Czech it out. If you’re re-creating these plots, remember that I’m using &lt;code&gt;readPNG()&lt;/code&gt; and &lt;code&gt;rasterGrob()&lt;/code&gt; to get the images ready for use with &lt;code&gt;annotation_custom()&lt;/code&gt;.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(wbg, aes(x = year, y = gdp, colour = communist)) +
-   annotation_custom(st, xmin = as.numeric(as.POSIXct(&amp;#39;2007-01-01&amp;#39;, 
-                                         origin = &amp;#39;1970-01-01&amp;#39;)),  
-                    xmax = as.numeric(as.POSIXct(&amp;#39;2010-01-01&amp;#39;, 
-                                         origin = &amp;#39;1970-01-01&amp;#39;)),
-                    ymin = 70000, ymax = 110000) +
-  geom_line(aes(group = country)) +
-  theme_classic() + 
-  theme(text = element_text(family = &amp;quot;Kremlin&amp;quot;),
-        panel.background = element_rect(fill = &amp;quot;#a20414&amp;quot;),
-        axis.title = element_text(colour = &amp;quot;#991014&amp;quot;),
-        axis.text = element_text(colour = &amp;quot;#991014&amp;quot;)) +
-  scale_colour_manual(values = c(&amp;quot;#ffda85&amp;quot;, &amp;quot;black&amp;quot;)) +
-  guides(colour = guide_legend(title = &amp;quot;System&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/communism_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Unsurprisingly, the communist countries don’t compete well in terms of GDP per capita.&lt;/p&gt;
-&lt;p&gt;How about other, less financial indicators, like adult literacy levels?&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/communism_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
-&lt;p&gt;Still the pattern we noticed earlier: while there is a notable difference between communist and non-communist countries inside of regions, the regions themselves vary widely.&lt;/p&gt;
-&lt;p&gt;Well, one thing that we can be sure about is that the commies cracked some great &lt;a href=&#34;http://www.prospectmagazine.co.uk/features/communist-jokes&#34;&gt;jokes&lt;/a&gt;. “Stalin himself cracked them, including this one about a visit from a Georgian delegation: They come, they talk to Stalin, and then they go, heading off down the Kremlin’s corridors. Stalin starts looking for his pipe. He can’t find it. He calls in Beria, the dreaded head of his secret police. ‘Go after the delegation, and find out which one took my pipe,’ he says. Beria scuttles off down the corridor. Five minutes later Stalin finds his pipe under a pile of papers. He calls Beria – ‘Look, I’ve found my pipe.’ ‘It’s too late,’ Beria says, ‘half the delegation admitted they took your pipe, and the other half died during questioning.’ :smile:&lt;/p&gt;
-&lt;div class=&#34;footnotes&#34;&gt;
-&lt;hr /&gt;
-&lt;ol&gt;
-&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;“Peace, Bread and Data!” I take from the Bolsheviks’ “Peace, Bread and Land!”.&lt;a href=&#34;#fnref1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;I’ve tried to find who did it, but to no avail.&lt;a href=&#34;#fnref2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li id=&#34;fn3&#34;&gt;&lt;p&gt;You can download the data and read it into R, or read directly from the “raw” version of the github page (i.e., &lt;code&gt;https://raw.githubusercontent.com/RobertMyles/Various_R-Scripts/&lt;/code&gt;). I use &lt;code&gt;readr&lt;/code&gt; from the &lt;code&gt;tidyverse&lt;/code&gt; package for this, since it can read straight from an url of a csv with &lt;code&gt;read_csv&lt;/code&gt;.&lt;a href=&#34;#fnref3&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li id=&#34;fn4&#34;&gt;&lt;p&gt;The sickle I used as a grob with &lt;code&gt;annotate_custom&lt;/code&gt;, in the same manner as the Rotten Tomatoes tomato on &lt;a href=&#34;http://robertmyles.github.io//blog/brad_pitt_movies/&#34;&gt;this&lt;/a&gt; post&lt;a href=&#34;#fnref4&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;li id=&#34;fn5&#34;&gt;&lt;p&gt;This can be downloaded from &lt;a href=&#34;https://www.google.com/search?q=kremlin+font&amp;amp;oq=kremlin+font&amp;amp;aqs=chrome.0.69i59.2400j0j7&amp;amp;sourceid=chrome&amp;amp;ie=UTF-8&#34;&gt;many&lt;/a&gt; sources, as you can see from the code, it’s called “Kremlin”. I think it’s great.&lt;a href=&#34;#fnref5&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/div&gt;
 
 
 &lt;!-- BLOGDOWN-HEAD

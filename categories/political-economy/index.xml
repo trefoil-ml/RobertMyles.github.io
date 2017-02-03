@@ -102,10 +102,10 @@ wb &amp;lt;- wb %&amp;gt;%
   scale_colour_manual(values = c(&amp;quot;#ffda85&amp;quot;, &amp;quot;black&amp;quot;)) +
   guides(colour = guide_legend(title = &amp;quot;System&amp;quot;)) +
   ylab(&amp;quot;Life Expectancy&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/communism_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/1/01/01/peace-bread-and-data/figures/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Ah, that font…&lt;a href=&#34;#fn5&#34; class=&#34;footnoteRef&#34; id=&#34;fnref5&#34;&gt;&lt;sup&gt;5&lt;/sup&gt;&lt;/a&gt;&lt;br /&gt;
 Well, everybody’s life expectancy is going up, that’s good, but there’s a massive difference between communist and non-communist countries in Africa and Asia. Former communist countries do slightly better in Eastern Europe, although it’s pretty much even. That’s quite a notable trend over such a short time period, it’s a pity the data doesn’t go back further. This might also be nice as a boxplot:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/communism_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/1/01/01/peace-bread-and-data/figures/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Communist countries were/are well-known for having rather large armies. In the data I’ve taken from the World Bank, we have two variables for exploring this theme, &lt;code&gt;Armed forces personnel (% of total labor force)&lt;/code&gt; and &lt;code&gt;Military expenditure (% of GDP)&lt;/code&gt;. Let’s see how they rank:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;wb %&amp;gt;% mutate(year = as.character(year)) %&amp;gt;% 
   filter(year == &amp;quot;2012-01-01&amp;quot;, country != &amp;quot;Arab World&amp;quot;,
@@ -141,7 +141,7 @@ So what about our &lt;bdi style=&#34;font-size: 0.8em; font-family:kremlin;&#34;
 ## 9       Serbia                          2.095175
 ## 10     Estonia                          1.895746&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;I’m not sure &lt;em&gt;any&lt;/em&gt; of these can be really be classed as communist, perhaps stubborn ol’ Cuba. Perhaps the number of armed forces personnel will live up the stereotype.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/communism_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/1/01/01/peace-bread-and-data/figures/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;There we go! The Democratic People’s Republic of Korea hasn’t let us down in our hunt to confirm what we already want to find. Some surprises in here: Montenegro, Singapore. I’m guessing mandatory military service for makes of a certain age exists in these countries. Or maybe Montenegro &lt;strong&gt;really&lt;/strong&gt; doesn’t like Greece.&lt;/p&gt;
 &lt;p&gt;And how about GDP? Maybe it’s a bit unfair to compare these, since communism was supposedly against all that filthy wealth generation. But let’s Czech it out. If you’re re-creating these plots, remember that I’m using &lt;code&gt;readPNG()&lt;/code&gt; and &lt;code&gt;rasterGrob()&lt;/code&gt; to get the images ready for use with &lt;code&gt;annotation_custom()&lt;/code&gt;.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(wbg, aes(x = year, y = gdp, colour = communist)) +
@@ -158,10 +158,10 @@ So what about our &lt;bdi style=&#34;font-size: 0.8em; font-family:kremlin;&#34;
         axis.text = element_text(colour = &amp;quot;#991014&amp;quot;)) +
   scale_colour_manual(values = c(&amp;quot;#ffda85&amp;quot;, &amp;quot;black&amp;quot;)) +
   guides(colour = guide_legend(title = &amp;quot;System&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/communism_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/1/01/01/peace-bread-and-data/figures/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Unsurprisingly, the communist countries don’t compete well in terms of GDP per capita.&lt;/p&gt;
 &lt;p&gt;How about other, less financial indicators, like adult literacy levels?&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;#####content/post/communism_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/1/01/01/peace-bread-and-data/figures/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Still the pattern we noticed earlier: while there is a notable difference between communist and non-communist countries inside of regions, the regions themselves vary widely.&lt;/p&gt;
 &lt;p&gt;Well, one thing that we can be sure about is that the commies cracked some great &lt;a href=&#34;http://www.prospectmagazine.co.uk/features/communist-jokes&#34;&gt;jokes&lt;/a&gt;. “Stalin himself cracked them, including this one about a visit from a Georgian delegation: They come, they talk to Stalin, and then they go, heading off down the Kremlin’s corridors. Stalin starts looking for his pipe. He can’t find it. He calls in Beria, the dreaded head of his secret police. ‘Go after the delegation, and find out which one took my pipe,’ he says. Beria scuttles off down the corridor. Five minutes later Stalin finds his pipe under a pile of papers. He calls Beria – ‘Look, I’ve found my pipe.’ ‘It’s too late,’ Beria says, ‘half the delegation admitted they took your pipe, and the other half died during questioning.’ :smile:&lt;/p&gt;
 &lt;div class=&#34;footnotes&#34;&gt;
