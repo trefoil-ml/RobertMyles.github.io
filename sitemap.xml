@@ -67,6 +67,16 @@
   </url>
   
   <url>
+    <loc>/research/</loc>
+    <lastmod>2016-05-05T21:48:51-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/cv/</loc>
+    <lastmod>2016-05-05T21:48:51-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/books-on-bayes-stats.html</loc>
     <lastmod>2016-05-03T00:00:00+00:00</lastmod>
   </url>
@@ -84,6 +94,10 @@
   <url>
     <loc>/stan-jags.html</loc>
     <lastmod>2016-04-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/1/01/01/peace-bread-and-data/</loc>
   </url>
   
 </urlset>

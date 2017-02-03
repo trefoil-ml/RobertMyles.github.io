@@ -195,7 +195,7 @@ ggplot(movies, aes(x = RATING)) +
   theme_classic() +
   theme(panel.background = element_rect(fill = &amp;quot;#3A9425&amp;quot;)) +
   annotation_custom(g, xmin = 0, xmax = 0.25, ymin = 4, ymax = 6)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;(You can get the tomato image from &lt;a href=&#34;http://static.tvtropes.org/pmwiki/pub/images/rotten_tomatoes_8290.jpg&#34;&gt;here&lt;/a&gt;. Convert it to png and strip out (most of) the white background using &lt;a href=&#34;https://www.imagemagick.org/script/index.php&#34;&gt;ImageMagick&lt;/a&gt; – the command on a mac is &lt;code&gt;convert rotten_tomatoes.jpg -transparent white tomato.png&lt;/code&gt;.)&lt;/p&gt;
 &lt;p&gt;Not so bad! Got some not-so-greats, but quite a lot of highly rated movies. I’m surprised, actually. In fact the mean and median values are:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mean(movies$RATING)&lt;/code&gt;&lt;/pre&gt;
@@ -221,7 +221,7 @@ ggplot(movies, aes(x = date_counter, y = difference)) +
   annotate(&amp;quot;label&amp;quot;, label = &amp;quot;2016&amp;quot;, x = 47, y = -0.7, colour = &amp;quot;#EE4000&amp;quot;) +
   geom_hline(yintercept = 0, linetype = 2, colour = &amp;quot;#EE4000&amp;quot;) +
   annotation_custom(g, xmin=0, xmax=7, ymin=0.5, ymax=0.95)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Hmm, he’s had a fairly erratic career in terms of movie ratings. Looking at the relationship between ratings and time, there’s a bit of an improvement, and certainly less train-wrecks, but the improvement is not massive. Maybe he didn’t start off so bad, after all.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(movies, aes(x = YEAR, y = RATING)) +
   geom_point(colour = &amp;quot;yellow&amp;quot;) +
@@ -229,7 +229,7 @@ ggplot(movies, aes(x = date_counter, y = difference)) +
   theme(panel.background = element_rect(fill = &amp;quot;#3A9425&amp;quot;),
         axis.line = element_line(colour = &amp;quot;#EE4000&amp;quot;)) +
   annotation_custom(g, xmin=2013, xmax=2016, ymin=0.01, ymax=0.25)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So what was Mr. Pitt’s worst film?&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;movies %&amp;gt;% arrange(RATING) %&amp;gt;% head(n = 1)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##   RATING      TITLE            CREDIT YEAR difference date_counter
@@ -291,7 +291,7 @@ all_actors &amp;lt;- full_join(all_actors, movies) %&amp;gt;%
         axis.ticks = element_line(colour = &amp;quot;#EE4000&amp;quot;),
         axis.title = element_text(colour = &amp;quot;#EE4000&amp;quot;)) +
   annotation_custom(g, xmin=1.5, xmax=2.5, ymin=0.01, ymax=0.25)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Not surprisingly, the three-time Best Actor Oscar winner Daniel Day-Lewis has a notably different profile. He doesn’t make many bad movies, that’s for sure (there’s nothing under the tomato image). Poor Jamie Foxx, on the other hand, has made quite a few more stinkers. Perhaps opportunities were harder to come by for the only black actor in the group, perhaps not.&lt;/p&gt;
 &lt;p&gt;So after all that, what do we think of Meister Pitt? He compares very favourably to some of his peers, with maybe only Fassbender and Day-Lewis on a different level. Still, though, not bad, Mr. Pitt. Even after Mr. and Mrs. Smith :wink:&lt;/p&gt;
 &lt;p&gt;&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/yBsAkLa.png?1&#34; /&gt;&lt;/p&gt;
@@ -792,7 +792,7 @@ rollcalls &amp;lt;- full_join(EU, theme) %&amp;gt;%
   filter(!is.na(vote))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Next, we need to prepare the data for Stan. Our model is a basic &lt;a href=&#34;https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/ClintonJackmanRivers2004.pdf&#34;&gt;2-parameter Item-Response theory model&lt;/a&gt; often used for &lt;a href=&#34;http://robertmyles.github.io/Bayesian-IRT-in-R-and-Stan.html&#34;&gt;creating ideal points&lt;/a&gt;. We write this in the Stan modelling language and save it as a string in R. In mathematical notation, the model is:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[y_{ijk} = \beta_j \theta_{ik} - \alpha_j,\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;where &lt;em&gt;i&lt;/em&gt; is an index of voters, &lt;em&gt;j&lt;/em&gt; an index of votes, and &lt;em&gt;k&lt;/em&gt; an index of topics. &lt;span class=&#34;math display&#34;&gt;\[\theta_{ik}\]&lt;/span&gt; is our main object of interest: the ideal point of MEP &lt;em&gt;i&lt;/em&gt; on topic &lt;em&gt;k&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;where &lt;em&gt;i&lt;/em&gt; is an index of voters, &lt;em&gt;j&lt;/em&gt; an index of votes, and &lt;em&gt;k&lt;/em&gt; an index of topics. &lt;span class=&#34;math inline&#34;&gt;\(\theta_{ik}\)&lt;/span&gt; is our main object of interest: the ideal point of MEP &lt;em&gt;i&lt;/em&gt; on topic &lt;em&gt;k&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;For those not familiar with Stan, the following Stan code has a &lt;code&gt;data&lt;/code&gt; block, in which we declare what our variables are and their type (these are created in the section after). Then we have a parameters block where we declare our parameters.&lt;/p&gt;
 &lt;p&gt;Lastly, we have the model block where we have our model and the priors for each parameter. In an IRT model like this, we need to constrain the ideal points of at least 2 legislators. Since I am not an expert on these MEPs, I am just going to do this for the first two in the database (&lt;code&gt;theta[1]&lt;/code&gt; and &lt;code&gt;theta[2]&lt;/code&gt;).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mep_model &amp;lt;- &amp;quot;
@@ -1743,6 +1743,182 @@ ggplot(St, aes(x=Mean, y=FullID)) +
     </item>
     
     <item>
+      <title>Research</title>
+      <link>/research/</link>
+      <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
+      
+      <guid>/research/</guid>
+      <description>&lt;p&gt;&lt;i class=&#34;fa fa-paperclip&#34;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&lt;strong&gt;Formally Comparing Legislative Institutions&lt;/strong&gt;
+    - forthcoming in the Brazilian Political Science Review. SocArXiv working paper available &lt;a href=&#34;https://osf.io/pd5hv/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;i class=&#34;fa fa-file-pdf-o&#34;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&lt;strong&gt;Explaining the Determinants of Foreign Policy Voting Behaviour in the Brazilian Houses of Legislature, with a Focus on the Senate&lt;/strong&gt;
+    - My PhD thesis, defended at the University of São Paulo in June 2016.&lt;/p&gt;
+
+&lt;p&gt;&lt;i class=&#34;fa fa-file-text-o&#34;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&lt;strong&gt;Measuring the effect of group-based voting in the United Nations General Assembly&lt;/strong&gt;
+    - with Danilo Freire, working paper.&lt;/p&gt;
+
+&lt;p&gt;&lt;i class=&#34;fa fa-file-text-o&#34;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&lt;strong&gt;The Brazilian Congress and Foreign Policy: delegation &amp;amp; abdication&lt;/strong&gt;
+    - working paper.&lt;/p&gt;
+
+&lt;p&gt;&lt;i class=&#34;fa fa-file-text-o&#34;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&lt;strong&gt;Informal Districts&lt;/strong&gt;
+    - working paper.&lt;/p&gt;
+
+&lt;p&gt;&lt;i class=&#34;fa fa-file-text-o&#34;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&lt;strong&gt;The Role of Suplentes in Nominal Voting Patterns in the Brazilian Congress&lt;/strong&gt;
+    - working paper.&lt;/p&gt;
+
+&lt;p&gt;&lt;i class=&#34;fa fa-file-text-o&#34;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&lt;strong&gt;A Latent Variable Measure of Social Cohesion&lt;/strong&gt;
+    - with Erika Medina, working paper.&lt;/p&gt;
+
+&lt;p&gt;&lt;i class=&#34;fa fa-file-text-o&#34;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&lt;strong&gt;Dynamic Voting Patterns in the Brazilian Chamber and Senate&lt;/strong&gt;
+    - with Guilherme Jardim Duarte, working paper.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Robert Myles McDonnell</title>
+      <link>/cv/</link>
+      <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
+      
+      <guid>/cv/</guid>
+      <description>
+
+&lt;h3 id=&#34;i-class-fa-fa-birthday-cake-i-19-12-1980&#34;&gt;&lt;i class=&#34;fa fa-birthday-cake&#34;&gt;&lt;/i&gt; 19/12/1980&lt;/h3&gt;
+
+&lt;h3 id=&#34;i-class-fa-fa-phone-i-55-11-98282-8713&#34;&gt;&lt;i class=&#34;fa fa-phone&#34;&gt;&lt;/i&gt; +55 (11) 98282-8713&lt;/h3&gt;
+
+&lt;h3 id=&#34;i-class-fa-fa-send-o-i-a-href-mailto-robertmylesmcdonnell-gmail-com-robertmylesmcdonnell-gmail-com-a&#34;&gt;&lt;i class=&#34;fa fa-send-o&#34;&gt;&lt;/i&gt; &lt;a href=&#34;mailto:robertmylesmcdonnell@gmail.com&#34;&gt;robertmylesmcdonnell@gmail.com&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&amp;nbsp;
+&amp;nbsp;&lt;/p&gt;
+
+&lt;h2 id=&#34;i-class-fa-fa-history-i-professional-history&#34;&gt;&lt;i class=&#34;fa fa-history&#34;&gt;&lt;/i&gt; Professional History&lt;/h2&gt;
+
+&lt;h3 id=&#34;instituto-brasileiro-de-pesquisa-e-ana-lise-de-dados-ibpad-http-www-ibpad-com-br&#34;&gt;Instituto Brasileiro de Pesquisa e Análise de Dados (&lt;a href=&#34;http://www.ibpad.com.br/&#34;&gt;IBPAD&lt;/a&gt;)&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;08/2016 – present&lt;/li&gt;
+&lt;li&gt;Various locations throughout Brazil&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Position: Course Tutor&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I give private classes, in-company courses and public courses on the statistical programming language R. I am responsible for designing and giving the classes, and I also contribute to the blog of the Institute. The topics covered in the public course include: an introduction to statistics; obtaining, cleaning and tidying data; data analysis and modelling; producing plots and interactive visualizations; producing high-quality documents and web pages in RStudio. I was also part of a 2-man team that designed and implemented a successful in-company course for the airline company Gol, which included an introduction to R, statistics in R, and machine learning in R. In my private classes, I have helped clients to implement genetic algorithms from scratch in R for analysis of financial data, among other things.&lt;/p&gt;
+
+&lt;h3 id=&#34;fundac-a-o-getu-lio-vargas-http-cpdoc-fgv-br-en-about&#34;&gt;&lt;a href=&#34;http://cpdoc.fgv.br/en/about&#34;&gt;Fundação Getúlio Vargas&lt;/a&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;08/2016 – present&lt;/li&gt;
+&lt;li&gt;São Paulo, Brazil&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Position: researcher&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I write case studies for FGV, to be used as teaching materials in their post-graduate courses, on topics ranging from Brexit to the embargo of Cuba. Apart from that, I do some data science work (web-scraping, organizing &amp;amp; cleaning data and statistical analyses) for some researchers involved with the Centre for International Relations.&lt;/p&gt;
+
+&lt;h3 id=&#34;centre-for-the-study-of-international-negotiations-caeni-http-www-caeni-com-br&#34;&gt;&lt;a href=&#34;http://www.caeni.com.br/&#34;&gt;Centre for the Study of International Negotiations (CAENI)&lt;/a&gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;03/2012 – 07/2016&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;University of São Paulo, Brazil&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Position: researcher&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I was a researcher at CAENI in USP during my PhD, and I was involved in seminars and study groups, as well as with the production of research. I also gave courses during my time there, on running Bayesian statistical models and doing analysis in the statistical programming language R.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;h2 id=&#34;i-class-fa-fa-crosshairs-i-professional-summary&#34;&gt;&lt;i class=&#34;fa fa-crosshairs&#34;&gt;&lt;/i&gt; Professional Summary&lt;/h2&gt;
+
+&lt;p&gt;I believe that my skills and background give me some unique advantages in the field of data analysis. I have found that my artistic background is very useful when it comes to visualizing data and the results of research. Similarly, my ability to speak well publicly, as demonstrated for example in the theatre which I wrote and performed solo, has been a great asset to me when speaking publicly about the work I’ve done.
+I believe that I have a very high level of writing ability, as I have shown in academic work that I have published. This capability has allowed me to produce high-quality studies that are enjoyable to read for experts and non-experts alike. My love of data wrangling and analysis, and programming in general, allows me to bring all these abilities together in a modern way, in what I believe is a valuable package for data analysis in any context.&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+
+&lt;h2 id=&#34;i-class-fa-fa-graduation-cap-i-academic-background&#34;&gt;&lt;i class=&#34;fa fa-graduation-cap&#34;&gt;&lt;/i&gt; Academic Background&lt;/h2&gt;
+
+&lt;h3 id=&#34;phd-university-of-sa-o-paulo-http-www5-usp-br-english-lang-en-2016&#34;&gt;PhD – &lt;a href=&#34;http://www5.usp.br/english/?lang=en&#34;&gt;University of São Paulo&lt;/a&gt; (2016)&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Thesis: Explaining the Determinants of Foreign Policy Voting Behaviour in the Brazilian Houses of Legislature, with a Focus on the Senate&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;masters-dublin-city-university-https-www-dcu-ie-ireland-2010-first-class-honour&#34;&gt;Masters: &lt;a href=&#34;https://www.dcu.ie/&#34;&gt;Dublin City University&lt;/a&gt;, Ireland (2010) (First Class Honour)&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Thesis: Brazil’s Foreign Policy- Domestic Interests, Presidentialism or the Autonomy of Itamaraty?&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;bachelor-s-degree-in-fine-art-national-college-of-art-design-http-www-ncad-ie-ireland-2004-2-1-honours&#34;&gt;Bachelor’s degree in Fine Art – &lt;a href=&#34;http://www.ncad.ie/&#34;&gt;National College of Art &amp;amp; Design&lt;/a&gt;, Ireland (2004) (2:1 Honours)&lt;/h3&gt;
+
+&lt;p&gt;&amp;nbsp;
+&amp;nbsp;&lt;/p&gt;
+
+&lt;h2 id=&#34;i-class-fa-fa-language-i-languages&#34;&gt;&lt;i class=&#34;fa fa-language&#34;&gt;&lt;/i&gt; Languages&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Native speaker of English&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Fluent in Portuguese&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Intermediate level Spanish and French&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&amp;nbsp;
+&amp;nbsp;&lt;/p&gt;
+
+&lt;h2 id=&#34;i-class-fa-fa-code-i-programming&#34;&gt;&lt;i class=&#34;fa fa-code&#34;&gt;&lt;/i&gt; Programming&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Advanced knowledge of R and RMarkdown (for documents and my website, and I wrote my PhD thesis in it). I have contributed to several R packages (&lt;a href=&#34;https://github.com/AndreaCirilloAC/updateR&#34;&gt;updateR&lt;/a&gt;, &lt;a href=&#34;https://github.com/leobarone/bRasilLegis&#34;&gt;bRasilLegis&lt;/a&gt;, &lt;a href=&#34;https://github.com/silvadenisson/electionsBR&#34;&gt;electionsBR&lt;/a&gt;) and I am one of the lead developers of the bRasilSenate package, which enables users of R to get detailed data from the Brazilian Federal Senate in a tidy data format ready for analysis. On my github page, I have made available many R code snippets of various functions and tips &amp;amp; tricks that I have found useful, and that I hope will help others.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Intermediate knowledge of Python, LaTeX, html, CSS, and basic knowledge of SPSS and Stata. I also have experience with the MS Office suite and the Mac equivalents.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;I also post R code snippets on my blog, showing readers how to create intricate plots or run various analyses in R. These posts have featured on the popular online R magazine RWeekly (&lt;a href=&#34;https://rweekly.org&#34;&gt;https://rweekly.org&lt;/a&gt;; Issue 21, “R in Real World”); they are shared on the popular &lt;a href=&#34;https://www.r-bloggers.com/&#34;&gt;R-Bloggers&lt;/a&gt; site and they have also been shared on R users groups on social media.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&amp;nbsp;
+&amp;nbsp;&lt;/p&gt;
+
+&lt;h2 id=&#34;other-information&#34;&gt;Other information&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;International experience: I have lived and worked or studied in Ireland, Belgium, the United States and Brazil.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Seminars / certifications: I have given academic presentations on my work and I have attended many short technical courses. The most recent one was on Agent-Based Models in Python and was given in USP by &lt;a href=&#34;https://www.taghawi-nejad.de/&#34;&gt;Davoud Taghawi-Nejad&lt;/a&gt;. Others have been on time-series modelling by &lt;a href=&#34;https://pols.tamu.edu/about-us/faculty-directory/guy-d-whitten-professor/&#34;&gt;Guy Whitten&lt;/a&gt; of Texas A&amp;amp;M, game theory by &lt;a href=&#34;http://politics.as.nyu.edu/object/PeterRosendorff&#34;&gt;B. Peter Rosendorff&lt;/a&gt; of New York University, experiments in social science by &lt;a href=&#34;https://www.spadap.com/&#34;&gt;Paolo Spada&lt;/a&gt; and &lt;a href=&#34;http://www.leonidpeisakhin.org/&#34;&gt;Leonid Peisakhin&lt;/a&gt; of Yale University, and various software packages.&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;Hobbies: I like to play music, write, read and blog, and I am involved in the creation and development of some R software packages. I have written a fictional novel, which I hope to publish in the future, and I have recorded an album of my music. I have a strong interest in political economic history and liberalism.&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&amp;nbsp;
+&amp;nbsp;&lt;/p&gt;
+
+&lt;h2 id=&#34;i-class-fa-fa-share-alt-i-social-networks&#34;&gt;&lt;i class=&#34;fa fa-share-alt&#34;&gt;&lt;/i&gt; Social Networks&lt;/h2&gt;
+
+&lt;p&gt;&lt;i class=&#34;fa fa-twitter&#34;&gt;&lt;/i&gt; @RobertMylesMc&lt;br /&gt;
+&lt;i class=&#34;fa fa-github&#34;&gt;&lt;/i&gt; &lt;a href=&#34;https://github.com/RobertMyles&#34;&gt;https://github.com/RobertMyles&lt;/a&gt;&lt;br /&gt;
+&lt;i class=&#34;fa fa-linkedin&#34;&gt;&lt;/i&gt; &lt;a href=&#34;https://br.linkedin.com/in/robert-mcdonnell-7475b320&#34;&gt;https://br.linkedin.com/in/robert-mcdonnell-7475b320&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;
+&amp;nbsp;&lt;/p&gt;
+
+&lt;h2 id=&#34;i-class-fa-fa-file-text-o-i-publications&#34;&gt;&lt;i class=&#34;fa fa-file-text-o&#34;&gt;&lt;/i&gt; Publications&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;“Formal Comparisons of Legislative Institutions: Comparing ideal points from the Chamber of Deputies and the Federal Senate”, Brazilian Political Science Review, forthcoming (early 2017).&lt;br /&gt;&lt;/li&gt;
+&lt;li&gt;“Do Brazilian Legislators Care About Foreign Policy?”. Currently under review.&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&amp;nbsp;
+&amp;nbsp;&lt;/p&gt;
+
+&lt;h2 id=&#34;professional-references&#34;&gt;Professional References&lt;/h2&gt;
+
+&lt;p&gt;Max Stabile, Director, IBPAD. +55 (11) 3042-0218; max@ibpad.com.br&lt;/p&gt;
+
+&lt;p&gt;Matias Spektor, Coordinator, Centre for International Relations, CPDOC, FGV São Paulo. +55 (11) 3799-3755; matias.spektor@fgv.br&lt;/p&gt;
+
+&lt;p&gt;Amâncio Oliveira, Director, Centro de Estudos das Negociações Internacionais, University of São Paulo. +55 (11) 3091- 0553; amanciocaeni@gmail.com&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;
+&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;&lt;i class=&#34;fa fa-download&#34;&gt;&lt;/i&gt; Downloadable pdf &lt;a href=&#34;./files/cv.pdf&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Bayesian Stats -- Book Recommendations</title>
       <link>/books-on-bayes-stats.html</link>
       <pubDate>Tue, 03 May 2016 00:00:00 +0000</pubDate>
@@ -1806,261 +1982,6 @@ Well, it’s a combination of the initial plausibility of our hypothesis (&lt;co
 &lt;p&gt;&lt;b id=&#34;fn4&#34;&gt;4&lt;/b&gt; I’ve learned much more from Jackman’s various political science articles, in which he uses Bayesian methods, than this book, to be honest. &lt;a href=&#34;#a4&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;b id=&#34;fn5&#34;&gt;5&lt;/b&gt; Speaking of Gelman, he has a literal treasure trove of papers and web discussions on the subject of Bayesian data analysis. See his &lt;a href=&#34;http://andrewgelman.com/&#34;&gt;site&lt;/a&gt; for many links to those. &lt;a href=&#34;#a5&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/aB6eoBS.png?1&#34; /&gt;&lt;/p&gt;
-
-
-&lt;!-- BLOGDOWN-HEAD
-
-
-
-
-/BLOGDOWN-HEAD --&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Web Navigation in R with RSelenium</title>
-      <link>/web-navigation-and-scraping-with-r.html</link>
-      <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      
-      <guid>/web-navigation-and-scraping-with-r.html</guid>
-      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
-
-/BLOGDOWN-BODY-BEFORE --&gt;
-
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;It goes almost without saying that the internet itself is the richest database available to us. From a 2014 &lt;a href=&#34;http://aci.info/2014/07/12/the-data-explosion-in-2014-minute-by-minute-infographic/&#34;&gt;blog post&lt;/a&gt;, it was claimed that &lt;em&gt;every minute&lt;/em&gt; :&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Facebook users share nearly 2.5 million pieces of content.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;Twitter users tweet nearly 300,000 times.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;Instagram users post nearly 220,000 new photos.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;YouTube users upload 72 hours of new video content.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;Apple users download nearly 50,000 apps.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;Email users send over 200 million messages.&lt;br /&gt;
-&lt;/li&gt;
-&lt;li&gt;Amazon generates over $80,000 in online sales.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Regardless of the accuracy of these claims, it is obvious to everyone that there is tons of information on the web. For researchers, then, the question is: how can you access all this information? You can of course go to specific, dedicated databases and download what you’re looking for, for example from the World Bank &lt;a href=&#34;http://databank.worldbank.org/data/home.aspx&#34;&gt;databank&lt;/a&gt;. However, there are drawbacks to this approach. It can become tiresome when you need to collect lots of data on different items (the World Bank databank is well organised, but not all databases are like that…to put it politely). Some only let you download small, specific sections of a bigger database, meaning you have to return time and time again to the starting page to enter new information in order to retrieve the data you want. (Another thing is that we’re not quite utilising the web &lt;em&gt;itself&lt;/em&gt; as the database either.)&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;To deal with the first problem, you can automate the search process by driving a web browser with R.&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; This is different from ‘web-scraping’. Web-scraping takes the webpage as a html document and allows you to read information from it. It’s quite a straightforward process, with plenty of R packages around to help you do it. &lt;a href=&#34;https://github.com/hadley/rvest&#34;&gt;rvest&lt;/a&gt; in particular is quite easy, although I’ve found the &lt;a href=&#34;https://cran.r-project.org/web/packages/XML/XML.pdf&#34;&gt;XML&lt;/a&gt; package to be more powerful. (Web-scraping deals with the second issue above, in that it does treat the web itself as a database.)&lt;/p&gt;
-&lt;p&gt;To drive a web browser in R, there are two packages (that I’m aware of) that can be used. One is &lt;a href=&#34;https://github.com/ropensci/RSelenium&#34;&gt;RSelenium&lt;/a&gt; by John Harrison, and &lt;a href=&#34;https://github.com/crubba/Rwebdriver&#34;&gt;Rwebdriver&lt;/a&gt; by Christian Rubba. I prefer &lt;code&gt;RSelenium&lt;/code&gt; and so I’ll use this package in the examples below.&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;If you don’t have it already installed, you’ll need to download this package and load it into R.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;install.packages(&amp;quot;RSelenium&amp;quot;)
-library(&amp;quot;RSelenium&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;You will also need to download the Selenium standalone server. You can get it from &lt;a href=&#34;http://www.seleniumhq.org/download/&#34;&gt;here&lt;/a&gt;. Opening this file automatically from &lt;code&gt;RSelenium&lt;/code&gt; can be problematic&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;, and so I’ve found the most straightforward way is to manually click on it and open it that way before you start.&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;To get started with &lt;code&gt;RSelenium&lt;/code&gt;, you’ll need to give your browser somewhere to go. For this example, I’m going to go to the funding management section of Brazilian National Health Service, the &lt;em&gt;Fundo Nacional de Saúde&lt;/em&gt;. From here, I’m going to get data for every municipality in every state over a period of some years. To do this manually would be a serious headache and would most likely lead to me making errors by forgetting where I am, which state is next, what municipality I just downloaded, and so on. Actually, you can be guaranteed I’d make those mistakes.&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;URL &amp;lt;- &amp;quot;http://www.fns.saude.gov.br/indexExterno.jsf&amp;quot;
-#checkForServer(dir=&amp;quot;[DIRECTORY WHERE THE SELENIUM SERVER IS]&amp;quot;, update=FALSE)
-#checkForServer(dir=&amp;quot;[DIRECTORY WHERE THE SELENIUM SERVER IS]&amp;quot;, update=TRUE) # if you want to update
-#startServer(dir=&amp;quot;[DIRECTORY WHERE THE SELENIUM SERVER IS]&amp;quot;) #none of these three are necessary if you click on the server first and manually open it.  
-
-fprof &amp;lt;- makeFirefoxProfile(list(browser.download.dir = &amp;quot;[DOWNLOAD DIRECTORY]&amp;quot;,  
-browser.download.folderList = 2L,   
-browser.download.manager.showWhenStarting=FALSE,  
-browser.helperApps.neverAsk.saveToDisk = &amp;quot;application/octet-stream&amp;quot;))   
-
-remDr &amp;lt;- remoteDriver(extraCapabilities=fprof)
-remDr$open()  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;So now your browser should be open. Here I’ve used a profile for Firefox because I will download files and I don’t want to deal with the download window that pops up in Firefox (you need to enter your download folder where it says ‘&lt;code&gt;[DOWNLOAD DIRECTORY]&lt;/code&gt;’, by the way. And you can also run &lt;code&gt;RSelenium&lt;/code&gt; on Chrome and &lt;a href=&#34;http://rpubs.com/johndharrison/13885&#34;&gt;other browsers&lt;/a&gt;, and even use a &lt;a href=&#34;https://rpubs.com/johndharrison/RSelenium-headless&#34;&gt;headless browser&lt;/a&gt; which speeds things up.) If you didn’t need to deal with download boxes and pop-ups and the like, you only need &lt;code&gt;remDr &amp;lt;- remoteDriver$new()&lt;/code&gt;, which will automatically open up a Firefox browser window. These particular files were recognised by Firefox as being binary files, and so I have disabled the download box for files of the type “application/octet-stream”. Other file types need a different setting.&lt;/p&gt;
-&lt;p&gt;This website has a drop-down box on the left hand side that we’re going to use. What we will input into this is, in turn, a list of years, states, and municipalities. After that we will click on “Consultar” (for those of you who don’t speak Portuguese, I’m quite sure you can figure out what that means). Clicking this will bring us to a new page, from which we can download the data we’re looking for in a .csv file.&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;So let’s create our inputs:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;InputYear &amp;lt;- list(&amp;quot;2016&amp;quot;, &amp;quot;2015&amp;quot;, &amp;quot;2014&amp;quot;, &amp;quot;2013&amp;quot;, &amp;quot;2012&amp;quot;, &amp;quot;2011&amp;quot;, &amp;quot;2010&amp;quot;, &amp;quot;2009&amp;quot;)  
-
-Input &amp;lt;- list(&amp;quot;ACRE&amp;quot;, &amp;quot;ALAGOAS&amp;quot;, &amp;quot;AMAPA&amp;quot;, &amp;quot;AMAZONAS&amp;quot;, &amp;quot;BAHIA&amp;quot;, &amp;quot;CEARA&amp;quot;, &amp;quot;DISTRITO FEDERAL&amp;quot;, &amp;quot;ESPIRITO SANTO&amp;quot;, &amp;quot;GOIAS&amp;quot;, &amp;quot;MARANHAO&amp;quot;, &amp;quot;MATO GROSSO&amp;quot;, &amp;quot;MATO GROSSO DO SUL&amp;quot;, &amp;quot;MINAS GERAIS&amp;quot;, &amp;quot;PARA&amp;quot;, &amp;quot;PARAIBA&amp;quot;, &amp;quot;PARANA&amp;quot;, &amp;quot;PERNAMBUCO&amp;quot;, &amp;quot;PIAUI&amp;quot;, &amp;quot;RIO DO JANEIRO&amp;quot;, &amp;quot;RIO GRANDE DO NORTE&amp;quot;, &amp;quot;RIO GRANDE DO SUL&amp;quot;, &amp;quot;RONDONIA&amp;quot;, &amp;quot;RORAIMA&amp;quot;, &amp;quot;SANTA CATARINA&amp;quot;, &amp;quot;SAO PAULO&amp;quot;, &amp;quot;SERGIPE&amp;quot;, &amp;quot;TOCANTINS&amp;quot;)  
-
-Input_Mun &amp;lt;- &amp;quot;TODOS DA UF&amp;quot; #this will select all municipalities  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;In order to get all this done, I will use a for loop in R which will first loop over the years, and then states, thereby selecting all states in a given year. In the following code, you will see &lt;code&gt;RSelenium&lt;/code&gt; commands that are quite different to regular commands in R. First of all, &lt;code&gt;RSelenium&lt;/code&gt; operates by way of two environments: one is remoteDriver environment, the other a webElement environment. These have specific options available to them (see the help section on each for a list and explanations). Some of the most useful are &lt;code&gt;findElement()&lt;/code&gt; (an option of remoteDriver), &lt;code&gt;sendKeystoElement()&lt;/code&gt; and &lt;code&gt;clickElement()&lt;/code&gt; (both options of webElement, as &lt;code&gt;remDr$findElement&lt;/code&gt; returns an object of webElement class). We will use these to navigate around the page and click on specific elements.&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;Speaking of elements on a page, this is actually the most crucial part of the process to get right (and can be the most frustrating). Some have recommended &lt;a href=&#34;http://selectorgadget.com/&#34;&gt;selectorgadget&lt;/a&gt;, but finding elements can be done in Firefox or Chrome without selectorgadget – you just right-click the element in question and select “Inspect” or “Inspect Element”. This will bring up a chaotic-looking panel, full of html, css and javascript code. Luckily, there are easy options in Firefox and Chrome for finding what we need. After you right-click the element that you want (the one you would have clicked if you were navigating the page manually), click “Inspect” and then this element of the html code will be highlighted. Right-click on this again and you will see the option to copy. In Chrome, you will have the option to copy the xpath or css selector (“selector”); in Firefox you can copy the css selector (“unique selector”). I have used other options below to give more examples, such as ‘id’. This can be copied directly from the html code, and ‘class’ and ‘name’ can be used in a similar fashion. In general, css selectors are the easiest to work with.&lt;/p&gt;
-&lt;p&gt;A quick note on some other aspects of the code. &lt;code&gt;Sys.sleep&lt;/code&gt; is used in order to be nice– you don’t want to bombard the website with all of your requests in rapid-fire fashion; after all, they may block you. So this spaces out our commands. This is also useful for when you may have to wait for an element to load on the page before you can click on it. I have used &lt;code&gt;paste()&lt;/code&gt; in order to include the loop counters in the css selector– just a little trick to make things easier. Some elements have &lt;code&gt;\\&lt;/code&gt; in the code: this is because the original had a single backslash, which is an escape character in R, and so the string is unreadable. Hence the added backslash. You will also see the use of &lt;code&gt;try()&lt;/code&gt; – in this case, there is a state that does not load like the others (the Federal District) and so this automated process will not work here. &lt;code&gt;try()&lt;/code&gt; allows R to try anyway, and if it fails, the loop just continues to the next iteration.&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;for(i in 1:length(InputYear)){
-  for(j in 1:length(Input)){
-    remDr$navigate(URL)
-    #Year:
-    webElem &amp;lt;- remDr$findElement(using = &amp;quot;id&amp;quot;, value = &amp;quot;formIndex:j_idt48&amp;quot;)
-    webElem$clickElement() #click on the drop-down year box
-    Sys.sleep(2)
-    webElem &amp;lt;- remDr$findElement(using = &amp;quot;id&amp;quot;, value=&amp;quot;formIndex:j_idt48_input&amp;quot;)
-    Sys.sleep(2)
-    webElem$sendKeysToElement(InputYear[i]) #send the year to the box
-    webElem &amp;lt;- remDr$findElement(using = &amp;quot;css&amp;quot;, value=&amp;quot;li.ui-state-active&amp;quot;)
-    webElem$clickElement() #click on the active element (the year we sent)
-    Sys.sleep(2)
-    #State:
-    webElem &amp;lt;- remDr$findElement(using = &amp;quot;id&amp;quot;, value = &amp;quot;formIndex:sgUf&amp;quot;)
-    webElem$clickElement()
-    Sys.sleep(2)
-    webElem$sendKeysToElement(Input[j]) #enter the state into the drop-down box
-    CSS &amp;lt;- paste(&amp;quot;#formIndex\\3a sgUf_panel &amp;gt; div &amp;gt; ul &amp;gt; li:nth-child(&amp;quot;, j+2, &amp;quot;)&amp;quot;, sep=&amp;quot;&amp;quot;)
-    webElem &amp;lt;- remDr$findElement(using = &amp;quot;css&amp;quot;, value = CSS)
-    Sys.sleep(1)
-    webElem$clickElement()
-    Sys.sleep(3)
-    #Municipality:
-    webElem &amp;lt;- remDr$findElement(using = &amp;#39;id&amp;#39;, value = &amp;#39;formIndex:cbMunicipio&amp;#39;)
-    webElem$clickElement()
-    Sys.sleep(2)
-    webElem &amp;lt;- remDr$findElement(using = &amp;#39;css&amp;#39;, value=&amp;#39;#formIndex\\3a cbMunicipio_panel &amp;gt; div &amp;gt; ul &amp;gt; li:nth-child(2)&amp;#39;)
-    webElem$sendKeysToElement(list(Input_Mun))
-    webElem$clickElement()
-    Sys.sleep(4)
-    #&amp;quot;Consultar&amp;quot;:
-    webElem &amp;lt;- remDr$findElement(using = &amp;#39;xpath&amp;#39;, value = &amp;#39;//*[@id=&amp;quot;formIndex:j_idt60&amp;quot;]&amp;#39;)
-    Sys.sleep(2)
-    webElem$clickElement() 
-    Sys.sleep(6)
-    #Download the .csv:
-    webElem &amp;lt;- try(remDr$findElement(using = &amp;#39;xpath&amp;#39;, value = &amp;#39;//*[@id=&amp;quot;formIndex&amp;quot;]/div[4]/input&amp;#39;), silent=T)
-    try(webElem$clickElement(), silent=T)
-    Sys.sleep(3)
-}}  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;So after all this, we’ll have a bunch of .csv files in out download folder, that you can import into R and mess around with. To load them all in together, you could use the following code:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(&amp;quot;readr&amp;quot;)
-setwd(&amp;quot;[THE DOWNLOAD FOLDER YOU USED]&amp;quot;)
-fileNames &amp;lt;- list.files(path = getwd(), pattern = &amp;quot;*.csv&amp;quot;)
-data &amp;lt;- rbindlist(lapply(fileNames, read_csv2,  
-col_names=c(&amp;quot;Ano&amp;quot;, &amp;quot;UF_MUNICIPIO&amp;quot;, &amp;quot;IBGE&amp;quot;, &amp;quot;ENTIDADE&amp;quot;, &amp;quot;CPF_CNPJ&amp;quot;,  
-&amp;quot;Bloco&amp;quot;, &amp;quot;Componente&amp;quot;, &amp;quot;Acao_Servico_Estrategia&amp;quot;, &amp;quot;Competencia_Parcela&amp;quot;,  
-&amp;quot;No_OB&amp;quot;, &amp;quot;Data_OB&amp;quot;, &amp;quot;Banco_OB&amp;quot;, &amp;quot;Agencia_OB&amp;quot;, &amp;quot;Conta_OB&amp;quot;, &amp;quot;Valor_Total&amp;quot;,  
-&amp;quot;Desconto&amp;quot;, &amp;quot;Valor_Liquido&amp;quot;, &amp;quot;Observacao&amp;quot;, &amp;quot;Processo&amp;quot;, &amp;quot;Tipo Repasse&amp;quot;,  
-&amp;quot;No_Proposta&amp;quot;), skip = 1, locale=locale(decimal_mark=&amp;quot;,&amp;quot;, grouping_mark=&amp;quot;.&amp;quot;)))  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;And there you go, all the data you wanted scraped automatically from the web. In this example, we were downloading a file, but you could be navigating around in order to arrive at a certain page and then to scrape the contents of that page. You can do that in a number of ways, by combining &lt;code&gt;RSelenium&lt;/code&gt; and other packages, such as &lt;code&gt;XML&lt;/code&gt; and &lt;code&gt;rvest&lt;/code&gt;. For a solution using only &lt;code&gt;RSelenium&lt;/code&gt;, we can first create an empty dataframe and then fill it with the &lt;code&gt;getElementText()&lt;/code&gt; option of the webElement class. So, for example, I was getting vote proposal content from the Brazilian Senate. I used &lt;code&gt;RSelenium&lt;/code&gt; to navigate to the pages that I wanted, as is shown above, and then I stored the Content and the Index of the vote (which were stored on the page as html text elements) as entries in the Index dataframe, using &lt;code&gt;webElem$getElementText()&lt;/code&gt;. Afterwards, I used various combinations of &lt;code&gt;stringr&lt;/code&gt; package functions and &lt;code&gt;gsub&lt;/code&gt; to clean up the text.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;Index &amp;lt;- data.frame(Content=NA, Index=NA)  
-Index[i,1] &amp;lt;- webElem$getElementText()  
-   ...    
-Index[i,2] &amp;lt;- webElem$getElementText()  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;You can also get the html and parse it using &lt;code&gt;XML&lt;/code&gt;:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;elemtxt &amp;lt;- webElem$getElementAttribute(&amp;quot;outerHTML&amp;quot;)  
-elemxml &amp;lt;- htmlTreeParse(elemtxt, asText=TRUE, encoding=&amp;quot;UTF-8&amp;quot;, useInternalNodes=TRUE)  
-Text &amp;lt;- html_text(elemxml, trim=TRUE)  &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;And then you have the text from the webpage stored as data in R. Magic! :metal:&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; It is often argued that R is not the best for this application, with Python often offered as a better alternative. In my experience, I’ve found R to be pretty good for this sort of thing, with delays being caused more by the browser/net speed than R. The scripts can be ugly, but using Selenium in Python looks pretty similar anyway. &lt;a href=&#34;http://stackoverflow.com/questions/17540971/how-to-use-selenium-with-python&#34;&gt;This question&lt;/a&gt; on Stack Overflow gives some instructions. &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;b id=&#34;fn2&#34;&gt;2&lt;/b&gt; See &lt;a href=&#34;https://github.com/ropensci/RSelenium/issues/54&#34;&gt;this&lt;/a&gt; discussion. &lt;a href=&#34;#a2&#34;&gt;↩&lt;/a&gt; &lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/v7y6SVt.png?1&#34; /&gt;&lt;/p&gt;
-
-
-&lt;!-- BLOGDOWN-HEAD
-
-
-
-
-/BLOGDOWN-HEAD --&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Write your thesis or paper in R Markdown!</title>
-      <link>/r-markdown.html</link>
-      <pubDate>Fri, 15 Apr 2016 00:00:00 +0000</pubDate>
-      
-      <guid>/r-markdown.html</guid>
-      <description>&lt;!-- BLOGDOWN-BODY-BEFORE
-
-/BLOGDOWN-BODY-BEFORE --&gt;
-
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;There are many reasons why you would want to use some variant of Markdown for writing, and indeed, posts are common on the net as to why you should.&lt;sup id=&#34;a1&#34;&gt;&lt;a href=&#34;#fn1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt; A simple summary of the reasons are that Markdown is: 1) easy; 2) easy; 3) yup, you guessed it – it’s easy.&lt;/p&gt;
-&lt;p&gt;One variant of Markdown is R Markdown, developed by the &lt;a href=&#34;https://www.rstudio.com/&#34;&gt;RStudio&lt;/a&gt; team, and in particular the genius that is &lt;a href=&#34;http://yihui.name/knitr/&#34;&gt;Yihui Xie&lt;/a&gt;, creator of the &lt;code&gt;knitr&lt;/code&gt; R package. R Markdown is pretty much like regular Markdown, except you get a whole load of nice extra features, including the ability to run code chunks, produce .pdfs and presentations, and even .docx (if you really, really want to&lt;sup id=&#34;a2&#34;&gt;&lt;a href=&#34;#fn2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;). Indeed, the ioslides presentation format lets you use the power of html and css to make browser-based presentations.&lt;/p&gt;
-&lt;p&gt;But surely academic papers require certain formats, and sometimes mathematical expressions and funny Greek letters? Well, sure. Academic papers, particularly theses, often have set formats that you must adhere to. And since Markdown is quite a simple language, it doesn’t have the advanced power of &lt;span class=&#34;math inline&#34;&gt;\(\LaTeX\)&lt;/span&gt; to position things in specific ways.&lt;/p&gt;
-&lt;div id=&#34;latex-in-r-markdown&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;&lt;span class=&#34;math inline&#34;&gt;\(\LaTeX\)&lt;/span&gt; in R Markdown&lt;/h3&gt;
-&lt;p&gt;Enter R Markdown! Although you might (depends on the Markdown) have to do something like &lt;code&gt;{% raw %}\\(\LaTeX\\){% endraw %}&lt;/code&gt; to get the word &lt;span class=&#34;math inline&#34;&gt;\(\LaTeX\)&lt;/span&gt; in your Markdown, with R Markdown it’s just &lt;code&gt;$ \LaTeX $&lt;/code&gt;. I used Mathjax characters in my thesis, and all worked fine using this method (&lt;a href=&#34;http://www.onemathematicalcat.org/MathJaxDocumentation/TeXSyntax.htm&#34;&gt;here’s&lt;/a&gt; a nice link showing all the possible characters you can create with Mathjax). Nice ‘n’ easy, lemon squeezy. Inline &lt;span class=&#34;math inline&#34;&gt;\(\LaTeX\)&lt;/span&gt; expressions get one &lt;code&gt;$&lt;/code&gt;, centred equations get two: &lt;code&gt;$$&lt;/code&gt;, and both need the equivalent to finish the expression. For example, in my first &lt;a href=&#34;http://robertmyles.github.io//post1.html&#34;&gt;post&lt;/a&gt;, I had the equation:&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[y_{ij} = \beta_j\boldsymbol{x_i} - \alpha_j.\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;In R Markdown, this is:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;$$ y_{ij} = \beta_j\boldsymbol{x_i} - \alpha_j.$$&lt;/code&gt; Simple!&lt;/p&gt;
-&lt;p&gt;So that’s math and funny characters done. What else can we do in R Markdown?&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;images&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Images&lt;/h3&gt;
-&lt;p&gt;Well, all the image-placement power of &lt;span class=&#34;math inline&#34;&gt;\(\LaTeX\)&lt;/span&gt; is also available. So &lt;code&gt;\begin{figure}&lt;/code&gt; (or subfigure and wrapfigure), &lt;code&gt;\centering&lt;/code&gt;, &lt;code&gt;\includegraphics&lt;/code&gt; and &lt;code&gt;\caption&lt;/code&gt; all work as they should. I found minipage to be particularly helpful. You can use &lt;code&gt;\&lt;/code&gt; with two spaces after it to organise blank space, or &lt;code&gt;\newpage&lt;/code&gt; to force a new page.&lt;/p&gt;
-&lt;p&gt;Of course, that supposing that you want to use &lt;span class=&#34;math inline&#34;&gt;\(\LaTeX\)&lt;/span&gt; for images. R Markdown’s own syntax for images is quite simple: &lt;code&gt;![Caption](file.png)&lt;/code&gt;, where ‘Caption’ is your image caption and ‘file.png’ your image file (you can use other formats, such as .pdf too). However, positioning may become a problem using this image-placing syntax. It’s worth taking the extra time to learn the &lt;span class=&#34;math inline&#34;&gt;\(\LaTeX\)&lt;/span&gt; if you don’t know it.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;tables&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Tables&lt;/h3&gt;
-&lt;p&gt;Tables are a &lt;em&gt;little&lt;/em&gt; annoying sometimes in any Markdown. It depends. If the simple one works for you, then great – they’re quick and easy. If you have to use grid tables, things take longer (for some reason, only grid tables worked for me sometimes). There’s a &lt;a href=&#34;http://pandoc.org/README.html#tables&#34;&gt;simple guide&lt;/a&gt; on the pandoc site, since it is pandoc that is actually converting to and fro in all these different formats (pandoc is amazing). But a basic one is &lt;em&gt;really&lt;/em&gt; simple (from the pandoc site):&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;div class=&#34;figure&#34;&gt;
-&lt;img src=&#34;http://i.imgur.com/TcbAp2U.png&#34; alt=&#34;Table&#34; /&gt;
-&lt;p class=&#34;caption&#34;&gt;Table&lt;/p&gt;
-&lt;/div&gt;
-&lt;p&gt;The table numbers will automatically increment, and the caption is set after the &lt;code&gt;:&lt;/code&gt; part. Indeed, &lt;code&gt;table&lt;/code&gt; is not even needed, using &lt;code&gt;:&lt;/code&gt; with give you a caption with &lt;code&gt;Table 1:&lt;/code&gt;, for your first table in the document.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;code&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Code&lt;/h3&gt;
-&lt;p&gt;There may be a need for you to display code segments, particularly in a quantitative paper or thesis. Again, it’s very simple. In R Markdown, you do the following (I’m using &lt;code&gt;eval = FALSE&lt;/code&gt; here because I don’t want the code chunk to be evaluated):&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(&amp;quot;readr&amp;quot;)
-data &amp;lt;- read_csv(&amp;quot;example.csv&amp;quot;)
-data &amp;lt;- data[1:6, ]&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Which should produce:&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(&amp;quot;readr&amp;quot;)
-data &amp;lt;- read_csv(&amp;quot;example.csv&amp;quot;)
-data &amp;lt;- data[1:6, ]&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This useful for plotting simple graphs and things like that. The example I’ve shown &lt;em&gt;wouldn’t&lt;/em&gt; be a particularly good idea, since R will load in &lt;code&gt;example.csv&lt;/code&gt; every time you produce the pdf using the ‘knit’ button in RStudio. The &lt;code&gt;{r}&lt;/code&gt; prt also has optional arguments, such as &lt;code&gt;eval&lt;/code&gt;, which can be set to &lt;code&gt;TRUE&lt;/code&gt; or &lt;code&gt;FALSE&lt;/code&gt;, and tells R Markdown whether to evaluate the expression or not (useful for examples where you want to show the code but not run it).&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;chapters-and-headings&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;Chapters and Headings&lt;/h3&gt;
-&lt;p&gt;Chapters and Headings are laughably simple in any Markdown, and R Markdown is no exception. &lt;code&gt;# Header 1&lt;/code&gt; will create the largest-sized header, &lt;code&gt;## Header 2&lt;/code&gt; a smaller one, and so on. To have these numbered, we’ll have to use another excellent feature of Markdown, the YAML block that goes on the top of the document.&lt;/p&gt;
-&lt;/div&gt;
-&lt;div id=&#34;the-yaml-block&#34; class=&#34;section level3&#34;&gt;
-&lt;h3&gt;The YAML block&lt;/h3&gt;
-&lt;p&gt;The YAML block is what makes your R Markdown document possibly really fancy. It’s here that the &lt;span class=&#34;math inline&#34;&gt;\(\LaTeX\)&lt;/span&gt; packages are loaded, and here that you can specify various options that will have an impact on your document. So what the hell &lt;em&gt;is&lt;/em&gt; a YAML block, anyway? Well, maybe the easiest way to explain that is to show you mine&lt;sup id=&#34;a3&#34;&gt;&lt;a href=&#34;#fn3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt; from my PhD &lt;a href=&#34;%7B%7B%20site.url%20%7D%7D/assets/Explaining%20the%20Determinants%20of%20Foreign%20Policy%20Voting%20Behaviour%20in%20the%20Brazilian%20Houses%20of%20Legislature.pdf&#34;&gt;thesis&lt;/a&gt;. It starts and ends with &lt;code&gt;---&lt;/code&gt;.&lt;/p&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;---
-title: &amp;quot;Explaining the Determinants of Foreign Policy Voting Behaviour in the Brazilian Houses of Legislature, with a Focus on the Senate&amp;quot;
-author: &amp;quot;Robert Myles McDonnell&amp;quot;
-date: &amp;quot;&amp;quot;
-fontsize: 12pt
-header-includes:
-   - \usepackage{booktabs}
-   - \usepackage{dcolumn}
-   - \usepackage{wrapfig}
-   - \usepackage{subcaption}
-   - \usepackage{caption}
-   - \usepackage[font=small,labelfont=bf]{caption}
-   - \hypersetup{colorlinks=false}
-documentclass: &amp;quot;article&amp;quot;
-output:
-  pdf_document:
-    fig_caption: yes
-    fig_height: 6
-    fig_width: 7
-    latex_engine: pdflatex
-    number_sections: yes
-    toc: yes
-    toc_depth: 4
-    citation_package: &amp;quot;natbib&amp;quot;
-linestretch: 2
-mainfont: &amp;quot;Linux Libertine O&amp;quot;
-bibliography: ThesisLibrary.bib
-csl: american-political-science-association.csl
-biblio-style: apalike
----&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;So, that’s quite extended, but maybe you won’t need all these things. One important thing to remember with the YAML block is that indentation &lt;em&gt;matters&lt;/em&gt;. When you have something like &lt;code&gt;output:&lt;/code&gt;, then the line &lt;code&gt;pdf document:&lt;/code&gt; is &lt;strong&gt;two&lt;/strong&gt; spaces indented. &lt;code&gt;fig_caption: yes&lt;/code&gt; is &lt;strong&gt;two more&lt;/strong&gt; spaces indented (four in total) and so are the other options to pdf_document. If you get your spacing wrong, it won’t work.&lt;/p&gt;
-&lt;p&gt;Many of the options are self-explanatory: &lt;code&gt;linestretch&lt;/code&gt; is line-spacing, for example. One important option is &lt;code&gt;toc&lt;/code&gt; and its option &lt;code&gt;toc_depth&lt;/code&gt;. This is the &lt;strong&gt;t&lt;/strong&gt;able &lt;strong&gt;o&lt;/strong&gt;f &lt;strong&gt;c&lt;/strong&gt;ontents. &lt;code&gt;toc_depth&lt;/code&gt; is telling R Markdown how many levels you’d like: Chapter 4.1, Chapter 4.1.1 etc. More advanced elements can be changed too. For example, this thesis had a &lt;code&gt;documentclass&lt;/code&gt; of article, but you can write your own document class and therefore produce radically different documents. One example is an R Markdown &lt;a href=&#34;https://github.com/danielkrizian/resume_template&#34;&gt;version&lt;/a&gt; of Friggeri’s popular CV template. Other examples are rapidly proliferating on the web. The RStudio team have a new R package &lt;a href=&#34;https://github.com/rstudio/rticles&#34;&gt;rticles&lt;/a&gt; that has document templates for various academic journal styles. Load ’em up, and you’ve already got an easy R Markdown template for the journal in question. And for papers, enable the &lt;code&gt;abstract:&lt;/code&gt; option in the YAML header, write your abstract there, and voilà! You’ve got yourself a nice abstract.&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;So if writing your thesis (or a paper) in Microsoft Word or something similar sounds like an ordeal, and you’re really not such an expert on&lt;span class=&#34;math inline&#34;&gt;\(\LaTeX\)&lt;/span&gt;, maybe you should consider doing it in R Markdown. It has all the easiness of Markdown, with a couple of nice extras that help you make a quality document. See my thesis if you don’t believe me! :wink:&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;Update:&lt;br /&gt;
-A colleague asked me how I produced the first few pages of my thesis, and I realised that I forgot to mention that you can include other documents, for example tex files, that may need to be part of your thesis. Many theses have strict guidelines for the introductory pages, which can be included in your R Markdown file as part of the YAML header section. The option is &lt;code&gt;includes&lt;/code&gt;, and it has the sub-options &lt;code&gt;in_header&lt;/code&gt;, &lt;code&gt;before_body&lt;/code&gt; and &lt;code&gt;after body&lt;/code&gt;. Like before, the spacing is meaningful in the YAML header, so these sub-options will need to be indented two spaces. For introductory pages of a thesis, your tex file will go in &lt;code&gt;before_body&lt;/code&gt;. (I have to admit that this option never worked well for me, I simply merged the .pdf produced from the tex file and the .pdf produced from the R Markdown document with Preview in OS X, but for others, it seems to work fine.) See &lt;a href=&#34;http://rmarkdown.rstudio.com/markdown_document_format.html&#34;&gt;here&lt;/a&gt; for examples. See &lt;a href=&#34;https://github.com/danilofreire/kcl-thesis-template-markdown&#34;&gt;here&lt;/a&gt; for a Markdown template for King’s College London’s PhD guidelines, by &lt;a href=&#34;http://danilofreire.com/&#34;&gt;Danilo Freire&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt; &lt;/p&gt;
-&lt;p&gt;&lt;b id=&#34;fn1&#34;&gt;1&lt;/b&gt; For example, &lt;a href=&#34;http://markdown-guide.readthedocs.org/en/latest/basics.html&#34;&gt;this cheatsheet&lt;/a&gt; &lt;a href=&#34;#a1&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;b id=&#34;fn2&#34;&gt;2&lt;/b&gt; In my experience, I think you’re just going to end up editing these in Word anyway so I don’t know that it’s worth the bother to do in RStudio. You can if you want, I suppose.&lt;a href=&#34;#a2&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;b id=&#34;fn3&#34;&gt;3&lt;/b&gt; I’m including extra things here that I used over the process of making the thesis pdf, but it wasn’t what I used exactly in the end. I had some problems, that I can’t recall right now, with rendering bibliographical items so I switched to the default LaTeX renderer, pdflatex. Using this means you can’t use other fonts, like the Linux Libertine font above.&lt;a href=&#34;#a3&#34;&gt;↩&lt;/a&gt; &lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/vywFhKA.png?1&#34; /&gt;&lt;/p&gt;
-&lt;/div&gt;
 
 
 &lt;!-- BLOGDOWN-HEAD

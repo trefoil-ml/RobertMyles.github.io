@@ -195,7 +195,7 @@ ggplot(movies, aes(x = RATING)) +
   theme_classic() +
   theme(panel.background = element_rect(fill = &amp;quot;#3A9425&amp;quot;)) +
   annotation_custom(g, xmin = 0, xmax = 0.25, ymin = 4, ymax = 6)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;(You can get the tomato image from &lt;a href=&#34;http://static.tvtropes.org/pmwiki/pub/images/rotten_tomatoes_8290.jpg&#34;&gt;here&lt;/a&gt;. Convert it to png and strip out (most of) the white background using &lt;a href=&#34;https://www.imagemagick.org/script/index.php&#34;&gt;ImageMagick&lt;/a&gt; – the command on a mac is &lt;code&gt;convert rotten_tomatoes.jpg -transparent white tomato.png&lt;/code&gt;.)&lt;/p&gt;
 &lt;p&gt;Not so bad! Got some not-so-greats, but quite a lot of highly rated movies. I’m surprised, actually. In fact the mean and median values are:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mean(movies$RATING)&lt;/code&gt;&lt;/pre&gt;
@@ -221,7 +221,7 @@ ggplot(movies, aes(x = date_counter, y = difference)) +
   annotate(&amp;quot;label&amp;quot;, label = &amp;quot;2016&amp;quot;, x = 47, y = -0.7, colour = &amp;quot;#EE4000&amp;quot;) +
   geom_hline(yintercept = 0, linetype = 2, colour = &amp;quot;#EE4000&amp;quot;) +
   annotation_custom(g, xmin=0, xmax=7, ymin=0.5, ymax=0.95)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Hmm, he’s had a fairly erratic career in terms of movie ratings. Looking at the relationship between ratings and time, there’s a bit of an improvement, and certainly less train-wrecks, but the improvement is not massive. Maybe he didn’t start off so bad, after all.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(movies, aes(x = YEAR, y = RATING)) +
   geom_point(colour = &amp;quot;yellow&amp;quot;) +
@@ -229,7 +229,7 @@ ggplot(movies, aes(x = date_counter, y = difference)) +
   theme(panel.background = element_rect(fill = &amp;quot;#3A9425&amp;quot;),
         axis.line = element_line(colour = &amp;quot;#EE4000&amp;quot;)) +
   annotation_custom(g, xmin=2013, xmax=2016, ymin=0.01, ymax=0.25)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So what was Mr. Pitt’s worst film?&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;movies %&amp;gt;% arrange(RATING) %&amp;gt;% head(n = 1)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##   RATING      TITLE            CREDIT YEAR difference date_counter
@@ -291,7 +291,7 @@ all_actors &amp;lt;- full_join(all_actors, movies) %&amp;gt;%
         axis.ticks = element_line(colour = &amp;quot;#EE4000&amp;quot;),
         axis.title = element_text(colour = &amp;quot;#EE4000&amp;quot;)) +
   annotation_custom(g, xmin=1.5, xmax=2.5, ymin=0.01, ymax=0.25)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;#####content/post/2017-01-11-brad_pitt_movies_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Not surprisingly, the three-time Best Actor Oscar winner Daniel Day-Lewis has a notably different profile. He doesn’t make many bad movies, that’s for sure (there’s nothing under the tomato image). Poor Jamie Foxx, on the other hand, has made quite a few more stinkers. Perhaps opportunities were harder to come by for the only black actor in the group, perhaps not.&lt;/p&gt;
 &lt;p&gt;So after all that, what do we think of Meister Pitt? He compares very favourably to some of his peers, with maybe only Fassbender and Day-Lewis on a different level. Still, though, not bad, Mr. Pitt. Even after Mr. and Mrs. Smith :wink:&lt;/p&gt;
 &lt;p&gt;&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/yBsAkLa.png?1&#34; /&gt;&lt;/p&gt;
@@ -792,7 +792,7 @@ rollcalls &amp;lt;- full_join(EU, theme) %&amp;gt;%
   filter(!is.na(vote))&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Next, we need to prepare the data for Stan. Our model is a basic &lt;a href=&#34;https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/ClintonJackmanRivers2004.pdf&#34;&gt;2-parameter Item-Response theory model&lt;/a&gt; often used for &lt;a href=&#34;http://robertmyles.github.io/Bayesian-IRT-in-R-and-Stan.html&#34;&gt;creating ideal points&lt;/a&gt;. We write this in the Stan modelling language and save it as a string in R. In mathematical notation, the model is:&lt;/p&gt;
 &lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[y_{ijk} = \beta_j \theta_{ik} - \alpha_j,\]&lt;/span&gt;&lt;/p&gt;
-&lt;p&gt;where &lt;em&gt;i&lt;/em&gt; is an index of voters, &lt;em&gt;j&lt;/em&gt; an index of votes, and &lt;em&gt;k&lt;/em&gt; an index of topics. &lt;span class=&#34;math display&#34;&gt;\[\theta_{ik}\]&lt;/span&gt; is our main object of interest: the ideal point of MEP &lt;em&gt;i&lt;/em&gt; on topic &lt;em&gt;k&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;where &lt;em&gt;i&lt;/em&gt; is an index of voters, &lt;em&gt;j&lt;/em&gt; an index of votes, and &lt;em&gt;k&lt;/em&gt; an index of topics. &lt;span class=&#34;math inline&#34;&gt;\(\theta_{ik}\)&lt;/span&gt; is our main object of interest: the ideal point of MEP &lt;em&gt;i&lt;/em&gt; on topic &lt;em&gt;k&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;For those not familiar with Stan, the following Stan code has a &lt;code&gt;data&lt;/code&gt; block, in which we declare what our variables are and their type (these are created in the section after). Then we have a parameters block where we declare our parameters.&lt;/p&gt;
 &lt;p&gt;Lastly, we have the model block where we have our model and the priors for each parameter. In an IRT model like this, we need to constrain the ideal points of at least 2 legislators. Since I am not an expert on these MEPs, I am just going to do this for the first two in the database (&lt;code&gt;theta[1]&lt;/code&gt; and &lt;code&gt;theta[2]&lt;/code&gt;).&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mep_model &amp;lt;- &amp;quot;

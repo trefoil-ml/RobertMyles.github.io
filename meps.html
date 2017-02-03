@@ -59,7 +59,7 @@
 
 
 
-<meta itemprop="keywords" content="bayesian-statistics,github,hugo,political-science,r,statistics,webscraping,bayes,bayesian-statistics,brazil,electionsbr,eu,geo-reference,ggplot2,github,ideal-points,irt,jags,r,r-markdown,rmarkdown,rotten-tomatoes,rselenium,rstan,stan,the-economist,tidyverse,webscraping," />
+<meta itemprop="keywords" content="bayesian-statistics,communism,github,hugo,political-economy,political-science,r,statistics,webscraping,bayes,bayesian-statistics,brazil,electionsbr,eu,geo-reference,ggplot2,github,ideal-points,irt,jags,r,r-markdown,rmarkdown,rotten-tomatoes,rselenium,rstan,stan,the-economist,tidyverse,webscraping," />
 
         
 
@@ -107,14 +107,23 @@
         <ul>
             
                 <li>
-                    <a href="https://github.com/RobertMyles">
-                        GitHub
+                    <a href="./research/">
+                        
+                            <i class="fa fa-bar-chart">&nbsp;</i>Research
                     </a>
                 </li>
             
                 <li>
-                    <a href="https://twitter.com/RobertMylesMc">
-                        Twitter
+                    <a href="https://github.com/RobertMyles">
+                        
+                            <i class="fa fa-code">&nbsp;</i>GitHub
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="./cv/">
+                        
+                            <i class="fa fa-file-o">&nbsp;</i>CV
                     </a>
                 </li>
             
@@ -132,7 +141,7 @@
                 </li>
             
                 <li>
-                    <a href="./categories">
+                    <a href="./categories/">
                         Categories
                     </a>
                 </li>
@@ -176,8 +185,21 @@
             <ul class="links">
                 
                     <li>
+                        <a href="./research/">
+                            <h3>
+                                
+                                    <i class="fa fa-bar-chart">&nbsp;</i>
+                                
+                                Research
+                            </h3>
+                        </a>
+                    </li>
+                
+                    <li>
                         <a href="https://github.com/RobertMyles">
                             <h3>
+                                
+                                    <i class="fa fa-code">&nbsp;</i>
                                 
                                 GitHub
                             </h3>
@@ -185,10 +207,12 @@
                     </li>
                 
                     <li>
-                        <a href="https://twitter.com/RobertMylesMc">
+                        <a href="./cv/">
                             <h3>
                                 
-                                Twitter
+                                    <i class="fa fa-file-o">&nbsp;</i>
+                                
+                                CV
                             </h3>
                         </a>
                     </li>
@@ -214,7 +238,7 @@
                     </li>
                 
                     <li>
-                        <a href="./categories">
+                        <a href="./categories/">
                             <h3>
                                 
                                 Categories
@@ -472,7 +496,7 @@ rollcalls &lt;- full_join(EU, theme) %&gt;%
   filter(!is.na(vote))</code></pre>
 <p>Next, we need to prepare the data for Stan. Our model is a basic <a href="https://www.cs.princeton.edu/courses/archive/fall09/cos597A/papers/ClintonJackmanRivers2004.pdf">2-parameter Item-Response theory model</a> often used for <a href="http://robertmyles.github.io/Bayesian-IRT-in-R-and-Stan.html">creating ideal points</a>. We write this in the Stan modelling language and save it as a string in R. In mathematical notation, the model is:</p>
 <p><span class="math display">\[y_{ijk} = \beta_j \theta_{ik} - \alpha_j,\]</span></p>
-<p>where <em>i</em> is an index of voters, <em>j</em> an index of votes, and <em>k</em> an index of topics. <span class="math display">\[\theta_{ik}\]</span> is our main object of interest: the ideal point of MEP <em>i</em> on topic <em>k</em>.</p>
+<p>where <em>i</em> is an index of voters, <em>j</em> an index of votes, and <em>k</em> an index of topics. <span class="math inline">\(\theta_{ik}\)</span> is our main object of interest: the ideal point of MEP <em>i</em> on topic <em>k</em>.</p>
 <p>For those not familiar with Stan, the following Stan code has a <code>data</code> block, in which we declare what our variables are and their type (these are created in the section after). Then we have a parameters block where we declare our parameters.</p>
 <p>Lastly, we have the model block where we have our model and the priors for each parameter. In an IRT model like this, we need to constrain the ideal points of at least 2 legislators. Since I am not an expert on these MEPs, I am just going to do this for the first two in the database (<code>theta[1]</code> and <code>theta[2]</code>).</p>
 <pre class="r"><code>mep_model &lt;- &quot;
@@ -624,9 +648,9 @@ ggplot(adwent, aes(x = mean, y = topic)) +
 
     
     
-        <li><a href='./categoriesr'>R</a></li>
+        <li><a href='./categories/r'>R</a></li>
     
-        <li><a href='./categoriespolitical-science'>Political Science</a></li>
+        <li><a href='./categories/political-science'>Political Science</a></li>
     
 </ul>
 
@@ -943,7 +967,7 @@ ggplot(adwent, aes(x = mean, y = topic)) +
                         <article>
                             <header>
                                 <a href="./categories/r/">r</a>
-                                <span style="float:right;">14</span>
+                                <span style="float:right;">15</span>
                             </header>
                         </article>
                     </li>
@@ -952,6 +976,15 @@ ggplot(adwent, aes(x = mean, y = topic)) +
                         <article>
                             <header>
                                 <a href="./categories/bayesian-statistics/">bayesian-statistics</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="./categories/communism/">communism</a>
                                 <span style="float:right;">1</span>
                             </header>
                         </article>
@@ -970,6 +1003,15 @@ ggplot(adwent, aes(x = mean, y = topic)) +
                         <article>
                             <header>
                                 <a href="./categories/hugo/">hugo</a>
+                                <span style="float:right;">1</span>
+                            </header>
+                        </article>
+                    </li>
+                
+                    <li>
+                        <article>
+                            <header>
+                                <a href="./categories/political-economy/">political-economy</a>
                                 <span style="float:right;">1</span>
                             </header>
                         </article>
