@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>The Economist on Robert Myles McDonnell</title>
-    <link>/tags/the-economist/</link>
+    <link>https://robertmyles.github.io/tags/the-economist/</link>
     <description>Recent content in The Economist on Robert Myles McDonnell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 21 Aug 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/tags/the-economist/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://robertmyles.github.io/tags/the-economist/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Re-creating Plots from The Economist in R and ggplot2</title>
-      <link>/re-creating-plots-from-the-economist-in-r.html</link>
+      <link>https://robertmyles.github.io/re-creating-plots-from-the-economist-in-r.html</link>
       <pubDate>Sun, 21 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>/re-creating-plots-from-the-economist-in-r.html</guid>
+      <guid>https://robertmyles.github.io/re-creating-plots-from-the-economist-in-r.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;

@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Statistics on Robert Myles McDonnell</title>
-    <link>/categories/statistics/</link>
+    <link>https://robertmyles.github.io/categories/statistics/</link>
     <description>Recent content in Statistics on Robert Myles McDonnell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 03 May 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://robertmyles.github.io/categories/statistics/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Bayesian Stats -- Book Recommendations</title>
-      <link>/books-on-bayes-stats.html</link>
+      <link>https://robertmyles.github.io/books-on-bayes-stats.html</link>
       <pubDate>Tue, 03 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>/books-on-bayes-stats.html</guid>
+      <guid>https://robertmyles.github.io/books-on-bayes-stats.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;

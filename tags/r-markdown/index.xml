@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R Markdown on Robert Myles McDonnell</title>
-    <link>/tags/r-markdown/</link>
+    <link>https://robertmyles.github.io/tags/r-markdown/</link>
     <description>Recent content in R Markdown on Robert Myles McDonnell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 02 Jan 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://robertmyles.github.io/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Tips and Tricks for R Markdown html</title>
-      <link>/background-image-rmarkdown.html</link>
+      <link>https://robertmyles.github.io/background-image-rmarkdown.html</link>
       <pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/background-image-rmarkdown.html</guid>
+      <guid>https://robertmyles.github.io/background-image-rmarkdown.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;

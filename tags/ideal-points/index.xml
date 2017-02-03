@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ideal Points on Robert Myles McDonnell</title>
-    <link>/tags/ideal-points/</link>
+    <link>https://robertmyles.github.io/tags/ideal-points/</link>
     <description>Recent content in Ideal Points on Robert Myles McDonnell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 21 May 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/tags/ideal-points/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://robertmyles.github.io/tags/ideal-points/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Bayesian IRT in R and Stan</title>
-      <link>/bayesian-irt-in-r-and-stan.html</link>
+      <link>https://robertmyles.github.io/bayesian-irt-in-r-and-stan.html</link>
       <pubDate>Sat, 21 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>/bayesian-irt-in-r-and-stan.html</guid>
+      <guid>https://robertmyles.github.io/bayesian-irt-in-r-and-stan.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -232,10 +232,10 @@ ggplot(St, aes(x=Mean, y=FullID)) +
     
     <item>
       <title>Stan or JAGS for Bayesian ideal-point IRT?</title>
-      <link>/stan-jags.html</link>
+      <link>https://robertmyles.github.io/stan-jags.html</link>
       <pubDate>Wed, 13 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>/stan-jags.html</guid>
+      <guid>https://robertmyles.github.io/stan-jags.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;

@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Political Science on Robert Myles McDonnell</title>
-    <link>/categories/political-science/</link>
+    <link>https://robertmyles.github.io/categories/political-science/</link>
     <description>Recent content in Political Science on Robert Myles McDonnell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 20 Oct 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/categories/political-science/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://robertmyles.github.io/categories/political-science/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Theme-Specific Voting in the European Parliament</title>
-      <link>/meps.html</link>
+      <link>https://robertmyles.github.io/meps.html</link>
       <pubDate>Thu, 20 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>/meps.html</guid>
+      <guid>https://robertmyles.github.io/meps.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;

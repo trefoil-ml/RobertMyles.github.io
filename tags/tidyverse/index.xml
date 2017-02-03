@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tidyverse on Robert Myles McDonnell</title>
-    <link>/tags/tidyverse/</link>
+    <link>https://robertmyles.github.io/tags/tidyverse/</link>
     <description>Recent content in Tidyverse on Robert Myles McDonnell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 29 Dec 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/tags/tidyverse/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://robertmyles.github.io/tags/tidyverse/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Make a colour table in R with ggplot2</title>
-      <link>/colour-table.html</link>
+      <link>https://robertmyles.github.io/colour-table.html</link>
       <pubDate>Thu, 29 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>/colour-table.html</guid>
+      <guid>https://robertmyles.github.io/colour-table.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;

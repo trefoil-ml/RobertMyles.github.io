@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Robert Myles McDonnell</title>
-    <link>/</link>
+    <link>https://robertmyles.github.io/</link>
     <description>Recent content on Robert Myles McDonnell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 01 Feb 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://robertmyles.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>How to make a GitHub pages blog with RStudio and Hugo</title>
-      <link>/2017/02/01/how-to-make-a-github-pages-blog-with-rstudio-and-hugo/</link>
+      <link>https://robertmyles.github.io/2017/02/01/how-to-make-a-github-pages-blog-with-rstudio-and-hugo/</link>
       <pubDate>Wed, 01 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>/2017/02/01/how-to-make-a-github-pages-blog-with-rstudio-and-hugo/</guid>
+      <guid>https://robertmyles.github.io/2017/02/01/how-to-make-a-github-pages-blog-with-rstudio-and-hugo/</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -131,10 +131,10 @@ git push origin master&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Ranking Brad Pitt’s Movies in R</title>
-      <link>/brad_pitt_movies.html</link>
+      <link>https://robertmyles.github.io/brad_pitt_movies.html</link>
       <pubDate>Wed, 11 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/brad_pitt_movies.html</guid>
+      <guid>https://robertmyles.github.io/brad_pitt_movies.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -195,7 +195,7 @@ ggplot(movies, aes(x = RATING)) +
   theme_classic() +
   theme(panel.background = element_rect(fill = &amp;quot;#3A9425&amp;quot;)) +
   annotation_custom(g, xmin = 0, xmax = 0.25, ymin = 4, ymax = 6)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://robertmyles.github.io/brad_pitt_movies.htmlfigures/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;(You can get the tomato image from &lt;a href=&#34;http://static.tvtropes.org/pmwiki/pub/images/rotten_tomatoes_8290.jpg&#34;&gt;here&lt;/a&gt;. Convert it to png and strip out (most of) the white background using &lt;a href=&#34;https://www.imagemagick.org/script/index.php&#34;&gt;ImageMagick&lt;/a&gt; – the command on a mac is &lt;code&gt;convert rotten_tomatoes.jpg -transparent white tomato.png&lt;/code&gt;.)&lt;/p&gt;
 &lt;p&gt;Not so bad! Got some not-so-greats, but quite a lot of highly rated movies. I’m surprised, actually. In fact the mean and median values are:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mean(movies$RATING)&lt;/code&gt;&lt;/pre&gt;
@@ -221,7 +221,7 @@ ggplot(movies, aes(x = date_counter, y = difference)) +
   annotate(&amp;quot;label&amp;quot;, label = &amp;quot;2016&amp;quot;, x = 47, y = -0.7, colour = &amp;quot;#EE4000&amp;quot;) +
   geom_hline(yintercept = 0, linetype = 2, colour = &amp;quot;#EE4000&amp;quot;) +
   annotation_custom(g, xmin=0, xmax=7, ymin=0.5, ymax=0.95)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://robertmyles.github.io/brad_pitt_movies.htmlfigures/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Hmm, he’s had a fairly erratic career in terms of movie ratings. Looking at the relationship between ratings and time, there’s a bit of an improvement, and certainly less train-wrecks, but the improvement is not massive. Maybe he didn’t start off so bad, after all.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(movies, aes(x = YEAR, y = RATING)) +
   geom_point(colour = &amp;quot;yellow&amp;quot;) +
@@ -229,7 +229,7 @@ ggplot(movies, aes(x = date_counter, y = difference)) +
   theme(panel.background = element_rect(fill = &amp;quot;#3A9425&amp;quot;),
         axis.line = element_line(colour = &amp;quot;#EE4000&amp;quot;)) +
   annotation_custom(g, xmin=2013, xmax=2016, ymin=0.01, ymax=0.25)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://robertmyles.github.io/brad_pitt_movies.htmlfigures/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;So what was Mr. Pitt’s worst film?&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;movies %&amp;gt;% arrange(RATING) %&amp;gt;% head(n = 1)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;##   RATING      TITLE            CREDIT YEAR difference date_counter
@@ -291,7 +291,7 @@ all_actors &amp;lt;- full_join(all_actors, movies) %&amp;gt;%
         axis.ticks = element_line(colour = &amp;quot;#EE4000&amp;quot;),
         axis.title = element_text(colour = &amp;quot;#EE4000&amp;quot;)) +
   annotation_custom(g, xmin=1.5, xmax=2.5, ymin=0.01, ymax=0.25)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/brad_pitt_movies.htmlfigures/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://robertmyles.github.io/brad_pitt_movies.htmlfigures/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Not surprisingly, the three-time Best Actor Oscar winner Daniel Day-Lewis has a notably different profile. He doesn’t make many bad movies, that’s for sure (there’s nothing under the tomato image). Poor Jamie Foxx, on the other hand, has made quite a few more stinkers. Perhaps opportunities were harder to come by for the only black actor in the group, perhaps not.&lt;/p&gt;
 &lt;p&gt;So after all that, what do we think of Meister Pitt? He compares very favourably to some of his peers, with maybe only Fassbender and Day-Lewis on a different level. Still, though, not bad, Mr. Pitt. Even after Mr. and Mrs. Smith :wink:&lt;/p&gt;
 &lt;p&gt;&lt;link rel=&#34;image_src&#34; href=&#34;http://i.imgur.com/yBsAkLa.png?1&#34; /&gt;&lt;/p&gt;
@@ -308,10 +308,10 @@ all_actors &amp;lt;- full_join(all_actors, movies) %&amp;gt;%
     
     <item>
       <title>Tips and Tricks for R Markdown html</title>
-      <link>/background-image-rmarkdown.html</link>
+      <link>https://robertmyles.github.io/background-image-rmarkdown.html</link>
       <pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/background-image-rmarkdown.html</guid>
+      <guid>https://robertmyles.github.io/background-image-rmarkdown.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -453,10 +453,10 @@ output:
     
     <item>
       <title>Make a colour table in R with ggplot2</title>
-      <link>/colour-table.html</link>
+      <link>https://robertmyles.github.io/colour-table.html</link>
       <pubDate>Thu, 29 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>/colour-table.html</guid>
+      <guid>https://robertmyles.github.io/colour-table.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -581,10 +581,10 @@ dev.off()&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Suicides in Ireland</title>
-      <link>/suicides-in-ireland.html</link>
+      <link>https://robertmyles.github.io/suicides-in-ireland.html</link>
       <pubDate>Wed, 21 Dec 2016 00:00:00 +0000</pubDate>
       
-      <guid>/suicides-in-ireland.html</guid>
+      <guid>https://robertmyles.github.io/suicides-in-ireland.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -732,10 +732,10 @@ kable(table[,1:3])&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Theme-Specific Voting in the European Parliament</title>
-      <link>/meps.html</link>
+      <link>https://robertmyles.github.io/meps.html</link>
       <pubDate>Thu, 20 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>/meps.html</guid>
+      <guid>https://robertmyles.github.io/meps.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -926,10 +926,10 @@ ggplot(adwent, aes(x = mean, y = topic)) +
     
     <item>
       <title>Map-making with R and electionsBR</title>
-      <link>/electionsbr.html</link>
+      <link>https://robertmyles.github.io/electionsbr.html</link>
       <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
       
-      <guid>/electionsbr.html</guid>
+      <guid>https://robertmyles.github.io/electionsbr.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -1141,10 +1141,10 @@ Dilma_1 &amp;lt;- left_join(Brasil, Pres1) %&amp;gt;%
     
     <item>
       <title>Re-creating Plots from The Economist in R and ggplot2</title>
-      <link>/re-creating-plots-from-the-economist-in-r.html</link>
+      <link>https://robertmyles.github.io/re-creating-plots-from-the-economist-in-r.html</link>
       <pubDate>Sun, 21 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>/re-creating-plots-from-the-economist-in-r.html</guid>
+      <guid>https://robertmyles.github.io/re-creating-plots-from-the-economist-in-r.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -1368,10 +1368,10 @@ embed_fonts(&amp;quot;Brexit_test_Econ.pdf&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Geo-reference an image in R</title>
-      <link>/geo-reference-an-image-in-r.html</link>
+      <link>https://robertmyles.github.io/geo-reference-an-image-in-r.html</link>
       <pubDate>Sat, 13 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>/geo-reference-an-image-in-r.html</guid>
+      <guid>https://robertmyles.github.io/geo-reference-an-image-in-r.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -1409,10 +1409,10 @@ crs(map2) &amp;lt;- &amp;quot;+proj=longlat +datum=WGS84&amp;quot;&lt;/code&gt;&
     
     <item>
       <title>Easier web scraping in R</title>
-      <link>/easier-web-scraping-in-r.html</link>
+      <link>https://robertmyles.github.io/easier-web-scraping-in-r.html</link>
       <pubDate>Fri, 05 Aug 2016 00:00:00 +0000</pubDate>
       
-      <guid>/easier-web-scraping-in-r.html</guid>
+      <guid>https://robertmyles.github.io/easier-web-scraping-in-r.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -1511,10 +1511,10 @@ Prefeitos &amp;lt;- Prefeitos[,c(1:5, 7, 6)]&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Bayesian IRT in R and Stan</title>
-      <link>/bayesian-irt-in-r-and-stan.html</link>
+      <link>https://robertmyles.github.io/bayesian-irt-in-r-and-stan.html</link>
       <pubDate>Sat, 21 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>/bayesian-irt-in-r-and-stan.html</guid>
+      <guid>https://robertmyles.github.io/bayesian-irt-in-r-and-stan.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -1732,10 +1732,10 @@ ggplot(St, aes(x=Mean, y=FullID)) +
     
     <item>
       <title>About</title>
-      <link>/about/</link>
+      <link>https://robertmyles.github.io/about/</link>
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
       
-      <guid>/about/</guid>
+      <guid>https://robertmyles.github.io/about/</guid>
       <description>&lt;p&gt;My name is Robert McDonnell and I live in Brazil, in the hustle and bustle of São Paulo. I have studied Fine Art (in &lt;a href=&#34;http://www.ncad.ie/&#34;&gt;NCAD&lt;/a&gt; in Dublin, Ireland), International Relations &amp;amp; Political Science (in &lt;a href=&#34;http://www.dcu.ie/&#34;&gt;DCU&lt;/a&gt;), and I have just finished my PhD in International Relations in the University of São Paulo. My academic work has so far focused on Bayesian item-response models of legislative voting. Currently, I produce some research for the &lt;a href=&#34;http://portal.fgv.br/en&#34;&gt;Getúlio Vargas Foundation&lt;/a&gt;, I&amp;rsquo;m (trying to) develop some R packages, and I give classes and courses on R and data analysis for &lt;a href=&#34;http://www.ibpad.com.br/&#34;&gt;IBPAD&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;You can find my work on &lt;a href=&#34;https://github.com/RobertMyles&#34;&gt;Github&lt;/a&gt;, or you can see my &lt;a href=&#34;https://br.linkedin.com/in/robert-mcdonnell-7475b320&#34;&gt;LinkedIn&lt;/a&gt;.&lt;/p&gt;
@@ -1744,10 +1744,10 @@ ggplot(St, aes(x=Mean, y=FullID)) +
     
     <item>
       <title>Research</title>
-      <link>/research/</link>
+      <link>https://robertmyles.github.io/research/</link>
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
       
-      <guid>/research/</guid>
+      <guid>https://robertmyles.github.io/research/</guid>
       <description>&lt;p&gt;&lt;i class=&#34;fa fa-paperclip&#34;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&lt;strong&gt;Formally Comparing Legislative Institutions&lt;/strong&gt;
     - forthcoming in the Brazilian Political Science Review. SocArXiv working paper available &lt;a href=&#34;https://osf.io/pd5hv/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
@@ -1776,10 +1776,10 @@ ggplot(St, aes(x=Mean, y=FullID)) +
     
     <item>
       <title>Robert Myles McDonnell</title>
-      <link>/cv/</link>
+      <link>https://robertmyles.github.io/cv/</link>
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
       
-      <guid>/cv/</guid>
+      <guid>https://robertmyles.github.io/cv/</guid>
       <description>
 
 &lt;h3 id=&#34;i-class-fa-fa-birthday-cake-i-19-12-1980&#34;&gt;&lt;i class=&#34;fa fa-birthday-cake&#34;&gt;&lt;/i&gt; 19/12/1980&lt;/h3&gt;
@@ -1920,10 +1920,10 @@ I believe that I have a very high level of writing ability, as I have shown in a
     
     <item>
       <title>Bayesian Stats -- Book Recommendations</title>
-      <link>/books-on-bayes-stats.html</link>
+      <link>https://robertmyles.github.io/books-on-bayes-stats.html</link>
       <pubDate>Tue, 03 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>/books-on-bayes-stats.html</guid>
+      <guid>https://robertmyles.github.io/books-on-bayes-stats.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;

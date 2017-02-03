@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Rselenium on Robert Myles McDonnell</title>
-    <link>/tags/rselenium/</link>
+    <link>https://robertmyles.github.io/tags/rselenium/</link>
     <description>Recent content in Rselenium on Robert Myles McDonnell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 27 Apr 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/tags/rselenium/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://robertmyles.github.io/tags/rselenium/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Web Navigation in R with RSelenium</title>
-      <link>/web-navigation-and-scraping-with-r.html</link>
+      <link>https://robertmyles.github.io/web-navigation-and-scraping-with-r.html</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>/web-navigation-and-scraping-with-r.html</guid>
+      <guid>https://robertmyles.github.io/web-navigation-and-scraping-with-r.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;

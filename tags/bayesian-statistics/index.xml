@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Bayesian Statistics on Robert Myles McDonnell</title>
-    <link>/tags/bayesian-statistics/</link>
+    <link>https://robertmyles.github.io/tags/bayesian-statistics/</link>
     <description>Recent content in Bayesian Statistics on Robert Myles McDonnell</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 21 May 2016 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/tags/bayesian-statistics/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://robertmyles.github.io/tags/bayesian-statistics/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Bayesian IRT in R and Stan</title>
-      <link>/bayesian-irt-in-r-and-stan.html</link>
+      <link>https://robertmyles.github.io/bayesian-irt-in-r-and-stan.html</link>
       <pubDate>Sat, 21 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>/bayesian-irt-in-r-and-stan.html</guid>
+      <guid>https://robertmyles.github.io/bayesian-irt-in-r-and-stan.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
@@ -232,10 +232,10 @@ ggplot(St, aes(x=Mean, y=FullID)) +
     
     <item>
       <title>Bayesian Stats -- Book Recommendations</title>
-      <link>/books-on-bayes-stats.html</link>
+      <link>https://robertmyles.github.io/books-on-bayes-stats.html</link>
       <pubDate>Tue, 03 May 2016 00:00:00 +0000</pubDate>
       
-      <guid>/books-on-bayes-stats.html</guid>
+      <guid>https://robertmyles.github.io/books-on-bayes-stats.html</guid>
       <description>&lt;!-- BLOGDOWN-BODY-BEFORE
 
 /BLOGDOWN-BODY-BEFORE --&gt;
